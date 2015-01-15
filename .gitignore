@@ -1,0 +1,8 @@
+/.idea
+/bootstrap/compiled.php
+/bower_components
+/node_modules
+/vendor
+.env
+.env.*.php
+_ide_helper.php
