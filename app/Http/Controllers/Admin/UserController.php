@@ -74,7 +74,7 @@ class UserController extends AdminController {
 		if($user->isDirty()) {
 			$user->save();
 
-			return redirect()->route('admin.user.index')->with('status', 'User Updated');
+			return redirect()->route('admin.user.index')->with('status', 'User updated');
 		}
 
 		return redirect()->route('admin.user.index')->with('status', 'No changes');

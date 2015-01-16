@@ -11,6 +11,7 @@
 			<?php
 			$navbar = [
 				['text' => 'Home', 'url' => route('admin.index'), 'active' => 'admin.index'],
+				['text' => 'Channels', 'url' => route('admin.channel.index'), 'active' => 'admin.channel.*'],
 				['text' => 'Services', 'active' => 'admin.service.*', 'children' => [
 					['text' => 'Incoming', 'url' => route('admin.service.incoming.index'), 'active' => 'admin.service.incoming.*'],
 				]],

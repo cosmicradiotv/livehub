@@ -23,7 +23,9 @@ class RouteServiceProvider extends ServiceProvider {
 	 */
 	public function boot(Router $router) {
 		// Register route bindings
+		$router->model('channel', 't2t2\\LiveHub\\Models\\Channel');
 		$router->model('user', 't2t2\\LiveHub\\Models\\User');
+
 		$router->pattern('service', '[a-zA-Z]+');
 
 		parent::boot($router);

@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * t2t2\LiveHub\Models\IncomingService
  *
- * @property integer                                        $id
- * @property string                                         $class
- * @property array                                          $options
- * @property \Carbon\Carbon                                 $created_at
- * @property \Carbon\Carbon                                 $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
+ * @property integer                                                                      $id
+ * @property string                                                                       $class
+ * @property array                                                                        $options
+ * @property \Carbon\Carbon                                                               $created_at
+ * @property \Carbon\Carbon                                                               $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $channels
+ * @property-read \Illuminate\Database\Eloquent\Collection|\                              $related[] $morphedByMany
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereClass($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereOptions($value)
@@ -20,8 +21,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class IncomingService extends Model {
 
-	protected $table = 'incoming_services';
-
 	protected $casts = ['options' => 'json'];
 
+	protected $fillable = ['class'];
+
+	protected $hidden = ['options'];
+
+	protected $table = 'incoming_services';
+
+	// Relations
+
+	public function channels() {
+		return $this->hasMany('t2t2\LiveHub\Models\Channel', 'incoming_service_id');
+	}
 }

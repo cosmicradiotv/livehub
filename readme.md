@@ -16,7 +16,7 @@ This project is sponsored by [cosmicradio.tv](http://cosmicradio.tv/)
 
 ### Installation
 
-* Close the site via git
+* Clone the site via git
 * Configure the server so that public directory is served
 * Get the dependencies
 	* `composer install`

@@ -1,2 +1,21 @@
 // Import foundation
 @import "../../../bower_components/foundation/scss/foundation";
+
+
+.no-margin {
+	margin-bottom: 0 !important;
+}
+.top-margin {
+	margin-top: $form-spacing;
+}
+.bottom-margin {
+	margin-bottom: $form-spacing;
+}
+.vertical-margin {
+	margin-top: $form-spacing;
+	margin-bottom: $form-spacing;
+}
+
+form .help {
+	color: $subheader-font-color;
+}
