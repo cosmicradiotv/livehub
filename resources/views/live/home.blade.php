@@ -9,20 +9,20 @@
 
 	<script src="{{ asset('assets/js/head.js') }}"></script>
 </head>
-<body>
+<body data-livehub data-livehub-config="{{ route('live.config') }}">
 	<div id="container">
 		<div id="header">
 			<nav class="top-bar" data-topbar role="navigation" data-options="mobile_show_parent_link: false">
 				<ul class="title-area">
 					<li class="name">
-						<h1><a href="#">{{ config('livehub.brand') }}</a></h1>
+						<h1 class="hide-for-small"><a href="#">{{ config('livehub.brand') }}</a></h1>
 					</li>
 					<li class="toggle-topbar menu-icon"><a href="#"><span class="live-streams-text">Now Live Streams: 0</span></a></li>
 				</ul>
 				<section class="top-bar-section">
 					<ul class="left">
 						<li class="has-dropdown">
-							<a href="#">
+							<a>
 								<span class="show-for-medium-up live-streams-text">Now Live Streams: 0</span>
 								<span class="show-for-small-only">Switch Stream</span>
 							</a>
@@ -34,10 +34,10 @@
 			</nav>
 		</div>
 		<div id="live-container">
-			<iframe src="about:blank" frameborder="0"></iframe>
+			<iframe id="live-frame" src="about:blank" frameborder="0"></iframe>
 		</div>
 		<div id="chat-container">
-			<iframe src="about:blank" frameborder="0"></iframe>
+			<iframe id="chat-frame" src="about:blank" frameborder="0"></iframe>
 		</div>
 	</div>
 

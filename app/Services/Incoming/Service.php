@@ -2,7 +2,9 @@
 namespace t2t2\LiveHub\Services\Incoming;
 
 use Illuminate\Contracts\Routing\UrlRoutable;
+use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
+use t2t2\LiveHub\Models\Stream;
 
 abstract class Service implements UrlRoutable {
 
@@ -16,6 +18,18 @@ abstract class Service implements UrlRoutable {
 	 * @return string
 	 */
 	abstract public function description();
+
+	/**
+	 * Get chat URL for this service
+	 *
+	 * @param null|Channel $channel
+	 * @param null|Stream $stream
+	 *
+	 * @return string
+	 */
+	public function getChatUrl($channel = null, $stream = null) {
+		return route('helper.misconfigured');
+	}
 
 	/**
 	 * @return mixed
@@ -60,6 +74,18 @@ abstract class Service implements UrlRoutable {
 		} else {
 			$this->options = null;
 		}
+	}
+
+	/**
+	 * Get video URL for this service
+	 *
+	 * @param null|Channel $channel
+	 * @param null|Stream $stream
+	 *
+	 * @return string
+	 */
+	public function getVideoUrl($channel = null, $stream = null) {
+		return route('helper.misconfigured');
 	}
 
 	/**

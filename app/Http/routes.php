@@ -19,9 +19,18 @@ use Illuminate\Routing\Router;
 
 $router->get('/', [
 	'as'   => 'home',
-	'uses' => 'LiveController@home'
+	'uses' => 'LiveController@home',
 ]);
 
+$router->get('live/config', [
+	'as' => 'live.config',
+	'uses' => 'LiveController@config',
+]);
+
+$router->get('helper/misconfigured', [
+	'as' => 'helper.misconfigured',
+	'uses' => 'HelperController@misconfigured',
+]);
 
 $router->group(['prefix' => 'auth'], function (Router $router) {
 

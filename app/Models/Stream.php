@@ -44,10 +44,31 @@ class Stream extends Model {
 
 	protected $table = 'streams';
 
-	// Relations
-
+	/**
+	 * Channel relation
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function channel() {
 		return $this->belongsTo('t2t2\LiveHub\Models\Channel');
+	}
+
+	/**
+	 * Gets the chat embed url for the stream
+	 *
+	 * @return string
+	 */
+	public function getChatUrl() {
+		return $this->chat_url ?: $this->channel->getChatUrl($this);
+	}
+
+	/**
+	 * Gets the video embed url for the stream
+	 *
+	 * @return string
+	 */
+	public function getVideoUrl() {
+		return $this->video_url ?: $this->channel->getVideoUrl($this);
 	}
 
 	// Setters

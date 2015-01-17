@@ -2,30 +2,31 @@
 namespace t2t2\LiveHub\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  * t2t2\LiveHub\Models\Channel
  *
- * @property integer                                        $id
- * @property integer                                        $incoming_service_id
- * @property string                                         $name
- * @property array                                          $options
- * @property string                                         $video_url
- * @property string                                         $chat_url
- * @property \Carbon\Carbon                                 $created_at
- * @property \Carbon\Carbon                                 $updated_at
- * @property-read \t2t2\LiveHub\Models\IncomingService      $service
- * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereClass($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereOptions($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereIncomingServiceId($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereVideoUrl($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereChatUrl($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Stream[] $streams
+ * @property integer                                                $id
+ * @property integer                                                $incoming_service_id
+ * @property string                                                 $name
+ * @property array                                                  $options
+ * @property string                                                 $video_url
+ * @property string                                                 $chat_url
+ * @property \Carbon\Carbon                                         $created_at
+ * @property \Carbon\Carbon                                         $updated_at
+ * @property-read \t2t2\LiveHub\Models\IncomingService              $service
+ * @property-read \Illuminate\Database\Eloquent\Collection          $related[] $morphedByMany
+ * @method static Builder|Channel whereId($value)
+ * @method static Builder|Channel whereClass($value)
+ * @method static Builder|Channel whereOptions($value)
+ * @method static Builder|Channel whereCreatedAt($value)
+ * @method static Builder|Channel whereUpdatedAt($value)
+ * @method static Builder|Channel whereIncomingServiceId($value)
+ * @method static Builder|Channel whereName($value)
+ * @method static Builder|Channel whereVideoUrl($value)
+ * @method static Builder|Channel whereChatUrl($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|Stream[] $streams
  */
 class Channel extends Model {
 
@@ -36,6 +37,24 @@ class Channel extends Model {
 	protected $hidden = ['options'];
 
 	protected $table = 'channels';
+
+	/**
+	 * Get Chat URL for the channel
+	 *
+	 * @return string
+	 */
+	public function getChatUrl($stream = null) {
+		return $this->chat_url ?: $this->service->getService()->getChatUrl($this, $stream);
+	}
+
+	/**
+	 * Get Video URL for the channel
+	 *
+	 * @return string
+	 */
+	public function getVideoUrl($stream = null) {
+		return $this->video_url ?: $this->service->getService()->getVideoUrl($this, $stream);
+	}
 
 	// Relations
 

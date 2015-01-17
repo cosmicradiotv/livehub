@@ -5,6 +5,7 @@
 	"browser": {
 		"foundation": "./bower_components/foundation/js/foundation.js",
 		"jquery": "./bower_components/jquery/dist/jquery.js",
+		"loadash": "./bower_components/lodash/dist/lodash.js",
 		"modernizr": "./bower_components/modernizr/modernizr.js"
 	},
 	"browserify": {
