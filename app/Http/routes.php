@@ -71,6 +71,9 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 	]);
 
 
+	$router->resource('stream', 'Admin\\StreamController', [
+		'except' => ['show']
+	]);
 
 	$router->resource('channel', 'Admin\\ChannelController', [
 		'except' => ['show']

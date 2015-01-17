@@ -1,6 +1,7 @@
 <?php namespace t2t2\LiveHub\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use t2t2\LiveHub\Custom\Validator;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -9,9 +10,8 @@ class AppServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot()
-	{
-		//
+	public function boot() {
+		$this->customValidator();
 	}
 
 	/**
@@ -23,12 +23,20 @@ class AppServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register()
-	{
+	public function register() {
 		$this->app->bind(
 			'Illuminate\Contracts\Auth\Registrar',
 			't2t2\LiveHub\Services\Registrar'
 		);
+	}
+
+	/**
+	 * Implement custom validator with extra rules
+	 */
+	public function customValidator() {
+		\Validator::resolver(function ($translator, $data, $rules, $messages) {
+			return new Validator($translator, $data, $rules, $messages);
+		});
 	}
 
 }

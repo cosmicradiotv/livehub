@@ -35,6 +35,8 @@ class ChannelController extends AdminController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @param ChannelRequest $request
+	 *
 	 * @return Response
 	 */
 	public function store(ChannelRequest $request) {
@@ -63,7 +65,8 @@ class ChannelController extends AdminController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param Channel $channel
+	 * @param Channel        $channel
+	 * @param ChannelRequest $request
 	 *
 	 * @return Response
 	 */

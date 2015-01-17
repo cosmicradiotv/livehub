@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereVideoUrl($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Channel whereChatUrl($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Stream[] $streams
  */
 class Channel extends Model {
 
@@ -40,6 +41,10 @@ class Channel extends Model {
 
 	public function service() {
 		return $this->belongsTo('t2t2\LiveHub\Models\IncomingService', 'incoming_service_id');
+	}
+
+	public function streams() {
+		return $this->hasMany('t2t2\LiveHub\Models\Stream');
 	}
 
 }

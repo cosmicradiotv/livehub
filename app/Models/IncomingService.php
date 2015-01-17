@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereOptions($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection                                $morphedByMany
  */
 class IncomingService extends Model {
 
