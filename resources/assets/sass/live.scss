@@ -1,2 +1,99 @@
 // Import Normalize
 @import "../../../bower_components/foundation/scss/normalize";
+
+// Import Top Bar
+@import "../../../bower_components/foundation/scss/foundation/components/type";
+@import "../../../bower_components/foundation/scss/foundation/components/top-bar";
+@import "../../../bower_components/foundation/scss/foundation/components/visibility";
+
+html, body {
+	height: 100%;
+}
+iframe {
+	display: block;
+}
+html {
+	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+#header {
+	background-color: #bbbbbb;
+	nav.top-bar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+}
+#live-container {
+	background-color: #b4b4b4;
+}
+#chat-container {
+	background-color: #adadad;
+}
+
+#container {
+	#header {
+
+	}
+	#live-container, #chat-container {
+		& > iframe {
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+
+
+// Flexbox based design
+.flexbox {
+	#container {
+		display: flex;
+
+		height: 100%;
+		padding-top: 45px;
+
+		flex-flow: column wrap;
+		justify-content: space-around;
+
+		#header {
+			width: 100%;
+			height: 45px;
+			margin-top: -45px;
+
+			flex: 0 0 40px;
+		}
+		#live-container {
+			height: 50%;
+			max-height: (10/16)*100vw; // Window width / 16 * 9
+			flex: 1 1 auto;
+		}
+		#chat-container {
+			height: 50%;
+			flex: 1 1 auto;
+		}
+
+		@media screen and (min-aspect-ratio: 16/11) {
+			flex-flow: row wrap;
+
+			#header {
+				flex: 0 0 100%;
+			}
+			#live-container {
+				height: 100%;
+				max-height: 100%;
+				
+				max-width: (16/10)*100vh;
+				width: 70%;
+			}
+			#chat-container {
+				height: 100%;
+				max-height: 100%;
+				width: 30%;
+			}
+		}
+	}
+}
