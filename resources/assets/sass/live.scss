@@ -2,6 +2,7 @@
 @import "../../../bower_components/foundation/scss/normalize";
 
 // Import Top Bar
+@import "../../../bower_components/foundation/scss/foundation/components/labels";
 @import "../../../bower_components/foundation/scss/foundation/components/type";
 @import "../../../bower_components/foundation/scss/foundation/components/top-bar";
 @import "../../../bower_components/foundation/scss/foundation/components/visibility";
@@ -37,7 +38,10 @@ html {
 
 #container {
 	#header {
-
+		#cruise-control {
+			line-height: 1.8rem;
+			padding: 0 0.4875rem;
+		}
 	}
 	#live-container, #chat-container {
 		& > iframe {

@@ -31,6 +31,10 @@ $router->get('helper/misconfigured', [
 	'as' => 'helper.misconfigured',
 	'uses' => 'HelperController@misconfigured',
 ]);
+$router->get('helper/notlive', [
+	'as' => 'helper.notlive',
+	'uses' => 'HelperController@notlive',
+]);
 
 $router->group(['prefix' => 'auth'], function (Router $router) {
 

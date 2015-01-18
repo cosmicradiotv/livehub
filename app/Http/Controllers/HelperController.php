@@ -14,4 +14,13 @@ class HelperController extends Controller {
 		return view('helpers.misconfigured');
 	}
 
+	/**
+	 * Display a page in case of nothing's live
+	 *
+	 * @return Response
+	 */
+	public function notlive() {
+		return view('helpers.notlive');
+	}
+
 }

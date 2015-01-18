@@ -17,16 +17,18 @@
 					<li class="name">
 						<h1 class="hide-for-small"><a href="#">{{ config('livehub.brand') }}</a></h1>
 					</li>
-					<li class="toggle-topbar menu-icon"><a href="#"><span class="live-streams-text">Now Live Streams: 0</span></a></li>
+					<li class="toggle-topbar menu-icon"><a href="#"><span class="live-streams-text">Loading streams...</span></a></li>
 				</ul>
 				<section class="top-bar-section">
 					<ul class="left">
 						<li class="has-dropdown">
 							<a>
-								<span class="show-for-medium-up live-streams-text">Now Live Streams: 0</span>
+								<span class="show-for-medium-up live-streams-text">Loading streams...</span>
 								<span class="show-for-small-only">Switch Stream</span>
 							</a>
 							<ul class="dropdown" id="streams-list">
+								<li><a id="cruise-control"></a></li>
+								<li class="divider"></li>
 							</ul>
 						</li>
 					</ul>

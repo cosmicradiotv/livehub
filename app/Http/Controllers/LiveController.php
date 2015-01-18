@@ -25,6 +25,7 @@ class LiveController extends Controller {
 	public function config(Manager $manager) {
 		$settings = [
 			'pushers' => [],
+			'notlive' => route('helper.notlive'),
 		];
 
 		$settings['pushers']['interval'] = [
