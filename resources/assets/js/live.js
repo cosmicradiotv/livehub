@@ -7,8 +7,9 @@ var liveapp = module.exports = function ($target) {
 	app.$target = $target;
 	app.config = null;
 	app.streams = [];
-	app.active = null;
+	app.active = -1;
 	app.cruisecontrol = true;
+	app.pushers = [];
 
 	app.init();
 };
@@ -24,12 +25,24 @@ liveapp.prototype.init = function () {
 		app.updateStreams();
 		app.setCruiseControl(true);
 		app.autochooseStream();
+		app.loadPushers();
 	});
 
 	$('#cruise-control').on('click', function () {
 		app.setCruiseControl(!app.cruisecontrol);
 		return false;
 	});
+};
+
+liveapp.prototype.streamData = function (streams) {
+	var app = this;
+
+	app.streams = streams;
+	app.updateStreams();
+
+	if (!( app.active in app.streams) && app.cruisecontrol) {
+		app.autochooseStream();
+	}
 };
 
 liveapp.prototype.updateStreams = function () {
@@ -105,10 +118,11 @@ liveapp.prototype.autochooseStream = function () {
 liveapp.prototype.switchTo = function (streamID) {
 	var app = this;
 
-	if (!streamID) {
+	if (!streamID && app.active) {
 		$('#live-frame').attr('src', app.config.notlive);
 
 		app.active = null;
+		return false;
 	}
 
 
@@ -137,4 +151,25 @@ liveapp.prototype.switchTo = function (streamID) {
 	$streams.find('[data-stream=' + stream.id + ']').addClass('active');
 
 	app.active = stream.id;
+};
+
+var pushers = require('./pushers');
+
+liveapp.prototype.loadPushers = function () {
+	var app = this;
+
+	app.pushers = _.map(app.config.pushers, function (settings, index) {
+		var configured = new pushers[settings.type](settings);
+		configured.ondata = function (data) {
+			app.streamData(data);
+		};
+		configured.onerror = function () {
+			configured.cancel();
+			app.pushers[index + 1].start();
+		};
+
+		return configured;
+	});
+
+	app.pushers[0].start();
 };

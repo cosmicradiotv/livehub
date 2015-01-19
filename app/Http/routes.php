@@ -26,6 +26,10 @@ $router->get('live/config', [
 	'as' => 'live.config',
 	'uses' => 'LiveController@config',
 ]);
+$router->get('live/pusher/interval', [
+	'as' => 'live.pusher.interval',
+	'uses' => 'LiveController@intervalPusher',
+]);
 
 $router->get('helper/misconfigured', [
 	'as' => 'helper.misconfigured',

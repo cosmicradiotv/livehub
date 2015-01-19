@@ -28,8 +28,10 @@ class LiveController extends Controller {
 			'notlive' => route('helper.notlive'),
 		];
 
-		$settings['pushers']['interval'] = [
+		$settings['pushers'][] = [
+			'type' => 'interval',
 			'frequency' => 5 * 60,
+			'target' => route('live.pusher.interval'),
 		];
 
 		$settings['streams'] = $manager->createData($this->streams())->toArray();
@@ -45,5 +47,16 @@ class LiveController extends Controller {
 		$streams = Stream::all()->load('channel.service');
 
 		return new FractalCollection($streams, new StreamsTransformer(), 'stream');
+	}
+
+	/**
+	 * Give data for the interval based checker
+	 *
+	 * @return Response
+	 */
+	public function intervalPusher(Manager $manager) {
+		$streams = $manager->createData($this->streams())->toArray();
+
+		return JsonResponse::create($streams);
 	}
 }
