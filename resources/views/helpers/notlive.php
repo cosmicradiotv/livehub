@@ -23,7 +23,7 @@
 		p {
 			font-size: 1em;
 			height: 30vh;
-			line-height: 30vh;
+			line-height: 10vh;
 			margin: 0;
 		}
 	</style>
@@ -32,7 +32,7 @@
 
 	<div id="container">
 		<h1>Nothing's live right now</h1>
-		<p>But you can leave this open to wait for the next live stream</p>
+		<p>But you can leave this page open <br /> to wait for the next live stream</p>
 	</div>
 
 </body>
