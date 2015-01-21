@@ -80,9 +80,9 @@ liveapp.prototype.setCruiseControl = function (state) {
 
 	var $cruisecontrol = $('#cruise-control');
 	if (app.cruisecontrol) {
-		$cruisecontrol.html('<span class="label success">On</span> Auto-select');
+		$cruisecontrol.html('<span class="label success">On</span> Auto-switch');
 	} else {
-		$cruisecontrol.html('<span class="label alert">Off</span> Auto-select')
+		$cruisecontrol.html('<span class="label alert">Off</span> Auto-switch');
 	}
 };
 

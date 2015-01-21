@@ -88,6 +88,19 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 	]);
 
 
+	$router->post('quick/stream', [
+		'as' => 'admin.quick.stream.add',
+		'uses' => 'Admin\\HomeController@addStream'
+	]);
+	$router->post('quick/stream/{stream}/live', [
+		'as' => 'admin.quick.stream.live',
+		'uses' => 'Admin\\HomeController@streamLive'
+	]);
+	$router->delete('quick/stream/{stream}', [
+		'as' => 'admin.quick.stream.destroy',
+		'uses' => 'Admin\\HomeController@streamDestroy'
+	]);
+
 	$router->resource('stream', 'Admin\\StreamController', [
 		'except' => ['show']
 	]);

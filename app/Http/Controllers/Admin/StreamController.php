@@ -57,7 +57,6 @@ class StreamController extends AdminController {
 	 */
 	public function store(StreamRequest $request) {
 		$stream = new Stream($request->only($this->fillable));
-		$stream->start_time = Carbon::parse($request->input('start_time'));
 
 		$stream->save();
 
