@@ -5,6 +5,7 @@ use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\ChannelRequest;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
+use t2t2\LiveHub\Services\ServicesGatherer;
 
 class ChannelController extends AdminController {
 
@@ -29,7 +30,15 @@ class ChannelController extends AdminController {
 		$services = IncomingService::all();
 		$title = 'Create | Channel';
 
-		return view('admin.channel.create', compact('services', 'title'));
+		/** @var IncomingService $currentService */
+		if ($service_id = old('incoming_service_id')) {
+			$currentService = $services->find($service_id);
+		} else {
+			$currentService = $services->first();
+		}
+		$currentServiceSettings = $currentService->getService()->channelConfig();
+
+		return view('admin.channel.create', compact('services', 'title', 'currentServiceSettings'));
 	}
 
 	/**
@@ -40,7 +49,12 @@ class ChannelController extends AdminController {
 	 * @return Response
 	 */
 	public function store(ChannelRequest $request) {
+		/** @var IncomingService $service */
+		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
+		$this->validate($request, $service->getService()->channelValidationRules());
+
 		$channel = new Channel($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url']));
+		$channel->options = $request->get('options');
 
 		$channel->save();
 
@@ -59,7 +73,11 @@ class ChannelController extends AdminController {
 		$services = IncomingService::all();
 		$title = 'Edit | Channel';
 
-		return view('admin.channel.edit', compact('channel', 'services', 'title'));
+		/** @var IncomingService $currentService */
+		$currentService = $services->find(old('incoming_service_id', $channel->incoming_service_id));
+		$currentServiceSettings = $currentService->getService()->channelConfig();
+
+		return view('admin.channel.edit', compact('channel', 'services', 'title', 'currentServiceSettings'));
 	}
 
 	/**
@@ -71,7 +89,12 @@ class ChannelController extends AdminController {
 	 * @return Response
 	 */
 	public function update(Channel $channel, ChannelRequest $request) {
+		/** @var IncomingService $service */
+		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
+		$this->validate($request, $service->getService()->channelValidationRules());
+
 		$channel->fill($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url']));
+		$channel->options = $request->get('options');
 
 		$channel->save();
 
@@ -89,6 +112,17 @@ class ChannelController extends AdminController {
 		$channel->delete();
 
 		return redirect()->route('admin.channel.index')->with('status', 'Channel deleted');
+	}
+
+	/**
+	 * Get channel settings for service
+	 *
+	 * @param IncomingService $service
+	 *
+	 * @return Response
+	 */
+	public function channelServiceSettings(IncomingService $service) {
+		return view('partials.service.settings', ['config' => $service->getService()->channelConfig()]);
 	}
 
 }

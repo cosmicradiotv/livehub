@@ -13,6 +13,7 @@
 					<tr>
 						<th>ID</th>
 						<th>Name</th>
+						<th>Service</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -21,6 +22,7 @@
 						<tr>
 							<td>{{ $channel->id }}</td>
 							<td>{{ $channel->name }}</td>
+							<td>{{ $channel->service->getService()->name() }}</td>
 							<td><a href="{{ route('admin.channel.edit', ['channel' => $channel]) }}">Edit</a></td>
 						</tr>
 					@endforeach

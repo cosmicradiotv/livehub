@@ -1,3 +1,8 @@
+<?php
+if (! isset($javascript)) {
+	$javascript = [];
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,7 +13,7 @@
 
 	<script src="{{ asset('assets/js/head.js') }}"></script>
 </head>
-<body>
+<body data-config="{{ json_encode($javascript) }}">
 	@include('partials.admin.navbar')
 
 	@if (session('status'))

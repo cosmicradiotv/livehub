@@ -15,7 +15,7 @@
 				</div>
 			</div>
 
-
+			@include('partials.service.settings', ['config' => $service->serviceConfig()])
 
 			<div class="row">
 				<div class="large-12 columns">

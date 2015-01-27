@@ -34,8 +34,6 @@ use Illuminate\Database\Query\Builder;
  */
 class Stream extends Model {
 
-	protected $casts = ['options' => 'json'];
-
 	protected $dates = ['start_time'];
 
 	protected $fillable = ['channel_id', 'service_info', 'title', 'state', 'start_time', 'video_url', 'chat_url'];

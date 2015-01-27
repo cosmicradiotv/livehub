@@ -30,7 +30,7 @@ use Illuminate\Database\Query\Builder;
  */
 class Channel extends Model {
 
-	protected $casts = ['options' => 'json'];
+	protected $casts = ['options' => 'object'];
 
 	protected $fillable = ['incoming_service_id', 'name', 'video_url', 'chat_url'];
 

@@ -13,6 +13,30 @@ abstract class Service implements UrlRoutable {
 	protected $settings;
 
 	/**
+	 * Configuration settings available for channels on this service
+	 *
+	 * @return array
+	 */
+	public function channelConfig() {
+		return [];
+	}
+
+	/**
+	 * Get the validation rules for this service's channel's configuration
+	 *
+	 * @return array
+	 */
+	public function channelValidationRules() {
+		$rules = [];
+
+		foreach ($this->channelConfig() as $input) {
+			$rules['options.' . $input['name']] = $input['rules'];
+		}
+
+		return $rules;
+	}
+
+	/**
 	 * Description of the service to show to user
 	 *
 	 * @return string
@@ -23,7 +47,7 @@ abstract class Service implements UrlRoutable {
 	 * Get chat URL for this service
 	 *
 	 * @param null|Channel $channel
-	 * @param null|Stream $stream
+	 * @param null|Stream  $stream
 	 *
 	 * @return string
 	 */
@@ -69,7 +93,7 @@ abstract class Service implements UrlRoutable {
 	public function setSettings($settings) {
 		$this->settings = $settings;
 
-		if($settings) {
+		if ($settings) {
 			$this->options = $settings->options;
 		} else {
 			$this->options = null;
@@ -80,7 +104,7 @@ abstract class Service implements UrlRoutable {
 	 * Get video URL for this service
 	 *
 	 * @param null|Channel $channel
-	 * @param null|Stream $stream
+	 * @param null|Stream  $stream
 	 *
 	 * @return string
 	 */
@@ -103,4 +127,28 @@ abstract class Service implements UrlRoutable {
 	 * @return string
 	 */
 	abstract public function name();
+
+	/**
+	 * Configuration setting available for this service
+	 *
+	 * @return array
+	 */
+	public function serviceConfig() {
+		return [];
+	}
+
+	/**
+	 * Get the validation rules for this service's configuration
+	 *
+	 * @return array
+	 */
+	public function serviceValidationRules() {
+		$rules = [];
+
+		foreach ($this->serviceConfig() as $input) {
+			$rules['options.' . $input['name']] = $input['rules'];
+		}
+
+		return $rules;
+	}
 }

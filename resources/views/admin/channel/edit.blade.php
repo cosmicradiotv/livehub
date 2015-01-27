@@ -1,3 +1,10 @@
+<?php
+$javascript = [
+	'module' => ['channel', 'edit'],
+	'service-settings-url' => route('admin.channel.service.settings'),
+]
+?>
+
 @extends('layouts.admin')
 
 @section('content')
@@ -19,13 +26,13 @@
 					<div class="large-3 columns">
 						<label>
 							Service
-							{!! Form::select('incoming_service_id', $services->lists('class', 'id')) !!}
+							{!! Form::select('incoming_service_id', $services->lists('class', 'id'), null, ['data-service' => true]) !!}
 						</label>
 					</div>
 				</div>
 
-				<div class="bottom-margin">
-					<span class="label warning">NYI: Service settings</span>
+				<div id="channel-service-settings">
+					@include('partials.service.settings', ['config' => $currentServiceSettings])
 				</div>
 
 				<div class="row">

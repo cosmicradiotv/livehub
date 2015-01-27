@@ -24,7 +24,7 @@
 
 		<!-- Right Nav Section -->
 		<ul class="right">
-			<li><a href="#" onclick="return false">{{ Auth::user()->username }}</a></li>
+			<li><a>{{ Auth::user()->username }}</a></li>
 			<li class="has-form">
 				<div class="row collapse">
 					<div class="small-12 columns">

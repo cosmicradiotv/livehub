@@ -1,5 +1,6 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use t2t2\LiveHub\Http\Requests;
@@ -62,11 +63,12 @@ class IncomingServiceController extends AdminController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  string $id
+	 * @param string  $class
+	 * @param Request $request
 	 *
 	 * @return Response
 	 */
-	public function update($class) {
+	public function update($class, Request $request) {
 		$service = $this->gatherer->incomingService($class);
 
 		if (! $service) {
@@ -81,7 +83,9 @@ class IncomingServiceController extends AdminController {
 		}
 
 		// Set service options
+		$this->validate($request, $service->serviceValidationRules());
 
+		$settings->options = $request->get('options');
 
 		$settings->save();
 

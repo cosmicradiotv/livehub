@@ -23,7 +23,7 @@ use t2t2\LiveHub\Services\Incoming\Service;
  */
 class IncomingService extends Model {
 
-	protected $casts = ['options' => 'json'];
+	protected $casts = ['options' => 'object'];
 
 	protected $fillable = ['class'];
 

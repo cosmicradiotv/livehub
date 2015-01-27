@@ -108,6 +108,10 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 	$router->resource('channel', 'Admin\\ChannelController', [
 		'except' => ['show']
 	]);
+	$router->get('channel/settings/{incoming_service}', [
+		'as' => 'admin.channel.service.settings',
+		'uses' => 'Admin\\ChannelController@channelServiceSettings',
+	]);
 
 	// Incoming data services
 	$router->get('service/incoming', [
