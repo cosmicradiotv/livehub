@@ -38,7 +38,7 @@ class YoutubeService extends Service {
 	 */
 	public function getVideoUrl($channel = null, $stream = null) {
 		if($stream->service_info) {
-			return 'http://www.youtube.com/embed/'.$stream->service_info.'?autoplay=1';
+			return 'http://www.youtube.com/embed/'.$stream->service_info.'?autohide=1&autoplay=1';
 		}
 		return parent::getVideoUrl($channel, $stream);
 	}
