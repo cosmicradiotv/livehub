@@ -10,27 +10,29 @@ use Illuminate\Database\Query\Builder;
  * @property integer                                                $id
  * @property integer                                                $incoming_service_id
  * @property string                                                 $name
- * @property array                                                  $options
+ * @property object                                                 $options
+ * @property \Carbon\Carbon                                         $last_checked
  * @property string                                                 $video_url
  * @property string                                                 $chat_url
  * @property \Carbon\Carbon                                         $created_at
  * @property \Carbon\Carbon                                         $updated_at
  * @property-read \t2t2\LiveHub\Models\IncomingService              $service
- * @property-read \Illuminate\Database\Eloquent\Collection          $related[] $morphedByMany
+ * @property-read \Illuminate\Database\Eloquent\Collection|Stream[] $streams
  * @method static Builder|Channel whereId($value)
- * @method static Builder|Channel whereClass($value)
- * @method static Builder|Channel whereOptions($value)
- * @method static Builder|Channel whereCreatedAt($value)
- * @method static Builder|Channel whereUpdatedAt($value)
  * @method static Builder|Channel whereIncomingServiceId($value)
  * @method static Builder|Channel whereName($value)
+ * @method static Builder|Channel whereOptions($value)
+ * @method static Builder|Channel whereLastChecked($value)
  * @method static Builder|Channel whereVideoUrl($value)
  * @method static Builder|Channel whereChatUrl($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|Stream[] $streams
+ * @method static Builder|Channel whereCreatedAt($value)
+ * @method static Builder|Channel whereUpdatedAt($value)
  */
 class Channel extends Model {
 
 	protected $casts = ['options' => 'object'];
+
+	protected $dates = ['last_checked'];
 
 	protected $fillable = ['incoming_service_id', 'name', 'video_url', 'chat_url'];
 

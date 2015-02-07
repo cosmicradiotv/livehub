@@ -32,28 +32,10 @@ class ConfigServiceProvider extends ServiceProvider {
 
 
 	/**
-	 * Register and configure IDE Helper
+	 * Register IDE Helper
 	 */
 	protected function registerIDEHelper() {
 		$this->app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
-
-		$configureIdeHelper = function($wanted, Application $app) {
-			/** @var Repository $config */
-			$config = $app->make('config');
-
-			$config->set('laravel-ide-helper::extra.Artisan', ['Illuminate\Contracts\Console\Kernel']);
-
-			$config->set('laravel-ide-helper::model_locations', ['app/Models']);
-			$config->set('laravel-ide-helper::interfaces', [
-				'\Illuminate\Auth\UserInterface' => config('auth.model', 'User'),
-				'\Illuminate\Contracts\Auth\Authenticatable' => config('auth.model', 'User')
-			]);
-
-			return $wanted;
-		};
-
-		$this->app->extend('command.ide-helper.generate', $configureIdeHelper);
-		$this->app->extend('command.ide-helper.models', $configureIdeHelper);
 	}
 
 }

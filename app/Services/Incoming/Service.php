@@ -13,6 +13,72 @@ abstract class Service implements UrlRoutable {
 	protected $settings;
 
 	/**
+	 * Nice name for the user
+	 *
+	 * @return string
+	 */
+	abstract public function name();
+
+	/**
+	 * Description of the service to show to user
+	 *
+	 * @return string
+	 */
+	abstract public function description();
+
+	/**
+	 * @return object
+	 */
+	public function getOptions() {
+		return $this->options;
+	}
+
+	/**
+	 * @return IncomingService|null
+	 */
+	public function getSettings() {
+		return $this->settings;
+	}
+
+	/**
+	 * @param IncomingService|null $settings
+	 */
+	public function setSettings($settings) {
+		$this->settings = $settings;
+
+		if ($settings) {
+			$this->options = $settings->options;
+		} else {
+			$this->options = null;
+		}
+	}
+
+
+	/**
+	 * Configuration setting available for this service
+	 *
+	 * @return array
+	 */
+	public function serviceConfig() {
+		return [];
+	}
+
+	/**
+	 * Get the validation rules for this service's configuration
+	 *
+	 * @return array
+	 */
+	public function serviceValidationRules() {
+		$rules = [];
+
+		foreach ($this->serviceConfig() as $input) {
+			$rules['options.' . $input['name']] = $input['rules'];
+		}
+
+		return $rules;
+	}
+
+	/**
 	 * Configuration settings available for channels on this service
 	 *
 	 * @return array
@@ -37,11 +103,16 @@ abstract class Service implements UrlRoutable {
 	}
 
 	/**
-	 * Description of the service to show to user
+	 * Get video URL for this service
+	 *
+	 * @param null|Channel $channel
+	 * @param null|Stream  $stream
 	 *
 	 * @return string
 	 */
-	abstract public function description();
+	public function getVideoUrl($channel = null, $stream = null) {
+		return route('helper.misconfigured');
+	}
 
 	/**
 	 * Get chat URL for this service
@@ -54,14 +125,6 @@ abstract class Service implements UrlRoutable {
 	public function getChatUrl($channel = null, $stream = null) {
 		return route('helper.misconfigured');
 	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getOptions() {
-		return $this->options;
-	}
-
 	/**
 	 * Get the value of the model's route key.
 	 *
@@ -81,38 +144,6 @@ abstract class Service implements UrlRoutable {
 	}
 
 	/**
-	 * @return null
-	 */
-	public function getSettings() {
-		return $this->settings;
-	}
-
-	/**
-	 * @param IncomingService|null $settings
-	 */
-	public function setSettings($settings) {
-		$this->settings = $settings;
-
-		if ($settings) {
-			$this->options = $settings->options;
-		} else {
-			$this->options = null;
-		}
-	}
-
-	/**
-	 * Get video URL for this service
-	 *
-	 * @param null|Channel $channel
-	 * @param null|Stream  $stream
-	 *
-	 * @return string
-	 */
-	public function getVideoUrl($channel = null, $stream = null) {
-		return route('helper.misconfigured');
-	}
-
-	/**
 	 * Get the class ID for this
 	 *
 	 * @return string
@@ -122,33 +153,22 @@ abstract class Service implements UrlRoutable {
 	}
 
 	/**
-	 * Nice name for the user
+	 * Is the service configured to be checkable
 	 *
-	 * @return string
+	 * @return bool
 	 */
-	abstract public function name();
-
-	/**
-	 * Configuration setting available for this service
-	 *
-	 * @return array
-	 */
-	public function serviceConfig() {
-		return [];
+	public function isCheckable() {
+		return false;
 	}
 
 	/**
-	 * Get the validation rules for this service's configuration
+	 * Check channel for live streams
+	 *
+	 * @param Channel $channel
 	 *
 	 * @return array
 	 */
-	public function serviceValidationRules() {
-		$rules = [];
-
-		foreach ($this->serviceConfig() as $input) {
-			$rules['options.' . $input['name']] = $input['rules'];
-		}
-
-		return $rules;
+	public function check(Channel $channel) {
+		return [];
 	}
 }

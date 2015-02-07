@@ -9,7 +9,7 @@ use t2t2\LiveHub\Services\Incoming\Service;
  *
  * @property integer                                                                      $id
  * @property string                                                                       $class
- * @property array                                                                        $options
+ * @property object                                                                       $options
  * @property \Carbon\Carbon                                                               $created_at
  * @property \Carbon\Carbon                                                               $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $channels

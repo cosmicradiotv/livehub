@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		't2t2\LiveHub\Console\Commands\CreateUser',
+		't2t2\LiveHub\Console\Commands\CronServiceChecker',
 	];
 
 	/**
