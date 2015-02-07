@@ -59,10 +59,10 @@ html {
 
 		#header {
 			width: 100%;
-			height: 45px;
-			margin-top: -45px;
+			height: $topbar-height;
+			margin-top: -$topbar-height;
 
-			flex: 0 0 40px;
+			flex: 0 0 $topbar-height;
 		}
 		#live-container {
 			height: 50%;
