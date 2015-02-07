@@ -40,3 +40,4 @@ This project is sponsored by [cosmicradio.tv](http://cosmicradio.tv/)
 * Update dependencies with install commands from above
 * Migrate the database `php artisan migrate`
 * Update assets `gulp production`
+* Optimize `php artisan optimize`

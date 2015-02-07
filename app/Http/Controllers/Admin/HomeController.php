@@ -1,6 +1,7 @@
 <?php
 namespace t2t2\LiveHub\Http\Controllers\Admin;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use t2t2\LiveHub\Http\Requests\StreamRequest;
 use t2t2\LiveHub\Models\IncomingService;
@@ -22,7 +23,7 @@ class HomeController extends AdminController {
 		if ($dummyService) {
 			$dummyChannels = $dummyService->channels;
 		} else {
-			$dummyChannels = false;
+			$dummyChannels = new Collection();
 		}
 
 

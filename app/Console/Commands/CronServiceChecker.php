@@ -71,13 +71,12 @@ class CronServiceChecker extends Command {
 			return $channel->last_checked->copy()->addSeconds(2 * 60)->isPast();
 		});
 
-
 		// Check all channels
 		foreach($channels as $channel) {
 			$streams = $services[$channel->incoming_service_id]->check($channel);
 
 			$channel->last_checked = Carbon::now();
-			$channel->save();
+			$channel->save(['timestamps' => false]);
 		}
 	}
 
