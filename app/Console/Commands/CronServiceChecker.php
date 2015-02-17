@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
+use Symfony\Component\Console\Input\InputOption;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Services\Incoming\Service;
@@ -13,14 +14,12 @@ class CronServiceChecker extends Command {
 
 	/**
 	 * The console command name.
-	 *
 	 * @var string
 	 */
 	protected $name = 'services:cron';
 
 	/**
 	 * The console command description.
-	 *
 	 * @var string
 	 */
 	protected $description = 'Cron based services checker';
@@ -42,20 +41,25 @@ class CronServiceChecker extends Command {
 
 	/**
 	 * Execute the console command.
-	 *
 	 * @return mixed
 	 */
 	public function fire() {
 
+		if (config('livehub.checker') != 'cron' && !$this->option('force')) {
+			$this->info('Not in use');
+
+			return;
+		}
+
 		/** @var Collection|Service[] $services */
-		$services = $this->services->allIncomingServices()->filter(function(Service $service) {
+		$services = $this->services->allIncomingServices()->filter(function (Service $service) {
 			return $service->isCheckable();
-		})->keyBy(function(Service $service) {
+		})->keyBy(function (Service $service) {
 			return $service->getSettings()->id;
 		});
 
 		/** @var DatabaseCollection|IncomingService[] $incomingServices */
-		$incomingServices = new DatabaseCollection($services->map(function(Service $service) {
+		$incomingServices = new DatabaseCollection($services->map(function (Service $service) {
 			return $service->getSettings();
 		}));
 		$incomingServices = $incomingServices->keyBy('id');
@@ -67,12 +71,12 @@ class CronServiceChecker extends Command {
 		$channels->load('streams');
 
 		// Filter to only have channels not recently checked
-		$channels = $channels->filter(function(Channel $channel) {
+		$channels = $channels->filter(function (Channel $channel) {
 			return $channel->last_checked->copy()->addSeconds(2 * 60)->isPast();
 		});
 
 		// Check all channels
-		foreach($channels as $channel) {
+		foreach ($channels as $channel) {
 			$streams = $services[$channel->incoming_service_id]->check($channel);
 
 			$channel->last_checked = Carbon::now();
@@ -82,7 +86,6 @@ class CronServiceChecker extends Command {
 
 	/**
 	 * Get the console command arguments.
-	 *
 	 * @return array
 	 */
 	protected function getArguments() {
@@ -92,11 +95,11 @@ class CronServiceChecker extends Command {
 
 	/**
 	 * Get the console command options.
-	 *
 	 * @return array
 	 */
 	protected function getOptions() {
 		return [
+			['force', 'F', InputOption::VALUE_NONE, 'Run even in otherwise configured environments'],
 		];
 	}
 

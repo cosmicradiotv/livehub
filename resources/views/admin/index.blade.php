@@ -10,7 +10,28 @@
 
 	<div class="row">
 		<div class="small-12 large-6 columns">
+			<h2>Channels</h2>
 
+			<table class="small-12">
+				<thead>
+					<tr>
+						<th>Channel</th>
+						<th>Last Checked</th>
+					</tr>
+				</thead>
+				<tbody>
+					@forelse($channels as $channel)
+						<tr>
+							<td>{{ $channel->name }}</td>
+							<td>{{ $channel->last_checked->diffForHumans() }}</td>
+						</tr>
+					@empty
+						<tr>
+							<td colspan="2">None</td>
+						</tr>
+					@endforelse
+				</tbody>
+			</table>
 		</div>
 		<div class="small-12 large-6 columns">
 			<h2>Live Streams</h2>

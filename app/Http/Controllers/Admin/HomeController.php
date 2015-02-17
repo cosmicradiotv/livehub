@@ -4,6 +4,7 @@ namespace t2t2\LiveHub\Http\Controllers\Admin;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use t2t2\LiveHub\Http\Requests\StreamRequest;
+use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Models\Stream;
 
@@ -16,6 +17,7 @@ class HomeController extends AdminController {
 	 * @return Response
 	 */
 	public function index() {
+		$channels = Channel::all();
 		$streams = Stream::all();
 
 		/** @var IncomingService $dummyService */
@@ -29,7 +31,7 @@ class HomeController extends AdminController {
 
 		$title = 'Admin';
 
-		return view('admin.index', compact('streams', 'dummyChannels', 'title'));
+		return view('admin.index', compact('streams', 'channels', 'dummyChannels', 'title'));
 	}
 
 	/**
