@@ -12,7 +12,6 @@ class YoutubeService extends Service {
 
 	/**
 	 * Nice name for the user
-	 *
 	 * @return string
 	 */
 	public function name() {
@@ -21,7 +20,6 @@ class YoutubeService extends Service {
 
 	/**
 	 * Description of the service to show to user
-	 *
 	 * @return string
 	 */
 	public function description() {
@@ -37,15 +35,15 @@ class YoutubeService extends Service {
 	 * @return string
 	 */
 	public function getVideoUrl($channel = null, $stream = null) {
-		if($stream->service_info) {
-			return 'http://www.youtube.com/embed/'.$stream->service_info.'?autohide=1&autoplay=1';
+		if ($stream->service_info) {
+			return 'http://www.youtube.com/embed/' . $stream->service_info . '?autohide=1&autoplay=1';
 		}
+
 		return parent::getVideoUrl($channel, $stream);
 	}
 
 	/**
 	 * Configuration setting available for this service
-	 *
 	 * @return array
 	 */
 	public function serviceConfig() {
@@ -62,7 +60,6 @@ class YoutubeService extends Service {
 
 	/**
 	 * Is the service configured to be checkable
-	 *
 	 * @return bool
 	 */
 	public function isCheckable() {
@@ -121,6 +118,8 @@ class YoutubeService extends Service {
 
 				\Log::error('Error retrieving info from youtube',
 					['message' => $error, 'channel' => $channel->id, 'type' => $type]);
+
+				return [];
 			}
 		}
 
@@ -171,9 +170,9 @@ class YoutubeService extends Service {
 				}
 				$stream_object->title = $item['snippet']['title'];
 				$stream_object->state = $item['snippet']['liveBroadcastContent'] == 'upcoming' ? 'next' : 'live';
-				if(isset($item['liveStreamingDetails']['actualStartTime'])) {
+				if (isset($item['liveStreamingDetails']['actualStartTime'])) {
 					$stream_object->start_time = Carbon::parse($item['liveStreamingDetails']['actualStartTime']);
-				} elseif(isset($item['liveStreamingDetails']['scheduledStartTime'])) {
+				} elseif (isset($item['liveStreamingDetails']['scheduledStartTime'])) {
 					$stream_object->start_time = Carbon::parse($item['liveStreamingDetails']['scheduledStartTime']);
 				} else {
 					$stream_object->start_time = Carbon::now();
