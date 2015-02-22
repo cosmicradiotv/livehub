@@ -6,6 +6,6 @@ var gulp      = require('gulp'),
 gulp.task('minifyCss', ['sass'], function () {
 	return gulp.src(config.cssSrc)
 		.pipe(minifyCSS({keepBreaks: true}))
-		.pipe(gulp.dest(config.dest))
+		.pipe(gulp.dest(config.cssDest))
 		.pipe(size());
 });
