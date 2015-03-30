@@ -12,8 +12,10 @@ if (! function_exists('versioned')) {
 	function versioned($file) {
 		static $manifest = null;
 
-		if (is_null($manifest)) {
-			$manifest = json_decode(file_get_contents(public_path() . '/rev-manifest.json'), true);
+		$file_path = public_path() . '/rev-manifest.json';
+
+		if (is_null($manifest) && file_exists($file_path)) {
+			$manifest = json_decode(file_get_contents($file_path), true);
 		}
 
 		if (isset($manifest[$file])) {
