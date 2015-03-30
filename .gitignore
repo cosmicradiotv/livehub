@@ -2,7 +2,9 @@
 /bootstrap/compiled.php
 /bower_components
 /node_modules
+/public/assets/*
 /vendor
 .env
 .env.*.php
 _ide_helper.php
+.phpstorm.meta.php

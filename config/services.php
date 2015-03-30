@@ -30,7 +30,7 @@ return [
 	],
 
 	'stripe' => [
-		'model'  => 'User',
+		'model'  => 't2t2\LiveHub\Models\User',
 		'secret' => '',
 	],
 
