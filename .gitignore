@@ -3,6 +3,8 @@
 /bower_components
 /node_modules
 /public/assets/*
+/public/rev-manifest.json
+/resources/assets/bower
 /vendor
 .env
 .env.*.php

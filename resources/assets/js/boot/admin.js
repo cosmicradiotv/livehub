@@ -1,6 +1,6 @@
-var $ = require('jquery');
-require('foundation');
-var App = require('../admin/app');
+import $ from 'jQuery';
+import 'foundation';
+import App from '../admin/app';
 
 $(function () {
 	// Boot foundation

@@ -1,11 +1,11 @@
 // Import Normalize
-@import "../../../bower_components/foundation/scss/normalize";
+@import "vendor/normalize";
 
 // Import Top Bar
-@import "../../../bower_components/foundation/scss/foundation/components/labels";
-@import "../../../bower_components/foundation/scss/foundation/components/type";
-@import "../../../bower_components/foundation/scss/foundation/components/top-bar";
-@import "../../../bower_components/foundation/scss/foundation/components/visibility";
+@import "../bower/foundation/scss/foundation/components/labels";
+@import "../bower/foundation/scss/foundation/components/type";
+@import "../bower/foundation/scss/foundation/components/top-bar";
+@import "../bower/foundation/scss/foundation/components/visibility";
 
 html, body {
 	height: 100%;

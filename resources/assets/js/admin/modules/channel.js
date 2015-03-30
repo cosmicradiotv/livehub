@@ -1,4 +1,4 @@
-var $ = require('jquery');
+import $ from 'jQuery';
 
 var Channel = module.exports = function (app) {
 	this.app = app;

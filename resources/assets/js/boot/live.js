@@ -1,7 +1,7 @@
-var $ = require('jquery');
-require('../../../../bower_components/foundation/js/foundation/foundation');
-require('../../../../bower_components/foundation/js/foundation/foundation.topbar');
-var App = require('../live/app');
+import $ from 'jQuery';
+import 'foundation/foundation';
+import 'foundation/foundation.topbar';
+import App from '../live/app';
 
 $(function () {
 	// Run foundation

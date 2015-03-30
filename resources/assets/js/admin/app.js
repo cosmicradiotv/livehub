@@ -1,4 +1,4 @@
-var $ = require('jquery');
+import $ from 'jQuery';
 
 var adminApp = module.exports = function (config) {
 	var app = this;

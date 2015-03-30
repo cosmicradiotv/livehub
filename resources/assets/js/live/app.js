@@ -1,5 +1,5 @@
-var $ = require('jquery'),
-    _ = require('lodash');
+import $ from 'jQuery';
+import _ from 'lodash';
 
 var liveapp = module.exports = function ($target) {
 	var app = this;
