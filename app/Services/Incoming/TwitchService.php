@@ -2,9 +2,12 @@
 namespace t2t2\LiveHub\Services\Incoming;
 
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Database\Eloquent\Collection;
+use GuzzleHttp\Message\Response;
+use Illuminate\Support\Collection;
+use React\Promise\ExtendedPromiseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Stream;
 
@@ -88,11 +91,9 @@ class TwitchService extends Service {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return array
+	 * @return ExtendedPromiseInterface
 	 */
 	public function check(Channel $channel) {
-		$streams = [];
-
 		$username = $channel->options->channel_username;
 
 		$client = new Client([
@@ -108,49 +109,73 @@ class TwitchService extends Service {
 			],
 		]);
 
-		try {
-			$response = $client->get('streams/' . $username, [
-				'query' => [
-				],
-			]);
-			$results = $response->json();
+		$promise = $this->requestChannelInformation($client, $username);
+		$promise = $this->transformStreamDataToLocal($promise);
+		$promise = $this->reformatServiceErrors($promise);
 
+		return $promise;
+	}
+
+	/**
+	 * Request information for channel from twitch
+	 *
+	 * @param Client $client
+	 * @param        $username
+	 *
+	 * @returns ExtendedPromiseInterface
+	 */
+	protected function requestChannelInformation(Client $client, $username) {
+		return \React\Promise\resolve($client->get('streams/' . $username, [
+			'future' => true
+		]));
+	}
+
+	/**
+	 * Convert data from twitch to locally usable format
+	 *
+	 * @param ExtendedPromiseInterface $promise
+	 *
+	 * @return ExtendedPromiseInterface
+	 */
+	protected function transformStreamDataToLocal(ExtendedPromiseInterface $promise) {
+		return $promise->then(function(Response $response) {
+			$results = $response->json();
 			$stream = $results['stream'];
-		} catch (RequestException $e) {
-			$error = 'Unknown';
+
+			$streams = new Collection();
+
+			if($stream) {
+				$data = new ShowData();
+				$data->service_info = $stream['channel']['name'];
+				$data->title = $stream['channel']['status'];
+				$data->state = 'live';
+				$data->start_time = Carbon::parse($stream['created_at']);
+
+				$streams->push($data);
+			}
+
+			return $streams;
+		});
+	}
+
+	/**
+	 * Reformat any service errors that may have happened
+	 *
+	 * @param ExtendedPromiseInterface $promise
+	 *
+	 * @return ExtendedPromiseInterface
+	 */
+	protected function reformatServiceErrors(ExtendedPromiseInterface $promise) {
+		return $promise->otherwise(function (RequestException $e) {
+			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
 				$response = $e->getResponse()->json();
-				$error = $response['message'];
+				if (isset($response['message'])) {
+					throw new Exception($response['message'], $e->getCode(), $e);
+				}
 			}
-
-			\Log::error('Error retrieving info from twitch',
-				['message' => $error, 'channel' => $channel->id]);
-
-			return [];
-		}
-
-		// Should only have one stream per channel
-		$database_stream = $channel->streams->first();
-
-		if (! $stream) {
-			// Stream over
-			if ($database_stream) {
-				$database_stream->delete();
-			}
-		} else {
-			if (! $database_stream) {
-				$database_stream = new Stream();
-				$database_stream->channel_id = $channel->id;
-			}
-
-			$database_stream->title = $stream['channel']['status'];
-			$database_stream->state = 'live';
-			$database_stream->start_time = Carbon::parse($stream['created_at']);
-
-			$database_stream->save();
-		}
-
-		return $streams;
+			throw $e;
+		});
 	}
 
 }

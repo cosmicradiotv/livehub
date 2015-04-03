@@ -2,9 +2,12 @@
 namespace t2t2\LiveHub\Services\Incoming;
 
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Database\Eloquent\Collection;
+use GuzzleHttp\Message\Response;
+use Illuminate\Support\Collection;
+use React\Promise\ExtendedPromiseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Stream;
 
@@ -12,6 +15,7 @@ class YoutubeService extends Service {
 
 	/**
 	 * Nice name for the user
+	 *
 	 * @return string
 	 */
 	public function name() {
@@ -20,6 +24,7 @@ class YoutubeService extends Service {
 
 	/**
 	 * Description of the service to show to user
+	 *
 	 * @return string
 	 */
 	public function description() {
@@ -44,6 +49,7 @@ class YoutubeService extends Service {
 
 	/**
 	 * Configuration setting available for this service
+	 *
 	 * @return array
 	 */
 	public function serviceConfig() {
@@ -60,6 +66,7 @@ class YoutubeService extends Service {
 
 	/**
 	 * Is the service configured to be checkable
+	 *
 	 * @return bool
 	 */
 	public function isCheckable() {
@@ -71,128 +78,169 @@ class YoutubeService extends Service {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return array
+	 * @return ExtendedPromiseInterface
 	 */
 	public function check(Channel $channel) {
-		$streams = [];
-
 		$channel_id = $channel->options->channel_id;
 
 		$client = new Client([
 			'base_url' => 'https://www.googleapis.com/youtube/v3/',
 			'defaults' => [
-				'headers' => [
-
-				],
-				'query'   => [
+				'query'  => [
 					'key' => $this->getOptions()->api_key,
 				],
-				'verify'  => storage_path('cacert.pem'),
+				'verify' => storage_path('cacert.pem'),
 			],
 		]);
 
-		foreach (['upcoming', 'live'] as $type) {
-			try {
-				$response = $client->get('search', [
-					'query' => [
-						'part'      => 'snippet',
-						'channelId' => $channel_id,
-						'type'      => 'video',
-						'eventType' => $type,
-					],
-				]);
-				$results = $response->json();
+		$promise = \React\Promise\all(
+			array_map($this->requestLiveOfTypeCallback($client, $channel_id),
+				['upcoming', 'live'])
+		);
+		$promise = $this->findVideoIDsFromRequest($promise);
+		$promise = $this->requestDataForVideoIDs($promise, $client);
+		$promise = $this->tranformVideoDataToLocal($promise);
+		$promise = $this->reformatServiceErrors($promise);
 
-				foreach ($results['items'] as $item) {
-					$streams[$item['id']['videoId']] = [
-						'service_info' => $item['id']['videoId'],
-						'state'        => $type == 'upcoming' ? 'next' : 'live',
-					];
-				}
-			} catch (RequestException $e) {
-				$error = 'Unknown';
-				if ($e->hasResponse()) {
-					$response = $e->getResponse()->json();
-					$error = $response['error']['errors'][0]['message'];
-				}
+		return $promise;
+	}
 
-				\Log::error('Error retrieving info from youtube',
-					['message' => $error, 'channel' => $channel->id, 'type' => $type]);
-
-				return [];
-			}
-		}
-
-		/** @var Collection|Stream[] $databaseStreams */
-		$databaseStreams = $channel->streams->keyBy('service_info');
-		$inDatabase = $databaseStreams->lists('service_info');
-		$actualStreams = array_keys($streams);
-		$endedStreams = array_diff($inDatabase, $actualStreams);
-
-		// Remove ended streams
-		foreach ($endedStreams as $ended) {
-			$databaseStreams[$ended]->delete();
-		}
-
-		$toUpdate = array_diff($actualStreams, $inDatabase);
-		// Check if any needs updating
-		foreach (array_intersect($inDatabase, $actualStreams) as $stream_id) {
-			$stream_info = $streams[$stream_id];
-			$stream_object = $databaseStreams[$stream_id];
-
-			if ($stream_object->state != $stream_info['state']) {
-				$toUpdate[] = $stream_id;
-			}
-		}
-
-		// Get all needed data for new streams
-		try {
-			$ids = implode(',', $toUpdate);
-
-			$response = $client->get('videos', [
-				'query' => [
-					'part' => 'snippet,liveStreamingDetails',
-					'id'   => $ids,
-				]
+	/**
+	 * Returns a callback that finds live videos from channel depending on livestatus
+	 *
+	 * @param Client $client
+	 * @param string $channel_id
+	 *
+	 * @return callable
+	 */
+	protected function requestLiveOfTypeCallback(Client $client, $channel_id) {
+		return function ($type) use ($client, $channel_id) {
+			// Get live videos that are upcoming or live
+			return $client->get('search', [
+				'query'  => [
+					'part'      => 'snippet',
+					'channelId' => $channel_id,
+					'type'      => 'video',
+					'eventType' => $type,
+				],
+				'future' => true
 			]);
+		};
+	}
 
+	/**
+	 * Finds video IDs from youtube search request
+	 *
+	 * @param $promise
+	 *
+	 * @return ExtendedPromiseInterface
+	 */
+	protected function findVideoIDsFromRequest(ExtendedPromiseInterface $promise) {
+		return $promise->then(function ($responses) {
+			// Find the video IDs
+			$ids = [];
+			/** @var Response[] $responses */
+			foreach ($responses as $response) {
+				$results = $response->json();
+				foreach ($results['items'] as $item) {
+					$ids[] = $item['id']['videoId'];
+				}
+			}
+
+			// Duplicates can happen between different requests (ty caching)
+			$ids = array_unique($ids);
+
+			return $ids;
+		});
+	}
+
+	/**
+	 * Gets data from youtube API about the list of video IDs
+	 *
+	 * @param ExtendedPromiseInterface $promise
+	 * @param Client                   $client
+	 *
+	 * @return ExtendedPromiseInterface
+	 */
+	protected function requestDataForVideoIDs(ExtendedPromiseInterface $promise, Client $client) {
+		return $promise->then(function ($ids) use ($client) {
+			// Get data for all of the found videos
+			if (count($ids) == 0) {
+				return new Collection();
+			}
+
+			return $client->get('videos', [
+				'query'  => [
+					'part' => 'snippet,liveStreamingDetails',
+					'id'   => implode(',', $ids),
+				],
+				'future' => true
+			]);
+		});
+	}
+
+	/**
+	 * Converts data from videos list to data livehub can use
+	 *
+	 * @param ExtendedPromiseInterface $promise
+	 *
+	 * @return ExtendedPromiseInterface
+	 */
+	protected function tranformVideoDataToLocal(ExtendedPromiseInterface $promise) {
+		return $promise->then(function ($response) {
+			// Skip if no videos
+			if ($response instanceof Collection) {
+				return $response;
+			}
+
+			// Format data from the videos to universal updater
+			/** @var Response $response */
 			$results = $response->json();
 
-			foreach ($results['items'] as $item) {
-				$stream_id = $item['id'];
-
-				if (isset($databaseStreams[$stream_id])) {
-					$stream_object = $databaseStreams[$stream_id];
-				} else {
-					$stream_object = new Stream();
-					$stream_object->channel_id = $channel->id;
-					$stream_object->service_info = $item['id'];
+			$videos = array_map(function ($item) {
+				/* Youtube bug: Search results may return cached response where live videos are listed
+				even way after they're over. This does not happen in /videos (here) */
+				if (! $item['snippet']['liveBroadcastContent'] || $item['snippet']['liveBroadcastContent'] == 'none') {
+					return null;
 				}
-				$stream_object->title = $item['snippet']['title'];
-				$stream_object->state = $item['snippet']['liveBroadcastContent'] == 'upcoming' ? 'next' : 'live';
+
+				$info = new ShowData();
+				$info->service_info = $item['id'];
+				$info->title = $item['snippet']['title'];
+				$info->state = $item['snippet']['liveBroadcastContent'] == 'upcoming' ? 'next' : 'live';
 				if (isset($item['liveStreamingDetails']['actualStartTime'])) {
-					$stream_object->start_time = Carbon::parse($item['liveStreamingDetails']['actualStartTime']);
+					$info->start_time = Carbon::parse($item['liveStreamingDetails']['actualStartTime']);
 				} elseif (isset($item['liveStreamingDetails']['scheduledStartTime'])) {
-					$stream_object->start_time = Carbon::parse($item['liveStreamingDetails']['scheduledStartTime']);
-				} else {
-					$stream_object->start_time = Carbon::now();
+					$info->start_time = Carbon::parse($item['liveStreamingDetails']['scheduledStartTime']);
 				}
 
-				$stream_object->save();
-			}
+				return $info;
+			}, $results['items']);
 
-		} catch (RequestException $e) {
-			$error = 'Unknown';
+			$videos = array_filter($videos);
+
+			return Collection::make($videos);
+		});
+	}
+
+	/**
+	 * Reformat any service errors that may have happened
+	 *
+	 * @param ExtendedPromiseInterface $promise
+	 *
+	 * @return ExtendedPromiseInterface
+	 */
+	protected function reformatServiceErrors(ExtendedPromiseInterface $promise) {
+		return $promise->otherwise(function (RequestException $e) {
+			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
 				$response = $e->getResponse()->json();
-				$error = $response['error']['errors'][0]['message'];
+				if (isset($response['error']['errors'][0]['message'])) {
+					throw new Exception($response['error']['errors'][0]['message'], $e->getCode(), $e);
+				}
 			}
-
-			\Log::error('Error retrieving info from youtube',
-				['message' => $error, 'channel' => $channel->id, 'ids' => $toUpdate]);
-		}
-
-		return $streams;
+			throw $e;
+		});
 	}
 
 }

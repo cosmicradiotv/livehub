@@ -53,6 +53,15 @@ $javascript = [
 						<p class="help">Leave blank to get from service</p>
 					</div>
 				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>
+							Default Show
+							{!! Form::select('default_show_id', ['' => '* No Show *'] + $shows->lists('name', 'id'), null, ['class' => 'no-margin']) !!}
+						</label>
+						<p class="help">If no default show is set and the found streams don't match any of the shows the stream is ignored.</p>
+					</div>
+				</div>
 
 				{!! Form::submit('Update', ['class' => 'button']) !!}
 

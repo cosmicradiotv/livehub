@@ -22,23 +22,14 @@ class UpdateUserRequest extends Request {
 	 *
 	 * @return array
 	 */
-	public function rules(Route $route) {
+	public function rules() {
 		/** @var User $user */
-		$user = $route->parameter('user');
+		$user = $this->route('user');
 
 		return [
 			'username' => ['required', 'alpha_dash', 'max:255', "unique:users,username,{$user->id}"],
 			'email' => ['required', 'email', 'max:255', "unique:users,email,{$user->id}"],
 		];
-	}
-
-	/**
-	 * Get the sanitized input for the request.
-	 *
-	 * @return array
-	 */
-	public function sanitize() {
-		return $this->all();
 	}
 
 }

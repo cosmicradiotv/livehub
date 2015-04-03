@@ -31,6 +31,9 @@ use Illuminate\Database\Query\Builder;
  * @method static Builder|Stream whereChatUrl($value)
  * @method static Builder|Stream whereCreatedAt($value)
  * @method static Builder|Stream whereUpdatedAt($value)
+ * @property integer $show_id 
+ * @property-read \t2t2\LiveHub\Models\Show $show 
+ * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Stream whereShowId($value)
  */
 class Stream extends Model {
 
@@ -49,6 +52,15 @@ class Stream extends Model {
 	 */
 	public function channel() {
 		return $this->belongsTo('t2t2\LiveHub\Models\Channel');
+	}
+
+	/**
+	 * Show relation
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function show(){
+		return $this->belongsTo('t2t2\LiveHub\Models\Show');
 	}
 
 	/**

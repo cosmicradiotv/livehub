@@ -104,7 +104,27 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 	$router->resource('stream', 'Admin\\StreamController', [
 		'except' => ['show']
 	]);
-
+	$router->resource('show', 'Admin\\ShowController', [
+		'except' => ['show']
+	]);
+	$router->group(['prefix' => 'show/{show}/channel'], function(Router $router) {
+		$router->post('/', [
+			'as' => 'admin.show.channel.store',
+			'uses' => 'Admin\\ShowChannelController@store'
+		]);
+		$router->get('{channel_id}', [
+			'as' => 'admin.show.channel.edit',
+			'uses' => 'Admin\\ShowChannelController@edit'
+		]);
+		$router->match(['PUT', 'PATCH'], '{channel_id}', [
+			'as' => 'admin.show.channel.update',
+			'uses' => 'Admin\\ShowChannelController@update'
+		]);
+		$router->delete('{channel_id}', [
+			'as' => 'admin.show.channel.destroy',
+			'uses' => 'Admin\\ShowChannelController@destroy'
+		]);
+	});
 	$router->resource('channel', 'Admin\\ChannelController', [
 		'except' => ['show']
 	]);

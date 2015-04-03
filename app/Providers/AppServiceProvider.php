@@ -24,10 +24,7 @@ class AppServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->app->bind(
-			'Illuminate\Contracts\Auth\Registrar',
-			't2t2\LiveHub\Services\Registrar'
-		);
+
 	}
 
 	/**

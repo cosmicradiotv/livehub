@@ -2,6 +2,7 @@
 namespace t2t2\LiveHub\Services\Incoming;
 
 use Illuminate\Contracts\Routing\UrlRoutable;
+use React\Promise\ExtendedPromiseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Models\Stream;
@@ -166,9 +167,9 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return array
+	 * @return ExtendedPromiseInterface
 	 */
 	public function check(Channel $channel) {
-		return [];
+		return \React\Promise\reject();
 	}
 }

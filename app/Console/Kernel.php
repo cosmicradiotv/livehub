@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel {
 	protected function schedule(Schedule $schedule) {
 		$schedule->command('services:cron')->cron('* * * * * *')->environments('production')->when(function () {
 			return config('livehub.checker') == 'cron';
-		});
+		})->withoutOverlapping();
 	}
 
 }

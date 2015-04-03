@@ -14,6 +14,7 @@
 						<th>ID</th>
 						<th>Title</th>
 						<th>Channel</th>
+						<th>Show</th>
 						<th>State</th>
 						<th></th>
 					</tr>
@@ -24,6 +25,7 @@
 							<td>{{ $stream->id }}</td>
 							<td>{{ $stream->title }}</td>
 							<td>{{ $stream->channel->name }}</td>
+							<td>{{ $stream->show->name }}</td>
 							<td>{{ $stream->state }}</td>
 							<td><a href="{{ route('admin.stream.edit', ['stream' => $stream]) }}">Edit</a></td>
 						</tr>

@@ -92,7 +92,7 @@
 					{!! Form::submit('Create now', ['class' => 'button']) !!}
 				{!! Form::close() !!}
 			@else
-				<p>Configure some channels for the DummyServie to quickly add streams.</p>
+				<p>Configure some channels for the DummyService to quickly add streams.</p>
 			@endif
 		</div>
 	</div>

@@ -30,7 +30,7 @@ class StreamController extends AdminController {
 	 * @return Response
 	 */
 	public function index() {
-		$streams = Stream::all()->load('channel');
+		$streams = Stream::all()->load('channel', 'show');
 		$title = 'Streams';
 
 		return view('admin.stream.index', compact('streams', 'title'));

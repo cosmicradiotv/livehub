@@ -1,7 +1,9 @@
 <?php
 namespace t2t2\LiveHub\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use t2t2\LiveHub\Services\Incoming\Service;
 
 /**
@@ -12,14 +14,12 @@ use t2t2\LiveHub\Services\Incoming\Service;
  * @property object                                                                       $options
  * @property \Carbon\Carbon                                                               $created_at
  * @property \Carbon\Carbon                                                               $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $channels
- * @property-read \Illuminate\Database\Eloquent\Collection|\                              $related[] $morphedByMany
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereClass($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereOptions($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\IncomingService whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection                                $morphedByMany
+ * @property-read Collection|\t2t2\LiveHub\Models\Channel[]                               $channels
+ * @method static Builder|IncomingService whereId($value)
+ * @method static Builder|IncomingService whereClass($value)
+ * @method static Builder|IncomingService whereOptions($value)
+ * @method static Builder|IncomingService whereCreatedAt($value)
+ * @method static Builder|IncomingService whereUpdatedAt($value)
  */
 class IncomingService extends Model {
 

@@ -1,13 +1,14 @@
 <?php namespace t2t2\LiveHub\Http\Requests;
 
 use Illuminate\Auth\Guard;
+use Illuminate\Routing\Route;
+use t2t2\LiveHub\Http\Requests\Request;
+use t2t2\LiveHub\Models\Show;
 
-class ChannelRequest extends Request {
+class ShowRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
-	 *
-	 * @param Guard $auth
 	 *
 	 * @return bool
 	 */
@@ -21,13 +22,21 @@ class ChannelRequest extends Request {
 	 * @return array
 	 */
 	public function rules() {
-		return [
+		/** @var Show $show */
+		$show = $this->route('show');
+
+		$rules = [
 			'name' => ['required', 'max:255'],
-			'incoming_service_id' => ['required', 'exists:incoming_services,id'],
-			'video_url' => ['url'],
-			'chat_url' => ['url'],
-			'default_show_id' => ['exists:shows,id'],
+			'slug' => ['required', 'max:255'],
 		];
+
+		if($show) {
+			$rules['slug'][] = "unique:shows,slug,{$show->id}";
+		} else {
+			$rules['slug'][] = "unique:shows,slug";
+		}
+
+		return $rules;
 	}
 
 }

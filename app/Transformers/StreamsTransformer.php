@@ -11,7 +11,7 @@ class StreamsTransformer extends TransformerAbstract {
 			'id' => $stream->id,
 			'title' => $stream->title,
 			'state' => $stream->state,
-			'start_time' => $stream->start_time,
+			'start_time' => $stream->start_time->toIso8601String(),
 			'video_url' => $stream->getVideoUrl(),
 			'chat_url' => $stream->getChatUrl(),
 		];

@@ -30,13 +30,4 @@ class StreamRequest extends Request {
 		];
 	}
 
-	/**
-	 * Get the sanitized input for the request.
-	 *
-	 * @return array
-	 */
-	public function sanitize() {
-		return $this->all();
-	}
-
 }

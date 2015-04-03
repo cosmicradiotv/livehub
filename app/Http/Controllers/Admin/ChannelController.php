@@ -5,6 +5,7 @@ use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\ChannelRequest;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
+use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
 class ChannelController extends AdminController {
@@ -28,6 +29,7 @@ class ChannelController extends AdminController {
 	 */
 	public function create() {
 		$services = IncomingService::all();
+		$shows = Show::all();
 		$title = 'Create | Channel';
 
 		/** @var IncomingService $currentService */
@@ -38,7 +40,7 @@ class ChannelController extends AdminController {
 		}
 		$currentServiceSettings = $currentService->getService()->channelConfig();
 
-		return view('admin.channel.create', compact('services', 'title', 'currentServiceSettings'));
+		return view('admin.channel.create', compact('services', 'shows', 'title', 'currentServiceSettings'));
 	}
 
 	/**
@@ -53,7 +55,13 @@ class ChannelController extends AdminController {
 		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
 		$this->validate($request, $service->getService()->channelValidationRules());
 
-		$channel = new Channel($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url']));
+		$channel = new Channel($request->only([
+			'incoming_service_id',
+			'name',
+			'video_url',
+			'chat_url',
+			'default_show_id'
+		]));
 		$channel->options = $request->get('options');
 
 		$channel->save();
@@ -71,13 +79,14 @@ class ChannelController extends AdminController {
 	 */
 	public function edit(Channel $channel) {
 		$services = IncomingService::all();
+		$shows = Show::all();
 		$title = 'Edit | Channel';
 
 		/** @var IncomingService $currentService */
 		$currentService = $services->find(old('incoming_service_id', $channel->incoming_service_id));
 		$currentServiceSettings = $currentService->getService()->channelConfig();
 
-		return view('admin.channel.edit', compact('channel', 'services', 'title', 'currentServiceSettings'));
+		return view('admin.channel.edit', compact('channel', 'services', 'shows', 'title', 'currentServiceSettings'));
 	}
 
 	/**
@@ -93,7 +102,7 @@ class ChannelController extends AdminController {
 		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
 		$this->validate($request, $service->getService()->channelValidationRules());
 
-		$channel->fill($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url']));
+		$channel->fill($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url', 'default_show_id']));
 		$channel->options = $request->get('options');
 
 		$channel->save();
