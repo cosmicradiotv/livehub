@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use React\Promise\ExtendedPromiseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Stream;
+use t2t2\LiveHub\Services\ShowData;
 
 class YoutubeService extends Service {
 

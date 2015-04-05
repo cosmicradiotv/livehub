@@ -1,6 +1,6 @@
 <?php
 
-namespace t2t2\LiveHub\Services\Incoming;
+namespace t2t2\LiveHub\Services;
 
 
 use Carbon\Carbon;
