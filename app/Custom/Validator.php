@@ -10,11 +10,11 @@ class Validator extends BaseValidator {
 
 	/**
 	 * Validate that an attribute is a valid date.
-	 *
 	 * Fixed to allow for relative dates
 	 *
-	 * @param  string  $attribute
-	 * @param  mixed   $value
+	 * @param  string $attribute
+	 * @param  mixed  $value
+	 *
 	 * @return bool
 	 */
 	protected function validateDate($attribute, $value) {
@@ -25,7 +25,7 @@ class Validator extends BaseValidator {
 		try {
 			Carbon::parse($value); // Catches most stupidity
 			return true;
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 	}
@@ -38,10 +38,12 @@ class Validator extends BaseValidator {
 	 *
 	 * @return bool
 	 */
-	protected function validateValidRegex($attribute, $value){
-		set_error_handler(function() {}, E_WARNING);
+	protected function validateValidRegex($attribute, $value) {
+		set_error_handler(function () {
+		}, E_WARNING);
 		$isRegEx = preg_match($value, "") !== false;
 		restore_error_handler();
+
 		return $isRegEx;
 	}
 

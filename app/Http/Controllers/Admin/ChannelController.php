@@ -51,9 +51,7 @@ class ChannelController extends AdminController {
 	 * @return Response
 	 */
 	public function store(ChannelRequest $request) {
-		/** @var IncomingService $service */
-		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
-		$this->validate($request, $service->getService()->channelValidationRules());
+		$this->validateServiceRules($request);
 
 		$channel = new Channel($request->only([
 			'incoming_service_id',
@@ -98,9 +96,7 @@ class ChannelController extends AdminController {
 	 * @return Response
 	 */
 	public function update(Channel $channel, ChannelRequest $request) {
-		/** @var IncomingService $service */
-		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
-		$this->validate($request, $service->getService()->channelValidationRules());
+		$this->validateServiceRules($request);
 
 		$channel->fill($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url', 'default_show_id']));
 		$channel->options = $request->get('options');
@@ -132,6 +128,17 @@ class ChannelController extends AdminController {
 	 */
 	public function channelServiceSettings(IncomingService $service) {
 		return view('partials.service.settings', ['config' => $service->getService()->channelConfig()]);
+	}
+
+	/**
+	 * Validate service rules
+	 *
+	 * @param ChannelRequest $request
+	 */
+	protected function validateServiceRules(ChannelRequest $request) {
+		/** @var IncomingService $service */
+		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
+		$this->validate($request, $service->getService()->channelValidationRules());
 	}
 
 }

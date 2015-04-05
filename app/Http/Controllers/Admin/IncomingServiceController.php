@@ -19,7 +19,7 @@ class IncomingServiceController extends AdminController {
 	/**
 	 * @param ServicesGatherer $gatherer
 	 */
-	function __construct(ServicesGatherer $gatherer) {
+	public function __construct(ServicesGatherer $gatherer) {
 		parent::__construct();
 
 		$this->gatherer = $gatherer;

@@ -55,7 +55,7 @@ class CreateUser extends Command {
 		$rules = (new CreateUserRequest())->rules();
 		$validator = $this->validator->make($credentials, $rules);
 
-		if($validator->passes()) {
+		if ($validator->passes()) {
 
 			$this->dispatchFromArray(CreateUserCommand::class, $credentials);
 
@@ -64,7 +64,7 @@ class CreateUser extends Command {
 		} else {
 			$this->error('Input error:');
 
-			foreach($validator->errors()->all() as $message) {
+			foreach ($validator->errors()->all() as $message) {
 				$this->error($message);
 			}
 		}

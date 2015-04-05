@@ -30,7 +30,7 @@ class ShowRequest extends Request {
 			'slug' => ['required', 'max:255'],
 		];
 
-		if($show) {
+		if ($show) {
 			$rules['slug'][] = "unique:shows,slug,{$show->id}";
 		} else {
 			$rules['slug'][] = "unique:shows,slug";

@@ -33,7 +33,7 @@ class IncomingServiceChecker {
 	 * @param ServicesGatherer $gatherer
 	 * @param ShowRuleMatcher  $matcher
 	 */
-	function __construct(ServicesGatherer $gatherer, ShowRuleMatcher $matcher) {
+	public function __construct(ServicesGatherer $gatherer, ShowRuleMatcher $matcher) {
 		$this->gatherer = $gatherer;
 		$this->matcher = $matcher;
 	}
@@ -101,7 +101,7 @@ class IncomingServiceChecker {
 	 * @param DatabaseCollection|Stream[] $channel_streams
 	 * @param Channel                     $channel
 	 */
-	protected function removeEndedStreams($streamIDs, $channel_streams, $channel) {
+	protected function removeEndedStreams($streamIDs, DatabaseCollection $channel_streams, Channel $channel) {
 		foreach ($streamIDs as $endedID) {
 			$stream = $channel_streams[$endedID];
 			// Delete from database

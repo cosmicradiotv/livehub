@@ -63,7 +63,8 @@ class UserController extends AdminController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  User $id
+	 * @param User              $user
+	 * @param UpdateUserRequest $request
 	 *
 	 * @return Response
 	 */
@@ -83,7 +84,7 @@ class UserController extends AdminController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int $id
+	 * @param User $user
 	 *
 	 * @return Response
 	 */

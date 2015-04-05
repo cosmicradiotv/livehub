@@ -1,8 +1,6 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
 use Illuminate\Http\Response;
-use Illuminate\Http\Request;
-use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\ShowRequest;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
@@ -35,6 +33,8 @@ class ShowController extends AdminController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @param ShowRequest $request
+	 *
 	 * @return Response
 	 */
 	public function store(ShowRequest $request) {
@@ -66,7 +66,8 @@ class ShowController extends AdminController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param Show $show
+	 * @param Show        $show
+	 * @param ShowRequest $request
 	 *
 	 * @return Response
 	 */

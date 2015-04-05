@@ -8,7 +8,7 @@ class AdminController extends Controller {
 	/**
 	 * Make sure user is authenticated
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->middleware('auth');
 	}
 }

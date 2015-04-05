@@ -1,17 +1,13 @@
 <?php namespace t2t2\LiveHub\Console\Commands;
 
-use Carbon\Carbon;
-use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Input\InputOption;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
-use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\Incoming\Service;
 use t2t2\LiveHub\Services\IncomingServiceChecker;
-use t2t2\LiveHub\Services\ShowData;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
 class CronServiceChecker extends Command {
