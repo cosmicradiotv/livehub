@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import $ from 'jquery';
 import 'foundation/foundation';
 import 'foundation/foundation.topbar';
 import App from '../live/app';

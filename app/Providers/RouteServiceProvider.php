@@ -7,7 +7,6 @@ class RouteServiceProvider extends ServiceProvider {
 
 	/**
 	 * This namespace is applied to the controller routes in your routes file.
-	 *
 	 * In addition, it is set as the URL generator's root namespace.
 	 *
 	 * @var string
@@ -29,6 +28,12 @@ class RouteServiceProvider extends ServiceProvider {
 		$router->model('stream', 't2t2\\LiveHub\\Models\\Stream');
 		$router->model('user', 't2t2\\LiveHub\\Models\\User');
 
+		$router->pattern('channel', '[0-9]+');
+		$router->pattern('incoming_service', '[0-9]+');
+		$router->pattern('show', '[0-9]+');
+		$router->pattern('stream', '[0-9]+');
+		$router->pattern('user', '[0-9]+');
+
 		$router->pattern('service', '[a-zA-Z]+');
 
 		parent::boot($router);
@@ -38,10 +43,11 @@ class RouteServiceProvider extends ServiceProvider {
 	 * Define the routes for the application.
 	 *
 	 * @param Router $router
+	 *
 	 * @return void
 	 */
 	public function map(Router $router) {
-		$router->group(['namespace' => $this->namespace], function(Router $router) {
+		$router->group(['namespace' => $this->namespace], function (Router $router) {
 			require app_path('Http/routes.php');
 		});
 	}

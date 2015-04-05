@@ -3,7 +3,6 @@
 	"version": "0.0.1",
 	"license": "MIT",
 	"dependencies": {
-		"editTable": "~0.2.0",
 		"foundation": "zurb/bower-foundation"
 	},
 	"private": true

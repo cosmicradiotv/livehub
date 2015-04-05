@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import $ from 'jquery';
 
 var Pusher = module.exports = function (config) {
 	this.type = 'interval';

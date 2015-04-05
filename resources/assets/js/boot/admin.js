@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import $ from 'jquery';
 import 'foundation';
 import App from '../admin/app';
 

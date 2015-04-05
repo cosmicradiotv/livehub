@@ -30,5 +30,31 @@ class Validator extends BaseValidator {
 		}
 	}
 
+	/**
+	 * Tests if the value is a regex
+	 *
+	 * @param $attribute
+	 * @param $value
+	 *
+	 * @return bool
+	 */
+	protected function validateValidRegex($attribute, $value){
+		set_error_handler(function() {}, E_WARNING);
+		$isRegEx = preg_match($value, "") !== false;
+		restore_error_handler();
+		return $isRegEx;
+	}
+
+	/**
+	 * Tests if value is a time (HH:MM(:SS))
+	 *
+	 * @param $attribute
+	 * @param $value
+	 *
+	 * @return bool
+	 */
+	protected function validateTime($attribute, $value) {
+		return $this->validateRegex($attribute, $value, ['/^([01][0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?$/']);
+	}
 
 }

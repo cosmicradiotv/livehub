@@ -22,15 +22,18 @@ $router->get('/', [
 	'uses' => 'LiveController@home',
 ]);
 
+// App config
 $router->get('live/config', [
 	'as' => 'live.config',
 	'uses' => 'LiveController@config',
 ]);
+// Interval based pusher
 $router->get('live/pusher/interval', [
 	'as' => 'live.pusher.interval',
 	'uses' => 'LiveController@intervalPusher',
 ]);
 
+// Helpers
 $router->get('helper/misconfigured', [
 	'as' => 'helper.misconfigured',
 	'uses' => 'HelperController@misconfigured',
@@ -40,6 +43,7 @@ $router->get('helper/notlive', [
 	'uses' => 'HelperController@notlive',
 ]);
 
+// Authentication
 $router->group(['prefix' => 'auth'], function (Router $router) {
 
 	$router->get('login', [
@@ -80,6 +84,7 @@ $router->group(['prefix' => 'auth'], function (Router $router) {
 
 });
 
+// Admin
 $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router $router) {
 
 	$router->get('/', [
@@ -101,30 +106,45 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 		'uses' => 'Admin\\HomeController@streamDestroy'
 	]);
 
+	/**
+	 * Streams
+	 */
 	$router->resource('stream', 'Admin\\StreamController', [
 		'except' => ['show']
 	]);
+
+	/**
+	 * Shows
+	 */
 	$router->resource('show', 'Admin\\ShowController', [
 		'except' => ['show']
 	]);
+
+	/**
+	 * Show's Channels
+	 */
 	$router->group(['prefix' => 'show/{show}/channel'], function(Router $router) {
-		$router->post('/', [
-			'as' => 'admin.show.channel.store',
-			'uses' => 'Admin\\ShowChannelController@store'
-		]);
-		$router->get('{channel_id}', [
+		$router->get('{channel}', [
 			'as' => 'admin.show.channel.edit',
 			'uses' => 'Admin\\ShowChannelController@edit'
 		]);
-		$router->match(['PUT', 'PATCH'], '{channel_id}', [
+		$router->match(['PUT', 'PATCH'], '{channel}', [
 			'as' => 'admin.show.channel.update',
 			'uses' => 'Admin\\ShowChannelController@update'
 		]);
-		$router->delete('{channel_id}', [
+		$router->delete('{channel}', [
 			'as' => 'admin.show.channel.destroy',
 			'uses' => 'Admin\\ShowChannelController@destroy'
 		]);
 	});
+	$router->get('show/channel', [
+		'as' => 'admin.show.channel.redirect',
+		'uses' => 'Admin\\ShowChannelController@redirect'
+	]);
+
+	/**
+	 * Channels
+	 */
 	$router->resource('channel', 'Admin\\ChannelController', [
 		'except' => ['show']
 	]);
@@ -133,7 +153,9 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 		'uses' => 'Admin\\ChannelController@channelServiceSettings',
 	]);
 
-	// Incoming data services
+	/**
+	 * Incoming data services
+	 */
 	$router->get('service/incoming', [
 		'as'   => 'admin.service.incoming.index',
 		'uses' => 'Admin\\IncomingServiceController@index'
@@ -148,7 +170,9 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth']], function (Router
 	]);
 
 
-	// Users admin controller
+	/**
+	 * Users
+	 */
 	$router->resource('user', 'Admin\\UserController', [
 		'except' => ['show']
 	]);

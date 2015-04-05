@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>503 | {{config('livehub.brand')}}</title>
+	<title>404 | {{config('livehub.brand')}}</title>
 
 	<style>
 		body {
@@ -14,18 +14,21 @@
 			color: #ffffff;
 			font-size: 4vw;
 		}
+
 		h1 {
 			font-size: 4em;
 			height: 40vh;
 			line-height: 40vh;
 			margin: 0;
 		}
+
 		h2 {
 			font-size: 2em;
 			height: 30vh;
 			line-height: 30vh;
 			margin: 0;
 		}
+
 		p {
 			font-size: 1em;
 			height: 20vh;
@@ -37,9 +40,14 @@
 <body>
 
 <div id="container">
-	<h1>503</h1>
-	<h2>Be Right Back</h2>
-	<p>Getting <span style="text-decoration: line-through;">Expensive Battle Lasers</span> Upgraded!</p>
+	<h1>404</h1>
+
+	<h2>Can't find it</h2>
+	@if(Auth::check())
+		<p><a href="{{route('admin.index')}}">Back to admin home</a></p>
+	@else
+		<p>Sorry</p>
+	@endif
 </div>
 
 </body>

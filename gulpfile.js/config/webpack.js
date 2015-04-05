@@ -28,7 +28,8 @@ module.exports = function (env) {
 			alias: {
 				foundation: path.join(__dirname, '../../resources/assets/bower/foundation/js/foundation'),
 				foundation$: path.join(__dirname, '../../resources/assets/bower/foundation/js/foundation.js'),
-				modernizr$: path.join(__dirname, '../../resources/assets/bower/modernizr/modernizr.js')
+				modernizr$: path.join(__dirname, '../../resources/assets/bower/modernizr/modernizr.js'),
+				ractive$: 'ractive/ractive.runtime.js'
 			},
 			extensions: ['', '.js']
 		},
@@ -46,7 +47,11 @@ module.exports = function (env) {
 				},
 				{
 					test: /resources\/assets\/bower\/foundation/,
-					loader: 'imports?jQuery=jQuery'
+					loader: 'imports?jQuery=jquery'
+				},
+				{
+					test: /\.hbs/,
+					loader: 'ractive-loader'
 				}
 			]
 		}

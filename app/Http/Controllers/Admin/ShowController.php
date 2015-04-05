@@ -4,6 +4,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\ShowRequest;
+use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
 
 class ShowController extends AdminController {
@@ -57,7 +58,9 @@ class ShowController extends AdminController {
 
 		$title = 'Edit | Show';
 
-		return view('admin.show.edit', compact('show', 'title'));
+		$channels = Channel::whereNotIn('id', $show->channels->lists('id'))->lists('name', 'id');
+
+		return view('admin.show.edit', compact('show', 'channels', 'title'));
 	}
 
 	/**

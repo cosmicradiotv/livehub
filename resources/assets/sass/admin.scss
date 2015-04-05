@@ -4,9 +4,6 @@
 // Import foundation
 @import "../bower/foundation/scss/foundation";
 
-// jquery editTable
-@import "vendor/jquery.edittable";
-
 .no-margin {
 	margin-bottom: 0 !important;
 }
@@ -23,4 +20,8 @@
 
 form .help {
 	color: $subheader-font-color;
+}
+
+.checklist > label {
+	display: inline-block;
 }

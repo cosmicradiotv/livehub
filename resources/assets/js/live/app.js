@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import $ from 'jquery';
 import _ from 'lodash';
 
 var liveapp = module.exports = function ($target) {

@@ -1,11 +1,15 @@
-import $ from 'jQuery';
+import $ from 'jquery';
+import channelModule from './modules/channel';
+import showChannelModule from './modules/showChannel';
+
 
 var adminApp = module.exports = function (config) {
 	var app = this;
 
 	app.config = config;
 	app.modules = {
-		'channel': require('./modules/channel')
+		'channel': channelModule,
+		'show-channel': showChannelModule
 	};
 	app.page = null;
 
@@ -17,7 +21,9 @@ var adminApp = module.exports = function (config) {
 adminApp.prototype.init = function (module) {
 	var app = this;
 
-	app.page = new app.modules[module[0]](app);
+	if(app.modules[module[0]]) {
+		app.page = new app.modules[module[0]](app);
 
-	app.page.call(module[1]);
+		app.page.call(module[1]);
+	}
 };

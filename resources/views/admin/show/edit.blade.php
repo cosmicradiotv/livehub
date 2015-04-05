@@ -1,18 +1,11 @@
-<?php
-$javascript = [
-	'module' => ['channel', 'edit'],
-	'service-settings-url' => route('admin.channel.service.settings'),
-]
-?>
-
 @extends('layouts.admin')
 
 @section('content')
 
 	<div class="row">
 		<div class="small-12 columns">
-			<h2>Channel</h2>
-			<h3>Edit channel</h3>
+			<h2>Show</h2>
+			<h3>Edit show</h3>
 
 			{!! Form::model($show, ['route' => ['admin.show.update', 'show' => $show], 'method' => 'PUT']) !!}
 
@@ -61,6 +54,13 @@ $javascript = [
 							</tr>
 						@endforeach
 						@foreach($show->channels as $channel)
+							<tr>
+								<td>{{$channel->name}}</td>
+								<td>
+									@include('partials.show.rules', ['rules' => json_decode($channel->pivot->rules)])
+								</td>
+								<td><a href="{{ route('admin.show.channel.edit', ['show' => $show, 'channel' => $channel]) }}">Edit</a></td>
+							</tr>
 						@endforeach
 					@else
 						<tr>
@@ -70,6 +70,17 @@ $javascript = [
 				</tbody>
 			</table>
 
+			{!! Form::open(['route' => ['admin.show.channel.redirect'], 'method' => 'GET']) !!}
+				{!! Form::hidden('show_id', $show->id) !!}
+				<div class="row collapse">
+					<div class="small-8 medium-4 medium-offset-6 columns">
+						{!! Form::select('channel_id', $channels) !!}
+					</div>
+					<div class="small-4 medium-2 columns">
+						{!! Form::submit('Add Channel', ['class' => 'postfix button']) !!}
+					</div>
+				</div>
+			{!! Form::close() !!}
 		</div>
 	</div>
 @endsection
