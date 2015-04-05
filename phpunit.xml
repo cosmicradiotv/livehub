@@ -20,4 +20,13 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+        <blacklist>
+            <directory suffix=".php">./vendor</directory>
+            <file>./bootstrap/compiled.php</file>
+        </blacklist>
+    </filter>
 </phpunit>

@@ -1,4 +1,6 @@
 <?php
+use Carbon\Carbon;
+
 $javascript = [
 	'module' => ['show-channel', 'edit'],
 ]
@@ -15,6 +17,7 @@ $javascript = [
 			<a href="{{ route('admin.show.edit', ['show' => $show]) }}">Back to show</a>
 
 			<h3>Channel: {{ $channel->name }}</h3>
+			<span class="right">Server Time: {{ Carbon::now() }}</span>
 
 			{!! Form::open(['route' => ['admin.show.channel.update', 'show' => $show, 'channel' => $channel], 'method' => 'PUT']) !!}
 				<h4>Show Rules</h4>

@@ -1,0 +1,12 @@
+filter:
+    paths:
+        - 'app/*'
+checks:
+    php: true
+coding_style:
+    php:
+        indentation:
+            general:
+                use_tabs: true
+tools:
+    external_code_coverage: true
