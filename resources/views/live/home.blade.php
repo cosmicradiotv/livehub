@@ -36,10 +36,10 @@
 			</nav>
 		</div>
 		<div id="live-container">
-			<iframe id="live-frame" src="about:blank" frameborder="0"></iframe>
+			<iframe id="live-frame" src="{{ $stream ? $stream->getVideoUrl() : 'about:blank' }}" frameborder="0"></iframe>
 		</div>
 		<div id="chat-container">
-			<iframe id="chat-frame" src="about:blank" frameborder="0"></iframe>
+			<iframe id="chat-frame" src="{{ $stream ? $stream->getChatUrl() : 'about:blank' }}" frameborder="0"></iframe>
 		</div>
 	</div>
 

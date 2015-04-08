@@ -23,6 +23,7 @@ class StreamRequest extends Request {
 		return [
 			'title'      => ['required', 'max:255'],
 			'channel_id' => ['required', 'exists:channels,id'],
+			'show_id'    => ['required', 'exists:shows,id'],
 			'state'      => ['required', 'in:next,live'],
 			'start_time' => ['required', 'date'],
 			'video_url'  => ['url'],

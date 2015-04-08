@@ -1,6 +1,5 @@
 // Import Normalize
 @import "vendor/normalize";
-
 // Import Top Bar
 @import "../bower/foundation/scss/foundation/components/labels";
 @import "../bower/foundation/scss/foundation/components/type";
@@ -10,12 +9,15 @@
 html, body {
 	height: 100%;
 }
+
 iframe {
 	display: block;
 }
+
 html {
 	box-sizing: border-box;
 }
+
 *, *:before, *:after {
 	box-sizing: inherit;
 }
@@ -36,6 +38,13 @@ html {
 			line-height: 1.8rem;
 			padding: 0 0.4875rem;
 		}
+		.stream .time {
+			display: block;
+			font-size: 0.8em;
+			line-height: 1em;
+			margin-top: (-$topbar-height + 1rem) / 2;
+			padding-bottom: 1em;
+		}
 	}
 	#live-container, #chat-container {
 		& > iframe {
@@ -44,7 +53,6 @@ html {
 		}
 	}
 }
-
 
 // Flexbox based design
 .flexbox {
@@ -83,7 +91,7 @@ html {
 			#live-container {
 				height: 100%;
 				max-height: 100%;
-				
+
 				max-width: (16/10)*100vh;
 				width: 70%;
 			}

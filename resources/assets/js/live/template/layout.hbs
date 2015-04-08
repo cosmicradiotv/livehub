@@ -1,0 +1,61 @@
+<div id="container">
+	<div id="header">
+		<nav class="top-bar" data-topbar role="navigation" data-options="mobile_show_parent_link: false">
+			<ul class="title-area">
+				<li class="name">
+					<h1 class="hide-for-small"><a href="#">{{ settings.brand }}</a></h1>
+				</li>
+				<li class="toggle-topbar menu-icon"><a href="#"><span>
+					{{liveStreamsText}}
+				</span></a></li>
+			</ul>
+			<section class="top-bar-section">
+				<ul class="left">
+					<li class="has-dropdown">
+						<a>
+							<span class="show-for-medium-up live-streams-text">{{liveStreamsText}}</span>
+							<span class="show-for-small-only">Switch Stream</span>
+						</a>
+						<ul class="dropdown" id="streams-list">
+							<li><a id="cruise-control" on-click="switchCruiseControl:{{!cruiseControl}}">
+								{{#cruiseControl}}
+									<span class="label success">On</span> Auto-switch
+								{{else}}
+									<span class="label alert">Off</span> Auto-switch
+								{{/cruiseControl}}
+							</a></li>
+							<li class="divider"></li>
+							{{#groupedStreams:show_id}}
+								<li>
+									<label>{{shows[show_id].name}}</label>
+								</li>
+								{{#this:stream_id}}
+									<li class="stream {{ .id == active ? 'active' : ''}}">
+										<a on-click="setStream:{{.id}},true">
+											{{.title}}
+											{{#.state != 'live'}}
+												<em class="time">Live {{relativeTime(start_time)}}</em>
+											{{/}}
+										</a>
+									</li>
+								{{/this}}
+							{{else}}
+								<li><a><em>No streams live</em></a></li>
+							{{/}}
+						</ul>
+					</li>
+				</ul>
+			</section>
+		</nav>
+	</div>
+	{{#loading}}
+		<h2>Loading...</h2>
+	{{else}}
+		<div id="live-container">
+			<iframe id="live-frame" src="{{liveURL}}" frameborder="0"></iframe>
+		</div>
+		<div id="chat-container">
+			<iframe id="chat-frame" src="{{chatUrl}}" frameborder="0"></iframe>
+		</div>
+	{{/}}
+</div>

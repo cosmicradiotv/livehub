@@ -39,7 +39,7 @@ class Stream extends Model {
 
 	protected $dates = ['start_time'];
 
-	protected $fillable = ['channel_id', 'service_info', 'title', 'state', 'start_time', 'video_url', 'chat_url'];
+	protected $fillable = ['channel_id', 'show_id', 'service_info', 'title', 'state', 'start_time', 'video_url', 'chat_url'];
 
 	protected $hidden = ['service_info'];
 

@@ -6,12 +6,10 @@ namespace t2t2\LiveHub\Services;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\Incoming\Service;
-use t2t2\LiveHub\Services\ShowData;
 
 class IncomingServiceChecker {
 
@@ -46,26 +44,23 @@ class IncomingServiceChecker {
 	 * @return null|\React\Promise\ExtendedPromiseInterface
 	 */
 	public function check(Channel $channel) {
-		if (! $this->services) {
+		if (!$this->services) {
 			$this->readServices();
 		}
-		if (! $this->services[$channel->incoming_service_id]) {
+		if (!$this->services[$channel->incoming_service_id]) {
 			return null;
 		}
 
 		$promise = $this->services[$channel->incoming_service_id]->check($channel);
 
 		$promise->then(function (Collection $streams) use ($channel) {
-			/** @var DatabaseCollection|Stream[] $channel_streams */
-			$channel_streams = $channel->streams->keyBy('service_info');
-
 			$found_streams = $streams->lists('service_info');
-			$database_streams = $channel_streams->lists('service_info');
+			$database_streams = $channel->streams->lists('service_info');
 
 			// Remove ended streams
-			$this->removeEndedStreams(array_diff($database_streams, $found_streams), $channel_streams, $channel);
+			$this->removeEndedStreams(array_diff($database_streams, $found_streams), $channel);
 			// Update other streams (including new ones)
-			$this->updateStreams($streams, $channel_streams, $channel);
+			$this->updateStreams($streams, $channel);
 
 			$channel->last_checked = Carbon::now();
 			$channel->save(['timestamps' => false]);
@@ -97,33 +92,37 @@ class IncomingServiceChecker {
 	/**
 	 * Removes streams that have ended
 	 *
-	 * @param array                       $streamIDs
-	 * @param DatabaseCollection|Stream[] $channel_streams
-	 * @param Channel                     $channel
+	 * @param array   $streamIDs
+	 * @param Channel $channel
+	 *
+	 * @internal param DatabaseCollection|\t2t2\LiveHub\Models\Stream[] $channel_streams
 	 */
-	protected function removeEndedStreams($streamIDs, DatabaseCollection $channel_streams, Channel $channel) {
+	protected function removeEndedStreams($streamIDs, Channel $channel) {
 		foreach ($streamIDs as $endedID) {
-			$stream = $channel_streams[$endedID];
-			// Delete from database
-			$stream->delete();
+			$stream = $channel->streams->first(function ($key, Stream $stream) use ($endedID) {
+				return $stream->service_info == $endedID;
+			});
 
-			// Remove from relation
-			$channel->setRelation('streams', $channel->streams->except($stream->id));
-			$channel_streams = $channel_streams->except($endedID);
+			if ($stream) {
+				// Delete from database
+				$stream->delete();
+
+				// Remove from relation
+				$channel->setRelation('streams', $channel->streams->except($stream->id));
+			}
 		}
 	}
 
 	/**
 	 * Updates and creates streams
 	 *
-	 * @param Collection|ShowData[]       $streams
-	 * @param DatabaseCollection|Stream[] $channel_streams
-	 * @param Channel                     $channel
+	 * @param Collection|ShowData[] $streams
+	 * @param Channel               $channel
 	 */
-	protected function updateStreams(Collection $streams, DatabaseCollection $channel_streams, Channel $channel) {
-		$streams->map(function (ShowData $data) use ($channel_streams, $channel) {
-			$stream = $this->getStream($data, $channel_streams, $channel);
-			if (! $stream) {
+	protected function updateStreams(Collection $streams, Channel $channel) {
+		$streams->map(function (ShowData $data) use ($channel) {
+			$stream = $this->getStream($data, $channel);
+			if (!$stream) {
 				return;
 			}
 
@@ -140,15 +139,19 @@ class IncomingServiceChecker {
 	}
 
 	/**
-	 * @param ShowData                    $data
-	 * @param DatabaseCollection|Stream[] $channel_streams
-	 * @param Channel                     $channel
+	 * Get stream object for the show data
+	 *
+	 * @param ShowData $data
+	 * @param Channel  $channel
 	 *
 	 * @return Stream|null
 	 */
-	protected function getStream(ShowData $data, DatabaseCollection $channel_streams, Channel $channel) {
-		if (isset($channel_streams[$data->service_info])) {
-			return $channel_streams[$data->service_info];
+	protected function getStream(ShowData $data, Channel $channel) {
+		$stream = $channel->streams->first(function ($key, Stream $stream) use ($data) {
+			return $stream->service_info == $data->service_info;
+		});
+		if ($stream) {
+			return $stream;
 		} else {
 			$matching_show = $this->matchesShow($data, $channel);
 

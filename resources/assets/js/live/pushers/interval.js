@@ -23,10 +23,19 @@ Pusher.prototype.check = function () {
 	}
 
 	$.ajax(this.config.target).done(function (response) {
-		var streams = response.data;
+		var data = {
+			streams: {},
+			shows: {}
+		};
+		_.transform(response.data, function (data, stream) {
+			data.streams[stream.id] = _.omit(stream, ['show']);
+			if(!(stream.show.data.id in data.shows)) {
+				data.shows[stream.show.data.id] = stream.show.data;
+			}
+		}, data);
 
 		if (that.ondata) {
-			that.ondata(streams);
+			that.ondata(data.streams, data.shows, true);
 		}
 
 		setTimeout(that.check.bind(that), that.config.frequency * 1000);

@@ -15,8 +15,8 @@
 			<table class="small-12">
 				<thead>
 					<tr>
-						<th>Channel</th>
-						<th>Last Checked</th>
+						<th class="medium-8">Channel</th>
+						<th class="medium-4">Last Checked</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -80,6 +80,10 @@
 					<label>
 						Channel
 						{!! Form::select('channel_id', $dummyChannels->lists('name', 'id')) !!}
+					</label>
+					<label>
+						Show
+						{!! Form::select('show_id', $shows->lists('name', 'id')) !!}
 					</label>
 					<label>
 						Video embed URL

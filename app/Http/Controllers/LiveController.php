@@ -16,7 +16,9 @@ class LiveController extends Controller {
 	 * @return Response
 	 */
 	public function home() {
-		return view('live.home');
+		$best_stream = Stream::query()->orderBy('state', 'ASC')->orderBy('id', 'ASC')->first();
+
+		return view('live.home', ['stream' => $best_stream]);
 	}
 
 	/**
@@ -24,6 +26,7 @@ class LiveController extends Controller {
 	 */
 	public function config(Manager $manager) {
 		$settings = [
+			'brand' => config('livehub.brand'),
 			'pushers' => [],
 			'notlive' => route('helper.notlive'),
 		];
@@ -34,8 +37,8 @@ class LiveController extends Controller {
 			'target' => route('live.pusher.interval'),
 		];
 
+		$manager->parseIncludes(['show']);
 		$settings['streams'] = $manager->createData($this->streams())->toArray();
-
 
 		return JsonResponse::create($settings);
 	}
@@ -44,7 +47,7 @@ class LiveController extends Controller {
 	 * @return FractalCollection
 	 */
 	protected function streams() {
-		$streams = Stream::all()->load('channel.service');
+		$streams = Stream::all()->load('channel.service', 'show');
 
 		return new FractalCollection($streams, new StreamsTransformer(), 'stream');
 	}
@@ -55,6 +58,7 @@ class LiveController extends Controller {
 	 * @return Response
 	 */
 	public function intervalPusher(Manager $manager) {
+		$manager->parseIncludes(['show']);
 		$streams = $manager->createData($this->streams())->toArray();
 
 		return JsonResponse::create($streams);

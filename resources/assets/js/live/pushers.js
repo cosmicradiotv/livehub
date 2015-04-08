@@ -1,3 +1,5 @@
+import intervalPusher from './pushers/interval';
+
 module.exports = {
-	'interval': require('./pushers/interval')
+	'interval': intervalPusher
 };

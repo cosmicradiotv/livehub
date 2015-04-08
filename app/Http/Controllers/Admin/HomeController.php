@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use t2t2\LiveHub\Http\Requests\StreamRequest;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
+use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 
 class HomeController extends AdminController {
@@ -27,11 +28,12 @@ class HomeController extends AdminController {
 		} else {
 			$dummyChannels = new Collection();
 		}
+		$shows = Show::all();
 
 
 		$title = 'Admin';
 
-		return view('admin.index', compact('streams', 'channels', 'dummyChannels', 'title'));
+		return view('admin.index', compact('streams', 'channels', 'shows', 'dummyChannels', 'title'));
 	}
 
 	/**
@@ -44,6 +46,7 @@ class HomeController extends AdminController {
 	public function addStream(StreamRequest $request) {
 		$stream = new Stream($request->only([
 			'channel_id',
+			'show_id',
 			'service_info',
 			'title',
 			'state',

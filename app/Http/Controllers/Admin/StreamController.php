@@ -5,6 +5,7 @@ use Illuminate\Http\Response;
 use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\StreamRequest;
 use t2t2\LiveHub\Models\Channel;
+use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 
 class StreamController extends AdminController {
@@ -16,6 +17,7 @@ class StreamController extends AdminController {
 	 */
 	protected $fillable = [
 		'channel_id',
+		'show_id',
 		'service_info',
 		'title',
 		'state',
@@ -43,9 +45,10 @@ class StreamController extends AdminController {
 	 */
 	public function create() {
 		$channels = Channel::all();
+		$shows = Show::all();
 		$title = 'Create | Streams';
 
-		return view('admin.stream.create', compact('channels', 'title'));
+		return view('admin.stream.create', compact('channels', 'shows', 'title'));
 	}
 
 	/**
@@ -73,9 +76,10 @@ class StreamController extends AdminController {
 	 */
 	public function edit(Stream $stream) {
 		$channels = Channel::all();
+		$shows = Show::all();
 		$title = 'Edit | Stream';
 
-		return view('admin.stream.edit', compact('stream', 'channels', 'title'));
+		return view('admin.stream.edit', compact('stream', 'channels', 'shows', 'title'));
 	}
 
 	/**
