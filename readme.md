@@ -1,8 +1,6 @@
 ## LiveHub
 
-[![Build Status](https://travis-ci.org/t2t2/livehub.svg)](https://travis-ci.org/t2t2/livehub)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/t2t2/livehub/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/t2t2/livehub/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/t2t2/livehub/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/t2t2/livehub/?branch=master)
+[![Build Status](https://travis-ci.org/cosmicradiotv/livehub.svg)](https://travis-ci.org/cosmicradiotv/livehub)
 
 LiveHub is a site focused on bringing live video from variety of services.
 

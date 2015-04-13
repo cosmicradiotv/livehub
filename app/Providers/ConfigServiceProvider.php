@@ -27,6 +27,9 @@ class ConfigServiceProvider extends ServiceProvider {
 			$config->set('mail.from', ['address' => 'mailer@livehub.dev', 'name' => 'livehub']);
 
 			$this->registerIDEHelper();
+		} elseif ($this->app->environment('testing')) {
+			$config->set('database.default', 'sqlite');
+			$config->set('database.connections.sqlite.database', ':memory:');
 		}
 	}
 

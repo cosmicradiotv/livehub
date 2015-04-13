@@ -12,10 +12,14 @@ class StreamLookupHelpingField extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('streams', function(Blueprint $table) {
-			$table->dropColumn('options');
+		DB::transaction(function() {
+			Schema::table('streams', function(Blueprint $table) {
+				$table->dropColumn('options');
+			}); // Separated due to sqlite problems
 
-			$table->string('service_info')->after('channel_id')->index()->nullable();
+			Schema::table('streams', function(Blueprint $table) {
+				$table->string('service_info')->after('channel_id')->nullable()->index();
+			});
 		});
 	}
 
@@ -26,10 +30,13 @@ class StreamLookupHelpingField extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('streams', function(Blueprint $table) {
-			$table->dropColumn('service_info')->after('channel_id');
-
-			$table->json('options');
+		DB::transaction(function() {
+			Schema::table('streams', function (Blueprint $table) {
+				$table->dropColumn('service_info');
+			});
+			Schema::table('streams', function (Blueprint $table) {
+				$table->json('options')->after('channel_id');
+			});
 		});
 	}
 

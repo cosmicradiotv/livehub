@@ -12,7 +12,7 @@ class AddLastCheckedChannelTimestamp extends Migration {
 	 */
 	public function up() {
 		Schema::table('channels', function(Blueprint $table) {
-			$table->timestamp('last_checked')->after('options');
+			$table->timestamp('last_checked')->after('options')->nullable();
 		});
 	}
 

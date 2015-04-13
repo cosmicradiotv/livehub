@@ -28,7 +28,7 @@ class CreateShowsTable extends Migration {
 			]);
 
 			Schema::table('streams', function (Blueprint $table) {
-				$table->unsignedInteger('show_id')->after('channel_id');
+				$table->unsignedInteger('show_id')->after('channel_id')->nullable();
 			});
 
 			DB::table('streams')->update(['show_id' => $default->id]);
