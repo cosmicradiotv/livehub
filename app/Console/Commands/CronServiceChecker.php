@@ -81,7 +81,7 @@ class CronServiceChecker extends Command {
 
 		// Filter to only have channels not recently checked
 		$channels = $channels->filter(function (Channel $channel) {
-			return $channel->last_checked->copy()->addSeconds(2 * 60)->isPast();
+			return $channel->last_checked ? $channel->last_checked->copy()->addSeconds(2 * 60)->isPast() : true;
 		});
 
 		// Check all channels

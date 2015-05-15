@@ -24,7 +24,7 @@
 							<td>{{ $channel->id }}</td>
 							<td>{{ $channel->name }}</td>
 							<td>{{ $channel->service->getService()->name() }}</td>
-							<td>{{ $channel->last_checked->diffForHumans() }}</td>
+							<td>{{ $channel->last_checked ? $channel->last_checked->diffForHumans() : 'Never' }}</td>
 							<td><a href="{{ route('admin.channel.edit', ['channel' => $channel]) }}">Edit</a></td>
 						</tr>
 					@endforeach
