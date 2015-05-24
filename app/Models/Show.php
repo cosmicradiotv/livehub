@@ -20,6 +20,7 @@ use t2t2\LiveHub\Models\Channel;
  * @method static Builder|Show whereSlug($value)
  * @method static Builder|Show whereCreatedAt($value)
  * @method static Builder|Show whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany 
  */
 class Show extends Model {
 

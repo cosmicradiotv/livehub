@@ -11,6 +11,7 @@ use Illuminate\Database\Query\Builder;
  *
  * @property integer                                        $id
  * @property integer                                        $channel_id
+ * @property integer                                        $show_id
  * @property array                                          $service_info
  * @property string                                         $title
  * @property string                                         $state
@@ -20,6 +21,7 @@ use Illuminate\Database\Query\Builder;
  * @property \Carbon\Carbon                                 $created_at
  * @property \Carbon\Carbon                                 $updated_at
  * @property-read \t2t2\LiveHub\Models\Channel              $channel
+ * @property-read \t2t2\LiveHub\Models\Show                 $show
  * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
  * @method static Builder|Stream whereId($value)
  * @method static Builder|Stream whereChannelId($value)
@@ -31,15 +33,22 @@ use Illuminate\Database\Query\Builder;
  * @method static Builder|Stream whereChatUrl($value)
  * @method static Builder|Stream whereCreatedAt($value)
  * @method static Builder|Stream whereUpdatedAt($value)
- * @property integer $show_id 
- * @property-read \t2t2\LiveHub\Models\Show $show 
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Stream whereShowId($value)
  */
 class Stream extends Model {
 
 	protected $dates = ['start_time'];
 
-	protected $fillable = ['channel_id', 'show_id', 'service_info', 'title', 'state', 'start_time', 'video_url', 'chat_url'];
+	protected $fillable = [
+		'channel_id',
+		'show_id',
+		'service_info',
+		'title',
+		'state',
+		'start_time',
+		'video_url',
+		'chat_url'
+	];
 
 	protected $hidden = ['service_info'];
 
@@ -59,7 +68,7 @@ class Stream extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function show(){
+	public function show() {
 		return $this->belongsTo('t2t2\LiveHub\Models\Show');
 	}
 
@@ -83,7 +92,7 @@ class Stream extends Model {
 
 	// Setters
 	public function setStartTimeAttribute($value) {
-		if(! ($value instanceof DateTime)) {
+		if (!($value instanceof DateTime)) {
 			$value = Carbon::parse($value);
 		}
 		$this->attributes['start_time'] = $value;

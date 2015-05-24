@@ -23,7 +23,10 @@ class AddDefaultShowToChannel extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		//
+		Schema::table('channels', function(Blueprint $table) {
+			$table->dropForeign('channels_default_show_id_foreign');
+			$table->dropColumn('default_show_id');
+		});
 	}
 
 }

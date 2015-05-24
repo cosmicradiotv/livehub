@@ -4,6 +4,7 @@ namespace t2t2\LiveHub\Services;
 
 
 use Carbon\Carbon;
+use DB;
 use Exception;
 use Illuminate\Support\Collection;
 use t2t2\LiveHub\Models\Channel;
@@ -65,8 +66,7 @@ class IncomingServiceChecker {
 			$channel->last_checked = Carbon::now();
 			$channel->save(['timestamps' => false]);
 		}, function (Exception $e) use ($channel) {
-			\Log::error('Error retrieving info from service',
-				['message' => $e->getMessage(), 'channel' => $channel->id, 'code' => $e->getCode()]);
+			$this->logError($e, $channel);
 
 			$channel->last_checked = Carbon::now();
 			$channel->save(['timestamps' => false]);
@@ -198,6 +198,27 @@ class IncomingServiceChecker {
 		} else {
 			return $channel->defaultShow;
 		}
+	}
+
+	/**
+	 * Log errors that happen when checking the stream
+	 *
+	 * @param Exception $e
+	 * @param Channel   $channel
+	 */
+	protected function logError(Exception $e, Channel $channel) {
+		// Log to database
+		DB::table('errors')->insert(
+			[
+				'text'       => 'Error retrieving info from service:' . "\n\n" . $e->getMessage(),
+				'channel_id' => $channel->id,
+				'created_at' => Carbon::now()
+			]
+		);
+
+		// Log error
+		\Log::error('Error retrieving info from service',
+			['message' => $e->getMessage(), 'channel' => $channel->id, 'code' => $e->getCode()]);
 	}
 
 }

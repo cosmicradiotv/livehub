@@ -32,6 +32,36 @@
 					@endforelse
 				</tbody>
 			</table>
+
+			<h2>Error Log</h2>
+
+			<table class="small-12">
+				<thead>
+				<tr>
+					<th>When</th>
+					<th>Error</th>
+				</tr>
+				</thead>
+				<tbody>
+				@forelse($errorlog as $error)
+					<tr>
+						<td>
+							<p><em>{{ $error->created_at->diffForHumans() }}</em></p>
+							@if($error->channel)
+								Channel:<br />{{ $error->channel->name }}
+							@endif
+						</td>
+						<td>
+							<pre>{{ $error->text }}</pre>
+						</td>
+					</tr>
+					@empty
+					<tr>
+						<td>No errors</td>
+					</tr>
+				@endforelse
+				</tbody>
+			</table>
 		</div>
 		<div class="small-12 large-6 columns">
 			<h2>Live Streams</h2>
