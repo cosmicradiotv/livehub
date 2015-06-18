@@ -1,7 +1,7 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
 use Illuminate\Http\Response;
-use t2t2\LiveHub\Commands\CreateUserCommand;
+use t2t2\LiveHub\Jobs\CreateUserCommand;
 use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\CreateUserRequest;
 use t2t2\LiveHub\Http\Requests\UpdateUserRequest;

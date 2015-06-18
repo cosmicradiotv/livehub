@@ -55,8 +55,8 @@ class IncomingServiceChecker {
 		$promise = $this->services[$channel->incoming_service_id]->check($channel);
 
 		$promise->then(function (Collection $streams) use ($channel) {
-			$found_streams = $streams->lists('service_info');
-			$database_streams = $channel->streams->lists('service_info');
+			$found_streams = $streams->lists('service_info')->all();
+			$database_streams = $channel->streams->lists('service_info')->all();
 
 			// Remove ended streams
 			$this->removeEndedStreams(array_diff($database_streams, $found_streams), $channel);

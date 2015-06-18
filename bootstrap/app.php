@@ -27,18 +27,18 @@ $app = new Illuminate\Foundation\Application(
 */
 
 $app->singleton(
-	'Illuminate\Contracts\Http\Kernel',
-	't2t2\LiveHub\Http\Kernel'
+	Illuminate\Contracts\Http\Kernel::class,
+	t2t2\LiveHub\Http\Kernel::class
 );
 
 $app->singleton(
-	'Illuminate\Contracts\Console\Kernel',
-	't2t2\LiveHub\Console\Kernel'
+	Illuminate\Contracts\Console\Kernel::class,
+	t2t2\LiveHub\Console\Kernel::class
 );
 
 $app->singleton(
-	'Illuminate\Contracts\Debug\ExceptionHandler',
-	't2t2\LiveHub\Exceptions\Handler'
+	Illuminate\Contracts\Debug\ExceptionHandler::class,
+	t2t2\LiveHub\Exceptions\Handler::class
 );
 
 /*

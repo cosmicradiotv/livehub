@@ -57,7 +57,7 @@ $javascript = [
 					<div class="small-12 columns">
 						<label>
 							Default Show
-							{!! Form::select('default_show_id', ['' => '* No Show *'] + $shows->lists('name', 'id'), null, ['class' => 'no-margin']) !!}
+							{!! Form::select('default_show_id', ['' => '* No Show *'] + $shows->lists('name', 'id')->all(), null, ['class' => 'no-margin']) !!}
 						</label>
 						<p class="help">If no default show is set and the found streams don't match any of the shows the stream is ignored.</p>
 					</div>

@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'model' => 't2t2\LiveHub\Models\User',
+	'model' => t2t2\LiveHub\Models\User::class,
 
 	/*
 	|--------------------------------------------------------------------------

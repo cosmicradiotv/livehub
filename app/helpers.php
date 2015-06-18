@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('versioned')) {
+if (!function_exists('versioned')) {
 
 	/**
 	 * Get the path to a versioned file. Based on Elixir

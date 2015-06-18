@@ -1,25 +1,22 @@
 <?php
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 class ExampleTest extends TestCase {
 
-	public function setUp() {
-		parent::setUp();
-
-		$this->artisan('migrate');
-		$this->seed();
-	}
-
+	use DatabaseMigrations;
+	use DatabaseTransactions;
 
 	/**
 	 * A basic functional test example.
 	 *
 	 * @return void
 	 */
-	public function testBasicExample()
-	{
-		$response = $this->call('GET', '/');
-
-		$this->assertEquals(200, $response->getStatusCode());
+	public function testBasicExample() {
+		$this->visit('/')
+		     ->see('LiveHub');
 	}
 
 }

@@ -18,10 +18,10 @@ class LiveHubServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->app->alias('t2t2\LiveHub\Services\Incoming\DumbService', 'livehub.services.incoming.DumbService');
-		$this->app->alias('t2t2\LiveHub\Services\Incoming\YoutubeService', 'livehub.services.incoming.YoutubeService');
-		$this->app->alias('t2t2\LiveHub\Services\Incoming\TwitchService', 'livehub.services.incoming.TwitchService');
-		$this->app->alias('t2t2\LiveHub\Services\Incoming\HlsService', 'livehub.services.incoming.HlsService');
+		$this->app->alias(\t2t2\LiveHub\Services\Incoming\DumbService::class, 'livehub.services.incoming.DumbService');
+		$this->app->alias(\t2t2\LiveHub\Services\Incoming\YoutubeService::class, 'livehub.services.incoming.YoutubeService');
+		$this->app->alias(\t2t2\LiveHub\Services\Incoming\TwitchService::class, 'livehub.services.incoming.TwitchService');
+		$this->app->alias(\t2t2\LiveHub\Services\Incoming\HlsService::class, 'livehub.services.incoming.HlsService');
 
 
 		$this->app->tag([

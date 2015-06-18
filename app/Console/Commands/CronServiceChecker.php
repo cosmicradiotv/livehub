@@ -17,7 +17,8 @@ class CronServiceChecker extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'services:cron';
+	protected $signature = 'services:cron
+	                        {--force : Run even in otherwise configured environments}';
 
 	/**
 	 * The console command description.
@@ -30,6 +31,7 @@ class CronServiceChecker extends Command {
 	 * @var ServicesGatherer
 	 */
 	private $services;
+
 	/**
 	 * @var IncomingServiceChecker
 	 */
@@ -43,6 +45,7 @@ class CronServiceChecker extends Command {
 	 */
 	public function __construct(ServicesGatherer $services, IncomingServiceChecker $checker) {
 		parent::__construct();
+
 		$this->services = $services;
 		$this->checker = $checker;
 	}
@@ -52,9 +55,9 @@ class CronServiceChecker extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function fire() {
+	public function handle() {
 
-		if (config('livehub.checker') != 'cron' && ! $this->option('force')) {
+		if (config('livehub.checker') != 'cron' && !$this->option('force')) {
 			$this->info('Not in use');
 
 			return;
@@ -75,7 +78,7 @@ class CronServiceChecker extends Command {
 		$incomingServices->load('channels');
 
 		/** @var DatabaseCollection|Channel[] $channels */
-		$channels = new DatabaseCollection($incomingServices->lists('channels'));
+		$channels = $incomingServices->lists('channels');
 		$channels = $channels->collapse();
 		$channels->load('streams');
 
@@ -86,29 +89,10 @@ class CronServiceChecker extends Command {
 
 		// Check all channels
 		foreach ($channels as $channel) {
-			$this->checker->check($channel);
+			$promise = $this->checker->check($channel);
+			$promise->then(function () use($channel) {
+				$this->info('Channel checked: #'.$channel->id);
+			});
 		}
 	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments() {
-		return [
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions() {
-		return [
-			['force', 'F', InputOption::VALUE_NONE, 'Run even in otherwise configured environments'],
-		];
-	}
-
 }

@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		't2t2\LiveHub\Console\Commands\CreateUser',
-		't2t2\LiveHub\Console\Commands\CronServiceChecker',
+		\t2t2\LiveHub\Console\Commands\CreateUser::class,
+		\t2t2\LiveHub\Console\Commands\CronServiceChecker::class,
 	];
 
 	/**

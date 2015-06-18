@@ -43,7 +43,7 @@ class HlsService extends Service {
 	}
 
 	/**
-	 * Is service configured to be checkabl
+	 * Is service configured to be checkable
 	 *
 	 * @return bool
 	 */

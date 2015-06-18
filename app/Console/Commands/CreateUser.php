@@ -3,7 +3,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Validation\Factory as ValidationFactory;
-use t2t2\LiveHub\Commands\CreateUserCommand;
+use t2t2\LiveHub\Jobs\CreateUserCommand;
 use t2t2\LiveHub\Http\Requests\CreateUserRequest;
 
 class CreateUser extends Command {
@@ -15,7 +15,7 @@ class CreateUser extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'auth:create';
+	protected $signature = 'auth:create';
 
 	/**
 	 * The console command description.
@@ -45,7 +45,7 @@ class CreateUser extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function fire() {
+	public function handle() {
 		$credentials = [];
 		$credentials['username'] = $this->ask('Username');
 		$credentials['email'] = $this->ask('E-mail');
@@ -70,26 +70,6 @@ class CreateUser extends Command {
 		}
 
 
-	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments() {
-		return [
-		];
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions() {
-		return [
-		];
 	}
 
 }

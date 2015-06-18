@@ -1,5 +1,6 @@
 <?php namespace t2t2\LiveHub\Providers;
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 use t2t2\LiveHub\Custom\Validator;
 
@@ -17,14 +18,24 @@ class AppServiceProvider extends ServiceProvider {
 	/**
 	 * Register any application services.
 	 *
-	 * This service provider is a great spot to register your various container
-	 * bindings with the application. As you can see, we are registering our
-	 * "Registrar" implementation here. You can add your own bindings too!
-	 *
 	 * @return void
 	 */
 	public function register() {
+		/** @var Repository $config */
+		$config = $this->app->make('config');
 
+
+		// Dev
+		if ($this->app->environment('local')) {
+
+			$config->set('mail.driver', 'log');
+			$config->set('mail.from', ['address' => 'mailer@livehub.dev', 'name' => 'livehub']);
+
+			$this->registerIDEHelper();
+		} elseif ($this->app->environment('testing')) {
+			$config->set('database.default', 'sqlite');
+			$config->set('database.connections.sqlite.database', ':memory:');
+		}
 	}
 
 	/**
@@ -34,6 +45,13 @@ class AppServiceProvider extends ServiceProvider {
 		\Validator::resolver(function ($translator, $data, $rules, $messages) {
 			return new Validator($translator, $data, $rules, $messages);
 		});
+	}
+
+	/**
+	 * Register IDE Helper
+	 */
+	protected function registerIDEHelper() {
+		$this->app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
 	}
 
 }
