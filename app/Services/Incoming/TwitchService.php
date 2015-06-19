@@ -106,7 +106,6 @@ class TwitchService extends Service {
 				],
 				'query'   => [
 				],
-				'verify'  => storage_path('cacert.pem'),
 			],
 		]);
 

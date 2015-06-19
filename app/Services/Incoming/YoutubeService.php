@@ -90,7 +90,6 @@ class YoutubeService extends Service {
 				'query'  => [
 					'key' => $this->getOptions()->api_key,
 				],
-				'verify' => storage_path('cacert.pem'),
 			],
 		]);
 

@@ -63,9 +63,6 @@ class HlsService extends Service {
 		$url = $channel->options->hls_url;
 
 		$client = new Client([
-			'defaults' => [
-				'verify' => storage_path('cacert.pem'),
-			],
 		]);
 
 		$promise = $this->getHlsStreamData($client, $url);
