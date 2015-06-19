@@ -23,7 +23,7 @@
 					@forelse($channels as $channel)
 						<tr>
 							<td>{{ $channel->name }}</td>
-							<td>{{ $channel->last_checked->diffForHumans() }}</td>
+							<td>{{ $channel->last_checked ? $channel->last_checked->diffForHumans() : 'Never' }}</td>
 						</tr>
 					@empty
 						<tr>
@@ -36,13 +36,13 @@
 			<h2>Error Log</h2>
 
 			<table class="small-12">
-				<thead>
-				<tr>
-					<th>When</th>
-					<th>Error</th>
+				<thead class="small-12">
+				<tr class="small-12">
+					<th class="small-4">When</th>
+					<th class="small-8">Error</th>
 				</tr>
 				</thead>
-				<tbody>
+				<tbody class="small-12">
 				@forelse($errorlog as $error)
 					<tr>
 						<td>
@@ -52,7 +52,7 @@
 							@endif
 						</td>
 						<td>
-							<pre>{{ $error->text }}</pre>
+							{!! nl2br(e($error->text)) !!}
 						</td>
 					</tr>
 					@empty

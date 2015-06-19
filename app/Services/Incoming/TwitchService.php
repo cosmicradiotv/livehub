@@ -5,9 +5,9 @@ use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Collection;
-use React\Promise\ExtendedPromiseInterface;
+use Psr\Http\Message\ResponseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\ShowData;
@@ -92,20 +92,18 @@ class TwitchService extends Service {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
 	public function check(Channel $channel) {
 		$username = $channel->options->channel_username;
 
 		$client = new Client([
-			'base_url' => 'https://api.twitch.tv/kraken/',
-			'defaults' => [
-				'headers' => [
-					'Accept'    => 'application/vnd.twitchtv.v3+json',
-					'Client-ID' => $this->getOptions()->client_key,
-				],
-				'query'   => [
-				],
+			'base_uri' => 'https://api.twitch.tv/kraken/',
+			'headers' => [
+				'Accept'    => 'application/vnd.twitchtv.v3+json',
+				'Client-ID' => $this->getOptions()->client_key,
+			],
+			'query'   => [
 			],
 		]);
 
@@ -122,24 +120,22 @@ class TwitchService extends Service {
 	 * @param Client $client
 	 * @param        $username
 	 *
-	 * @returns ExtendedPromiseInterface
+	 * @returns PromiseInterface
 	 */
 	protected function requestChannelInformation(Client $client, $username) {
-		return \React\Promise\resolve($client->get('streams/' . $username, [
-			'future' => true
-		]));
+		return $client->getAsync('streams/' . $username);
 	}
 
 	/**
 	 * Convert data from twitch to locally usable format
 	 *
-	 * @param ExtendedPromiseInterface $promise
+	 * @param PromiseInterface $promise
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
-	protected function transformStreamDataToLocal(ExtendedPromiseInterface $promise) {
-		return $promise->then(function(Response $response) {
-			$results = $response->json();
+	protected function transformStreamDataToLocal(PromiseInterface $promise) {
+		return $promise->then(function(ResponseInterface $response) {
+			$results = json_decode($response->getBody(), true);
 			$stream = $results['stream'];
 
 			$streams = new Collection();
@@ -161,15 +157,15 @@ class TwitchService extends Service {
 	/**
 	 * Reformat any service errors that may have happened
 	 *
-	 * @param ExtendedPromiseInterface $promise
+	 * @param PromiseInterface $promise
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
-	protected function reformatServiceErrors(ExtendedPromiseInterface $promise) {
+	protected function reformatServiceErrors(PromiseInterface $promise) {
 		return $promise->otherwise(function (RequestException $e) {
 			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
-				$response = $e->getResponse()->json();
+				$response = json_decode($e->getResponse()->getBody(), true);
 				if (isset($response['message'])) {
 					throw new Exception($response['message'], $e->getCode(), $e);
 				}

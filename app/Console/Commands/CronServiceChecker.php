@@ -88,11 +88,18 @@ class CronServiceChecker extends Command {
 		});
 
 		// Check all channels
+		$promises = [];
 		foreach ($channels as $channel) {
 			$promise = $this->checker->check($channel);
 			$promise->then(function () use($channel) {
 				$this->info('Channel checked: #'.$channel->id);
+			}, function ($e) use($channel) {
+			    $this->error('Channel error: #'.$channel->id);
 			});
+			$promises[] = $promise;
 		}
+		// Wait for all promises
+		$collected = \GuzzleHttp\Promise\settle($promises);
+		$collected->wait(false);
 	}
 }

@@ -1,8 +1,8 @@
 <?php
 namespace t2t2\LiveHub\Services\Incoming;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Routing\UrlRoutable;
-use React\Promise\ExtendedPromiseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Models\Stream;
@@ -167,9 +167,9 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
 	public function check(Channel $channel) {
-		return \React\Promise\reject();
+		return \GuzzleHttp\Promise\rejection_for(new \Exception('Not Implemented'));
 	}
 }

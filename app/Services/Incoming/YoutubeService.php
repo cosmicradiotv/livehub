@@ -5,9 +5,9 @@ use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Collection;
-use React\Promise\ExtendedPromiseInterface;
+use Psr\Http\Message\ResponseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\ShowData;
@@ -79,21 +79,19 @@ class YoutubeService extends Service {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
 	public function check(Channel $channel) {
 		$channel_id = $channel->options->channel_id;
 
 		$client = new Client([
-			'base_url' => 'https://www.googleapis.com/youtube/v3/',
-			'defaults' => [
-				'query'  => [
-					'key' => $this->getOptions()->api_key,
-				],
+			'base_uri' => 'https://www.googleapis.com/youtube/v3/',
+			'query'  => [
+				'key' => $this->getOptions()->api_key,
 			],
 		]);
 
-		$promise = \React\Promise\all(
+		$promise = \GuzzleHttp\Promise\all(
 			array_map($this->requestLiveOfTypeCallback($client, $channel_id),
 				['upcoming', 'live'])
 		);
@@ -116,14 +114,13 @@ class YoutubeService extends Service {
 	protected function requestLiveOfTypeCallback(Client $client, $channel_id) {
 		return function ($type) use ($client, $channel_id) {
 			// Get live videos that are upcoming or live
-			return $client->get('search', [
-				'query'  => [
+			return $client->getAsync('search', [
+				'query'  => $client->getConfig('query') + [
 					'part'      => 'snippet',
 					'channelId' => $channel_id,
 					'type'      => 'video',
 					'eventType' => $type,
 				],
-				'future' => true
 			]);
 		};
 	}
@@ -133,15 +130,15 @@ class YoutubeService extends Service {
 	 *
 	 * @param $promise
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
-	protected function findVideoIDsFromRequest(ExtendedPromiseInterface $promise) {
+	protected function findVideoIDsFromRequest(PromiseInterface $promise) {
 		return $promise->then(function ($responses) {
 			// Find the video IDs
 			$ids = [];
-			/** @var Response[] $responses */
+			/** @var ResponseInterface[] $responses */
 			foreach ($responses as $response) {
-				$results = $response->json();
+				$results = json_decode($response->getBody(), true);
 				foreach ($results['items'] as $item) {
 					$ids[] = $item['id']['videoId'];
 				}
@@ -157,24 +154,23 @@ class YoutubeService extends Service {
 	/**
 	 * Gets data from youtube API about the list of video IDs
 	 *
-	 * @param ExtendedPromiseInterface $promise
+	 * @param PromiseInterface $promise
 	 * @param Client                   $client
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
-	protected function requestDataForVideoIDs(ExtendedPromiseInterface $promise, Client $client) {
+	protected function requestDataForVideoIDs(PromiseInterface $promise, Client $client) {
 		return $promise->then(function ($ids) use ($client) {
 			// Get data for all of the found videos
 			if (count($ids) == 0) {
 				return new Collection();
 			}
 
-			return $client->get('videos', [
-				'query'  => [
+			return $client->getAsync('videos', [
+				'query'  => $client->getConfig('query') + [
 					'part' => 'snippet,liveStreamingDetails',
 					'id'   => implode(',', $ids),
 				],
-				'future' => true
 			]);
 		});
 	}
@@ -182,11 +178,11 @@ class YoutubeService extends Service {
 	/**
 	 * Converts data from videos list to data livehub can use
 	 *
-	 * @param ExtendedPromiseInterface $promise
+	 * @param PromiseInterface $promise
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
-	protected function tranformVideoDataToLocal(ExtendedPromiseInterface $promise) {
+	protected function tranformVideoDataToLocal(PromiseInterface $promise) {
 		return $promise->then(function ($response) {
 			// Skip if no videos
 			if ($response instanceof Collection) {
@@ -194,8 +190,8 @@ class YoutubeService extends Service {
 			}
 
 			// Format data from the videos to universal updater
-			/** @var Response $response */
-			$results = $response->json();
+			/** @var ResponseInterface $response */
+			$results = json_decode($response->getBody(), true);
 
 			$videos = array_map(function ($item) {
 				/* Youtube bug: Search results may return cached response where live videos are listed
@@ -226,15 +222,15 @@ class YoutubeService extends Service {
 	/**
 	 * Reformat any service errors that may have happened
 	 *
-	 * @param ExtendedPromiseInterface $promise
+	 * @param PromiseInterface $promise
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
-	protected function reformatServiceErrors(ExtendedPromiseInterface $promise) {
+	protected function reformatServiceErrors(PromiseInterface $promise) {
 		return $promise->otherwise(function (RequestException $e) {
 			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
-				$response = $e->getResponse()->json();
+				$response = json_decode($e->getResponse()->getBody(), true);
 				if (isset($response['error']['errors'][0]['message'])) {
 					throw new Exception($response['error']['errors'][0]['message'], $e->getCode(), $e);
 				}

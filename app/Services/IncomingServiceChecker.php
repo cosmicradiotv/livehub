@@ -6,6 +6,8 @@ namespace t2t2\LiveHub\Services;
 use Carbon\Carbon;
 use DB;
 use Exception;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Promise\RejectedPromise;
 use Illuminate\Support\Collection;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
@@ -42,7 +44,7 @@ class IncomingServiceChecker {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return null|\React\Promise\ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
 	public function check(Channel $channel) {
 		if (!$this->services) {
@@ -65,11 +67,12 @@ class IncomingServiceChecker {
 
 			$channel->last_checked = Carbon::now();
 			$channel->save(['timestamps' => false]);
-		}, function (Exception $e) use ($channel) {
+		})->otherwise(function (Exception $e) use ($channel) {
 			$this->logError($e, $channel);
 
 			$channel->last_checked = Carbon::now();
 			$channel->save(['timestamps' => false]);
+			return new RejectedPromise($e);
 		});
 
 		return $promise;

@@ -2,12 +2,11 @@
 
 namespace t2t2\LiveHub\Services\Incoming;
 
-
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Collection;
-use React\Promise\ExtendedPromiseInterface;
+use Psr\Http\Message\ResponseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Services\ShowData;
 
@@ -57,7 +56,7 @@ class HlsService extends Service {
 	 *
 	 * @param Channel $channel
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
 	public function check(Channel $channel) {
 		$url = $channel->options->hls_url;
@@ -76,23 +75,22 @@ class HlsService extends Service {
 	 *
 	 * @param Client $client
 	 *
-	 * @return ExtendedPromiseInterface
+	 * @return PromiseInterface
 	 */
 	protected function getHlsStreamData(Client $client, $url) {
-		return \React\Promise\resolve($client->get($url, [
-			'future' => true
-		]));
+		return $client->getAsync($url);
+
 	}
 
 	/**
 	 * Reformat data into livehub format
 	 *
-	 * @param ExtendedPromiseInterface $promise
+	 * @param PromiseInterface $promise
 	 *
 	 * @return mixed
 	 */
-	protected function reformatData(ExtendedPromiseInterface $promise, Channel $channel) {
-		return $promise->then(function (Response $response) use ($channel) {
+	protected function reformatData(PromiseInterface $promise, Channel $channel) {
+		return $promise->then(function (ResponseInterface $response) use ($channel) {
 			$streams = new Collection();
 			$body = $response->getBody();
 
@@ -108,7 +106,7 @@ class HlsService extends Service {
 			}
 
 			return $streams;
-		}, function (BadResponseException $error) {
+		}, function (RequestException $error) {
 			$response = $error->getResponse();
 
 			if (400 <= $response->getStatusCode() && $response->getStatusCode() <= 599) {
