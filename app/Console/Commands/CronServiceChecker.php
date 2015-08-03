@@ -65,7 +65,7 @@ class CronServiceChecker extends Command {
 
 		/** @var Collection|Service[] $services */
 		$services = $this->services->allIncomingServices()->filter(function (Service $service) {
-			return $service->isCheckable();
+			return $service->getSettings() && $service->isCheckable();
 		})->keyBy(function (Service $service) {
 			return $service->getSettings()->id;
 		});
@@ -91,10 +91,10 @@ class CronServiceChecker extends Command {
 		$promises = [];
 		foreach ($channels as $channel) {
 			$promise = $this->checker->check($channel);
-			$promise->then(function () use($channel) {
-				$this->info('Channel checked: #'.$channel->id);
-			}, function ($e) use($channel) {
-			    $this->error('Channel error: #'.$channel->id);
+			$promise->then(function () use ($channel) {
+				$this->info('Channel checked: #' . $channel->id);
+			}, function ($e) use ($channel) {
+				$this->error('Channel error: #' . $channel->id);
 			});
 			$promises[] = $promise;
 		}
