@@ -84,7 +84,7 @@ class IncomingServiceChecker {
 	public function readServices() {
 		/** @var Collection|Service[] $services */
 		$this->services = $this->gatherer->allIncomingServices()->filter(function (Service $service) {
-			return $service->isCheckable();
+			return $service->getSettings() && $service->isCheckable();
 		})->keyBy(function (Service $service) {
 			return $service->getSettings()->id;
 		});
