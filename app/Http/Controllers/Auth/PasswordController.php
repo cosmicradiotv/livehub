@@ -21,6 +21,16 @@ class PasswordController extends Controller {
 	use ResetsPasswords;
 
 	/**
+	 * @var Guard
+	 */
+	protected $auth;
+
+	/**
+	 * @var PasswordBroker
+	 */
+	protected $passwords;
+
+	/**
 	 * Create a new password controller instance.
 	 *
 	 * @param \Illuminate\Contracts\Auth\Guard          $auth

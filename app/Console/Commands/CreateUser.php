@@ -1,14 +1,14 @@
 <?php namespace t2t2\LiveHub\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Validation\Factory as ValidationFactory;
 use t2t2\LiveHub\Jobs\CreateUserCommand;
 use t2t2\LiveHub\Http\Requests\CreateUserRequest;
 
 class CreateUser extends Command {
 
-	use DispatchesCommands;
+	use DispatchesJobs;
 
 	/**
 	 * The console command name.
