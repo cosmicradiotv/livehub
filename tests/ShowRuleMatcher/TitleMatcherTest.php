@@ -3,12 +3,14 @@
 use t2t2\LiveHub\Services\ShowData;
 use t2t2\LiveHub\Services\ShowRuleMatcher;
 
-class TitleMatcherTest extends TestCase {
+class TitleMatcherTest extends TestCase
+{
 
 	/**
 	 * Title matches
 	 */
-	public function testTitleMatch() {
+	public function testTitleMatch()
+	{
 		$matcher = $this->getMatcher();
 
 		$rule = new stdClass();
@@ -24,7 +26,8 @@ class TitleMatcherTest extends TestCase {
 	/**
 	 * Title doesn't match
 	 */
-	public function testTitleNotMatch() {
+	public function testTitleNotMatch()
+	{
 		$matcher = $this->getMatcher();
 
 		$rule = new stdClass();
@@ -42,9 +45,9 @@ class TitleMatcherTest extends TestCase {
 	 *
 	 * @return ShowRuleMatcher
 	 */
-	protected function getMatcher(){
+	protected function getMatcher()
+	{
 		/** @var ShowRuleMatcher $matcher */
 		return $this->app->make(ShowRuleMatcher::class);
 	}
-
 }

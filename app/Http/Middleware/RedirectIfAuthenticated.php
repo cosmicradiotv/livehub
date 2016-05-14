@@ -4,7 +4,8 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
 
-class RedirectIfAuthenticated {
+class RedirectIfAuthenticated
+{
 
 	/**
 	 * The Guard implementation.
@@ -18,7 +19,8 @@ class RedirectIfAuthenticated {
 	 *
 	 * @param  Guard $auth
 	 */
-	public function __construct(Guard $auth) {
+	public function __construct(Guard $auth)
+    {
 		$this->auth = $auth;
 	}
 
@@ -30,12 +32,12 @@ class RedirectIfAuthenticated {
 	 *
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next) {
+	public function handle($request, Closure $next)
+    {
 		if ($this->auth->check()) {
 			return new RedirectResponse(route('admin.index'));
 		}
 
 		return $next($request);
 	}
-
 }

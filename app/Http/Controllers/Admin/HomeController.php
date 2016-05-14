@@ -10,7 +10,8 @@ use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 
-class HomeController extends AdminController {
+class HomeController extends AdminController
+{
 
 
 	/**
@@ -18,7 +19,8 @@ class HomeController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index()
+	{
 		$channels = Channel::all();
 		$streams = Stream::all();
 
@@ -44,7 +46,8 @@ class HomeController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function addStream(StreamRequest $request) {
+	public function addStream(StreamRequest $request)
+	{
 		$stream = new Stream($request->only([
 			'channel_id',
 			'show_id',
@@ -69,7 +72,8 @@ class HomeController extends AdminController {
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
 	 */
-	public function streamLive(Stream $stream) {
+	public function streamLive(Stream $stream)
+	{
 		$stream->state = 'live';
 		$stream->save();
 
@@ -84,10 +88,10 @@ class HomeController extends AdminController {
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
 	 */
-	public function streamDestroy(Stream $stream) {
+	public function streamDestroy(Stream $stream)
+	{
 		$stream->delete();
 
 		return redirect()->back()->with('status', 'Stream removed');
 	}
-
 }

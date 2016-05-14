@@ -6,7 +6,8 @@ use Illuminate\Validation\Factory as ValidationFactory;
 use t2t2\LiveHub\Jobs\CreateUserCommand;
 use t2t2\LiveHub\Http\Requests\CreateUserRequest;
 
-class CreateUser extends Command {
+class CreateUser extends Command
+{
 
 	use DispatchesJobs;
 
@@ -34,7 +35,8 @@ class CreateUser extends Command {
 	 *
 	 * @param ValidationFactory $validator
 	 */
-	public function __construct(ValidationFactory $validator) {
+	public function __construct(ValidationFactory $validator)
+	{
 		parent::__construct();
 
 		$this->validator = $validator;
@@ -45,7 +47,8 @@ class CreateUser extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function handle() {
+	public function handle()
+	{
 		$credentials = [];
 		$credentials['username'] = $this->ask('Username');
 		$credentials['email'] = $this->ask('E-mail');
@@ -56,11 +59,13 @@ class CreateUser extends Command {
 		$validator = $this->validator->make($credentials, $rules);
 
 		if ($validator->passes()) {
-
-			$this->dispatchFromArray(CreateUserCommand::class, $credentials);
+			$this->dispatchNow(new CreateUserCommand(
+				$credentials['username'],
+				$credentials['email'],
+				$credentials['password']
+			));
 
 			$this->info('User has been created');
-
 		} else {
 			$this->error('Input error:');
 
@@ -68,8 +73,5 @@ class CreateUser extends Command {
 				$this->error($message);
 			}
 		}
-
-
 	}
-
 }

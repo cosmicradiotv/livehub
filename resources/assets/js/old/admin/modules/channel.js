@@ -31,7 +31,7 @@ Channel.prototype.loadServiceSettings = function (service_id, $target) {
 
 	$target.html('<div class="alert-box info">Loading settings...</div>');
 
-	var url = module.app.config['service-settings-url'].replace(encodeURIComponent('{incoming_service}'), service_id);
+	var url = module.app.config['service-settings-url'].replace('{incoming_service}', service_id);
 
 	$.ajax(url).done(function (content) {
 		$target.html(content);

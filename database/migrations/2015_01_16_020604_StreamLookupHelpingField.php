@@ -3,7 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class StreamLookupHelpingField extends Migration {
+class StreamLookupHelpingField extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -12,12 +13,12 @@ class StreamLookupHelpingField extends Migration {
 	 */
 	public function up()
 	{
-		DB::transaction(function() {
-			Schema::table('streams', function(Blueprint $table) {
+		DB::transaction(function () {
+			Schema::table('streams', function (Blueprint $table) {
 				$table->dropColumn('options');
 			}); // Separated due to sqlite problems
 
-			Schema::table('streams', function(Blueprint $table) {
+			Schema::table('streams', function (Blueprint $table) {
 				$table->string('service_info')->after('channel_id')->nullable()->index();
 			});
 		});
@@ -30,7 +31,7 @@ class StreamLookupHelpingField extends Migration {
 	 */
 	public function down()
 	{
-		DB::transaction(function() {
+		DB::transaction(function () {
 			Schema::table('streams', function (Blueprint $table) {
 				$table->dropColumn('service_info');
 			});
@@ -39,5 +40,4 @@ class StreamLookupHelpingField extends Migration {
 			});
 		});
 	}
-
 }

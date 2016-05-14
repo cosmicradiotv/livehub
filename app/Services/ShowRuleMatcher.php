@@ -2,10 +2,10 @@
 
 namespace t2t2\LiveHub\Services;
 
-
 use Carbon\Carbon;
 
-class ShowRuleMatcher {
+class ShowRuleMatcher
+{
 
 	/**
 	 * Tests if show data matches for the rule
@@ -15,7 +15,8 @@ class ShowRuleMatcher {
 	 *
 	 * @return int
 	 */
-	public function match($rule, ShowData $data) {
+	public function match($rule, ShowData $data)
+	{
 		$method = 'matches' . studly_case($rule->type);
 		if (method_exists($this, $method)) {
 			return $this->$method($rule, $data);
@@ -32,7 +33,8 @@ class ShowRuleMatcher {
 	 *
 	 * @return int
 	 */
-	protected function matchesTitle($settings, ShowData $data) {
+	protected function matchesTitle($settings, ShowData $data)
+	{
 		if (preg_match($settings->rule, $data->title)) {
 			return 1;
 		} else {
@@ -48,7 +50,8 @@ class ShowRuleMatcher {
 	 *
 	 * @return int
 	 */
-	protected function matchesStartBetween($settings, ShowData $data) {
+	protected function matchesStartBetween($settings, ShowData $data)
+	{
 		$time = $data->start_time ?: Carbon::now();
 		$timeStart = $this->explodeTime($settings->start);
 		$timeEnd = $this->explodeTime($settings->end);
@@ -66,7 +69,7 @@ class ShowRuleMatcher {
 		$daymodifier = 0;
 		if ($overnight) {
 			// If start is earlier than the range start we'll want to have start be day earlier.
-			if($time < $range[0]) {
+			if ($time < $range[0]) {
 				$range[0]->subDay();
 				$daymodifier--;
 			} else {
@@ -75,12 +78,15 @@ class ShowRuleMatcher {
 		}
 
 		// Check if time is in range
-		if (! $time->between($range[0], $range[1])) {
+		if (!$time->between($range[0], $range[1])) {
 			return 0;
 		}
 
 		// Check if day is OK
-		return in_array(($time->dayOfWeek + $daymodifier) >= 0 ? $time->dayOfWeek + $daymodifier : 6, $settings->days) ? 1 : 0;
+		return in_array(
+			($time->dayOfWeek + $daymodifier) >= 0 ? $time->dayOfWeek + $daymodifier : 6,
+			$settings->days
+		) ? 1 : 0;
 	}
 
 	/**
@@ -90,7 +96,8 @@ class ShowRuleMatcher {
 	 *
 	 * @return array
 	 */
-	protected function explodeTime($string) {
+	protected function explodeTime($string)
+	{
 		$parts = explode(':', $string);
 
 		return [intval($parts[0]), intval($parts[1]), isset($parts[2]) ? intval($parts[2]) : 0];

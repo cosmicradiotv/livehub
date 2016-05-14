@@ -35,7 +35,8 @@ use Illuminate\Database\Query\Builder;
  * @method static Builder|Stream whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Stream whereShowId($value)
  */
-class Stream extends Model {
+class Stream extends Model
+{
 
 	protected $dates = ['start_time'];
 
@@ -59,7 +60,8 @@ class Stream extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function channel() {
+	public function channel()
+    {
 		return $this->belongsTo('t2t2\LiveHub\Models\Channel');
 	}
 
@@ -68,7 +70,8 @@ class Stream extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function show() {
+	public function show()
+    {
 		return $this->belongsTo('t2t2\LiveHub\Models\Show');
 	}
 
@@ -77,7 +80,8 @@ class Stream extends Model {
 	 *
 	 * @return string
 	 */
-	public function getChatUrl() {
+	public function getChatUrl()
+    {
 		return $this->chat_url ?: $this->channel->getChatUrl($this);
 	}
 
@@ -86,16 +90,17 @@ class Stream extends Model {
 	 *
 	 * @return string
 	 */
-	public function getVideoUrl() {
+	public function getVideoUrl()
+    {
 		return $this->video_url ?: $this->channel->getVideoUrl($this);
 	}
 
 	// Setters
-	public function setStartTimeAttribute($value) {
+	public function setStartTimeAttribute($value)
+    {
 		if (!($value instanceof DateTime)) {
 			$value = Carbon::parse($value);
 		}
 		$this->attributes['start_time'] = $value;
 	}
-
 }

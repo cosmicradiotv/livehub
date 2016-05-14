@@ -33,7 +33,8 @@ use Illuminate\Database\Query\Builder;
  * @method static Builder|Channel whereCreatedAt($value)
  * @method static Builder|Channel whereUpdatedAt($value)
  */
-class Channel extends Model {
+class Channel extends Model
+{
 
 	protected $casts = ['options' => 'object'];
 
@@ -50,7 +51,8 @@ class Channel extends Model {
 	 *
 	 * @return string
 	 */
-	public function getChatUrl($stream = null) {
+	public function getChatUrl($stream = null)
+    {
 		return $this->chat_url ?: $this->service->getService()->getChatUrl($this, $stream);
 	}
 
@@ -59,7 +61,8 @@ class Channel extends Model {
 	 *
 	 * @return string
 	 */
-	public function getVideoUrl($stream = null) {
+	public function getVideoUrl($stream = null)
+    {
 		return $this->video_url ?: $this->service->getService()->getVideoUrl($this, $stream);
 	}
 
@@ -68,13 +71,15 @@ class Channel extends Model {
 	 *
 	 * @param $value
 	 */
-	public function setDefaultShowIdAttribute($value) {
+	public function setDefaultShowIdAttribute($value)
+    {
 		$this->attributes['default_show_id'] = $value ?: null;
 	}
 
 	// Relations
 
-	public function service() {
+	public function service()
+    {
 		return $this->belongsTo('t2t2\LiveHub\Models\IncomingService', 'incoming_service_id');
 	}
 
@@ -83,7 +88,8 @@ class Channel extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function defaultShow() {
+	public function defaultShow()
+    {
 		return $this->belongsTo('t2t2\LiveHub\Models\Show', 'default_show_id');
 	}
 
@@ -92,7 +98,8 @@ class Channel extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
-	public function shows() {
+	public function shows()
+    {
 		return $this->belongsToMany('t2t2\LiveHub\Models\Show')->withPivot('rules')->withTimestamps();
 	}
 
@@ -101,8 +108,8 @@ class Channel extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function streams() {
+	public function streams()
+    {
 		return $this->hasMany('t2t2\LiveHub\Models\Stream');
 	}
-
 }

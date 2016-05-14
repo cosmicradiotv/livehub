@@ -1,3 +1,4 @@
+/*
 import $ from 'jquery';
 import 'foundation/foundation';
 import 'foundation/foundation.topbar';
@@ -38,3 +39,5 @@ $(function () {
 	// Run foundation
 	$(document).foundation();
 });
+*/
+console.log('OK');

@@ -5,7 +5,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use InvalidArgumentException;
 
-class Kernel extends ConsoleKernel {
+class Kernel extends ConsoleKernel
+{
 
 	/**
 	 * The Artisan commands provided by your application.
@@ -13,8 +14,8 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		\t2t2\LiveHub\Console\Commands\CreateUser::class,
-		\t2t2\LiveHub\Console\Commands\CronServiceChecker::class,
+		Commands\CreateUser::class,
+		Commands\CronServiceChecker::class,
 	];
 
 	/**
@@ -24,10 +25,10 @@ class Kernel extends ConsoleKernel {
 	 *
 	 * @return void
 	 */
-	protected function schedule(Schedule $schedule) {
+	protected function schedule(Schedule $schedule)
+	{
 		$schedule->command('services:cron')->cron('* * * * * *')->environments('production')->when(function () {
 			return config('livehub.checker') == 'cron';
 		})->withoutOverlapping();
 	}
-
 }

@@ -1,8 +1,9 @@
 <?php namespace t2t2\LiveHub\Http\Requests;
 
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 
-class ChannelRequest extends Request {
+class ChannelRequest extends Request
+{
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -11,7 +12,8 @@ class ChannelRequest extends Request {
 	 *
 	 * @return bool
 	 */
-	public function authorize(Guard $auth) {
+	public function authorize(Guard $auth)
+    {
 		return $auth->check();
 	}
 
@@ -20,7 +22,8 @@ class ChannelRequest extends Request {
 	 *
 	 * @return array
 	 */
-	public function rules() {
+	public function rules()
+    {
 		return [
 			'name' => ['required', 'max:255'],
 			'incoming_service_id' => ['required', 'exists:incoming_services,id'],
@@ -29,5 +32,4 @@ class ChannelRequest extends Request {
 			'default_show_id' => ['exists:shows,id'],
 		];
 	}
-
 }

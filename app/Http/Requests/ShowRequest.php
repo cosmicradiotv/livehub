@@ -1,18 +1,18 @@
 <?php namespace t2t2\LiveHub\Http\Requests;
 
-use Illuminate\Auth\Guard;
-use Illuminate\Routing\Route;
-use t2t2\LiveHub\Http\Requests\Request;
+use Illuminate\Contracts\Auth\Guard;
 use t2t2\LiveHub\Models\Show;
 
-class ShowRequest extends Request {
+class ShowRequest extends Request
+{
 
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
-	public function authorize(Guard $auth) {
+	public function authorize(Guard $auth)
+    {
 		return $auth->check();
 	}
 
@@ -21,7 +21,8 @@ class ShowRequest extends Request {
 	 *
 	 * @return array
 	 */
-	public function rules() {
+	public function rules()
+    {
 		/** @var Show $show */
 		$show = $this->route('show');
 
@@ -38,5 +39,4 @@ class ShowRequest extends Request {
 
 		return $rules;
 	}
-
 }

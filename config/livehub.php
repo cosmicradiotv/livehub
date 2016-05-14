@@ -7,7 +7,8 @@ return [
 	 *
 	 * Title to use for the site
 	 */
-	'brand' => 'LiveHub',
+
+	'brand' => env('LIVEHUB_BRAND', 'LiveHub'),
 
 	/**
 	 * Checker Driver
@@ -16,5 +17,7 @@ return [
 	 *
 	 * Options: "none", "cron"
 	 */
+
 	'checker' => env('LIVEHUB_CHECKER', 'none'),
+
 ];

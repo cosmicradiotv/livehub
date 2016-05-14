@@ -3,7 +3,8 @@
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider {
+class RouteServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * This namespace is applied to the controller routes in your routes file.
@@ -20,7 +21,8 @@ class RouteServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot(Router $router) {
+	public function boot(Router $router)
+    {
 		// Register route bindings
 		$router->model('channel', 't2t2\\LiveHub\\Models\\Channel');
 		$router->model('incoming_service', 't2t2\\LiveHub\\Models\\IncomingService');
@@ -42,14 +44,30 @@ class RouteServiceProvider extends ServiceProvider {
 	/**
 	 * Define the routes for the application.
 	 *
-	 * @param Router $router
-	 *
+	 * @param  \Illuminate\Routing\Router  $router
 	 * @return void
 	 */
-	public function map(Router $router) {
-		$router->group(['namespace' => $this->namespace], function (Router $router) {
+	public function map(Router $router)
+	{
+		$this->mapWebRoutes($router);
+
+		//
+	}
+
+	/**
+	 * Define the "web" routes for the application.
+	 *
+	 * These routes all receive session state, CSRF protection, etc.
+	 *
+	 * @param  \Illuminate\Routing\Router  $router
+	 * @return void
+	 */
+	protected function mapWebRoutes(Router $router)
+	{
+		$router->group([
+			'namespace' => $this->namespace, 'middleware' => 'web',
+		], function ($router) {
 			require app_path('Http/routes.php');
 		});
 	}
-
 }

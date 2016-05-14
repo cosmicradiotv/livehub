@@ -1,12 +1,18 @@
-/.idea
-/bootstrap/compiled.php
-/bower_components
+# Dependencies
 /node_modules
+/vendor
+
+# Laravel
+.env
+
+# laravel-ide-helper
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+
+# Built
 /public/assets/*
 /public/rev-manifest.json
-/resources/assets/bower
-/vendor
-.env
-.env.*.php
-_ide_helper.php
-.phpstorm.meta.php
+
+# General
+npm-debug.log*

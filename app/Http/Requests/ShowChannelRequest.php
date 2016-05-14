@@ -1,10 +1,11 @@
 <?php namespace t2t2\LiveHub\Http\Requests;
 
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Validation\Validator;
 
-class ShowChannelRequest extends Request {
+class ShowChannelRequest extends Request
+{
 
 	protected $allData;
 
@@ -13,7 +14,8 @@ class ShowChannelRequest extends Request {
 	 *
 	 * @return bool
 	 */
-	public function authorize(Guard $auth) {
+	public function authorize(Guard $auth)
+    {
 		return $auth->check();
 	}
 
@@ -22,7 +24,8 @@ class ShowChannelRequest extends Request {
 	 *
 	 * @return array
 	 */
-	public function rules() {
+	public function rules()
+    {
 		$rules = [
 			'rules' => 'array'
 		];
@@ -37,7 +40,8 @@ class ShowChannelRequest extends Request {
 	 *
 	 * @return Validator
 	 */
-	public function validator(Factory $factory) {
+	public function validator(Factory $factory)
+    {
 		$input = $this->all();
 		$input['rules'] = json_decode($input['rules'], true);
 
@@ -61,6 +65,4 @@ class ShowChannelRequest extends Request {
 
 		return $validator;
 	}
-
-
 }

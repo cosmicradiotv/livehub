@@ -7,14 +7,16 @@ use t2t2\LiveHub\Http\Requests\CreateUserRequest;
 use t2t2\LiveHub\Http\Requests\UpdateUserRequest;
 use t2t2\LiveHub\Models\User;
 
-class UserController extends AdminController {
+class UserController extends AdminController
+{
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index()
+    {
 		$users = User::all();
 
 		$title = 'Users | Admin';
@@ -27,7 +29,8 @@ class UserController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function create() {
+	public function create()
+    {
 
 		$title = 'Create | User | Admin';
 
@@ -39,7 +42,8 @@ class UserController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function store(CreateUserRequest $request) {
+	public function store(CreateUserRequest $request)
+    {
 
 		$this->dispatchFrom(CreateUserCommand::class, $request);
 
@@ -54,7 +58,8 @@ class UserController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function edit(User $user) {
+	public function edit(User $user)
+    {
 		$title = 'Edit | Users | Admin';
 
 		return view('admin.user.edit', compact('user', 'title'));
@@ -68,11 +73,12 @@ class UserController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function update(User $user, UpdateUserRequest $request) {
+	public function update(User $user, UpdateUserRequest $request)
+    {
 
 		$user->fill($request->only(['username', 'email']));
 
-		if($user->isDirty()) {
+		if ($user->isDirty()) {
 			$user->save();
 
 			return redirect()->route('admin.user.index')->with('status', 'User updated');
@@ -88,10 +94,10 @@ class UserController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function destroy(User $user) {
+	public function destroy(User $user)
+    {
 		$user->delete();
 
 		return redirect()->route('admin.user.index')->with('status', 'User deleted');
 	}
-
 }

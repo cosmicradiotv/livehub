@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import channelModule from './modules/channel';
-import showChannelModule from './modules/showChannel';
+import showChannelModule from '../../admin/modules/show-channel';
 
 
-var adminApp = module.exports = function (config) {
+var adminApp = function (config) {
 	var app = this;
 
 	app.config = config;
@@ -27,3 +27,5 @@ adminApp.prototype.init = function (module) {
 		app.page.call(module[1]);
 	}
 };
+
+export default adminApp

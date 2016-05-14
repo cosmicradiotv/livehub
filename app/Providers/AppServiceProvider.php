@@ -2,16 +2,17 @@
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\ServiceProvider;
-use t2t2\LiveHub\Custom\Validator;
 
-class AppServiceProvider extends ServiceProvider {
+class AppServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Bootstrap any application services.
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot()
+	{
 		$this->customValidator();
 	}
 
@@ -20,17 +21,14 @@ class AppServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register()
+	{
 		/** @var Repository $config */
 		$config = $this->app->make('config');
 
 
 		// Dev
 		if ($this->app->environment('local')) {
-
-			$config->set('mail.driver', 'log');
-			$config->set('mail.from', ['address' => 'mailer@livehub.dev', 'name' => 'livehub']);
-
 			$this->registerIDEHelper();
 		} elseif ($this->app->environment('testing')) {
 			$config->set('database.default', 'sqlite');
@@ -41,17 +39,18 @@ class AppServiceProvider extends ServiceProvider {
 	/**
 	 * Implement custom validator with extra rules
 	 */
-	public function customValidator() {
-		\Validator::resolver(function ($translator, $data, $rules, $messages) {
-			return new Validator($translator, $data, $rules, $messages);
-		});
+	public function customValidator()
+	{
+		\Validator::extend('date_parseable', 'Custom\ValidatorRules@parseableDate');
+		\Validator::extend('valid_regex', 'Custom\ValidatorRules@validRegex');
+		\Validator::extend('time', 'Custom\ValidatorRules@time');
 	}
 
 	/**
 	 * Register IDE Helper
 	 */
-	protected function registerIDEHelper() {
-		$this->app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
+	protected function registerIDEHelper()
+	{
+		$this->app->register('Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider');
 	}
-
 }

@@ -17,9 +17,9 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(\t2t2\LiveHub\Models\User::class, function (Generator $faker) {
 	return [
-		'username' => $faker->username,
-		'email' => $faker->email,
-		'password' => str_random(10),
+		'username' => $faker->userName,
+		'email' => $faker->safeEmail,
+		'password' => bcrypt(str_random(10)),
 		'remember_token' => str_random(10),
 	];
 });

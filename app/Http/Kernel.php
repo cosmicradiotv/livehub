@@ -1,21 +1,46 @@
 <?php namespace t2t2\LiveHub\Http;
 
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\Authorize;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use t2t2\LiveHub\Http\Middleware\Authenticate;
+use t2t2\LiveHub\Http\Middleware\EncryptCookies;
+use t2t2\LiveHub\Http\Middleware\RedirectIfAuthenticated;
+use t2t2\LiveHub\Http\Middleware\VerifyCsrfToken;
 
-class Kernel extends HttpKernel {
-
+class Kernel extends HttpKernel
+{
 	/**
 	 * The application's global HTTP middleware stack.
+	 *
+	 * These middleware are run during every request to your application.
 	 *
 	 * @var array
 	 */
 	protected $middleware = [
-		'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-		'Illuminate\Cookie\Middleware\EncryptCookies',
-		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-		'Illuminate\Session\Middleware\StartSession',
-		'Illuminate\View\Middleware\ShareErrorsFromSession',
-		't2t2\LiveHub\Http\Middleware\VerifyCsrfToken',
+		CheckForMaintenanceMode::class,
+	];
+
+	/**
+	 * The application's route middleware groups.
+	 *
+	 * @var array
+	 */
+	protected $middlewareGroups = [
+		'web' => [
+		],
+		'backend' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+		],
 	];
 
 	/**
@@ -24,9 +49,10 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' => 't2t2\LiveHub\Http\Middleware\Authenticate',
-		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-		'guest' => 't2t2\LiveHub\Http\Middleware\RedirectIfAuthenticated',
+		'auth' => Authenticate::class,
+		'auth.basic' => AuthenticateWithBasicAuth::class,
+		'can' => Authorize::class,
+		'guest' => RedirectIfAuthenticated::class,
+		'throttle' => ThrottleRequests::class,
 	];
-
 }

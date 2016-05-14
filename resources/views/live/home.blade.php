@@ -5,44 +5,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{ config('livehub.brand') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('assets/css/live.css')) }}"/>
-
-	<script src="{{ asset(versioned('assets/js/head.js')) }}"></script>
+	<link rel="stylesheet" href="{{ asset(versioned('assets/live.css')) }}"/>
 </head>
 <body data-livehub data-livehub-config="{{ route('live.config') }}">
-	<div id="container">
-		<div id="header">
-			<nav class="top-bar" data-topbar role="navigation" data-options="mobile_show_parent_link: false">
-				<ul class="title-area">
-					<li class="name">
-						<h1 class="hide-for-small"><a href="#">{{ config('livehub.brand') }}</a></h1>
-					</li>
-					<li class="toggle-topbar menu-icon"><a href="#"><span class="live-streams-text">Loading streams...</span></a></li>
-				</ul>
-				<section class="top-bar-section">
-					<ul class="left">
-						<li class="has-dropdown">
-							<a>
-								<span class="show-for-medium-up live-streams-text">Loading streams...</span>
-								<span class="show-for-small-only">Switch Stream</span>
-							</a>
-							<ul class="dropdown" id="streams-list">
-								<li><a id="cruise-control"></a></li>
-								<li class="divider"></li>
-							</ul>
-						</li>
-					</ul>
-				</section>
-			</nav>
+	<div id="app" class="container">
+		<div class="header">
+			<a href="#">{{ config('livehub.brand') }}</a>
+			<p>Pardon the dust, still fixing a few things</p>
 		</div>
-		<div id="live-container">
-			<iframe id="live-frame" src="{{ $stream ? $stream->getVideoUrl() : 'about:blank' }}" frameborder="0"></iframe>
-		</div>
-		<div id="chat-container">
-			<iframe id="chat-frame" src="{{ $stream ? $stream->getChatUrl() : 'about:blank' }}" frameborder="0"></iframe>
+		<div class="content-wrapper">
+			<div class="live-container iframe-container">
+				<iframe id="live-frame" src="{{ $stream ? $stream->getVideoUrl() : 'about:blank' }}" frameborder="0"></iframe>
+			</div>
+			<div class="chat-container iframe-container">
+				<iframe id="chat-frame" src="{{ $stream ? $stream->getChatUrl() : 'about:blank' }}" frameborder="0"></iframe>
+			</div>
 		</div>
 	</div>
 
-	<script src="{{ asset(versioned('assets/js/live.js')) }}"></script>
+	<script src="{{ asset(versioned('assets/live.js')) }}"></script>
 </body>
 </html>

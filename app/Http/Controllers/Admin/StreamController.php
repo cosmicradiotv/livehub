@@ -8,7 +8,8 @@ use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 
-class StreamController extends AdminController {
+class StreamController extends AdminController
+{
 
 	/**
 	 * Fields that can be filled on the model
@@ -31,7 +32,8 @@ class StreamController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index()
+    {
 		$streams = Stream::all()->load('channel', 'show');
 		$title = 'Streams';
 
@@ -43,7 +45,8 @@ class StreamController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function create() {
+	public function create()
+    {
 		$channels = Channel::all();
 		$shows = Show::all();
 		$title = 'Create | Streams';
@@ -58,7 +61,8 @@ class StreamController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function store(StreamRequest $request) {
+	public function store(StreamRequest $request)
+    {
 		$stream = new Stream($request->only($this->fillable));
 
 		$stream->save();
@@ -74,7 +78,8 @@ class StreamController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function edit(Stream $stream) {
+	public function edit(Stream $stream)
+    {
 		$channels = Channel::all();
 		$shows = Show::all();
 		$title = 'Edit | Stream';
@@ -90,7 +95,8 @@ class StreamController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function update(Stream $stream, StreamRequest $request) {
+	public function update(Stream $stream, StreamRequest $request)
+    {
 		$stream->fill($request->only($this->fillable));
 
 		$stream->save();
@@ -106,11 +112,11 @@ class StreamController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function destroy(Stream $stream) {
+	public function destroy(Stream $stream)
+    {
 		$stream->delete();
 
 		return redirect()->route('admin.stream.index')
 		                 ->with('status', 'Stream deleted');
 	}
-
 }

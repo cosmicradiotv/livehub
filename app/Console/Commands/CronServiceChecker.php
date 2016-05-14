@@ -10,7 +10,8 @@ use t2t2\LiveHub\Services\Incoming\Service;
 use t2t2\LiveHub\Services\IncomingServiceChecker;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
-class CronServiceChecker extends Command {
+class CronServiceChecker extends Command
+{
 
 	/**
 	 * The console command name.
@@ -40,10 +41,11 @@ class CronServiceChecker extends Command {
 	/**
 	 * Create a new command instance.
 	 *
-	 * @param ServicesGatherer       $services
+	 * @param ServicesGatherer $services
 	 * @param IncomingServiceChecker $checker
 	 */
-	public function __construct(ServicesGatherer $services, IncomingServiceChecker $checker) {
+	public function __construct(ServicesGatherer $services, IncomingServiceChecker $checker)
+	{
 		parent::__construct();
 
 		$this->services = $services;
@@ -55,8 +57,8 @@ class CronServiceChecker extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function handle() {
-
+	public function handle()
+	{
 		if (config('livehub.checker') != 'cron' && !$this->option('force')) {
 			$this->info('Not in use');
 
@@ -78,8 +80,7 @@ class CronServiceChecker extends Command {
 		$incomingServices->load('channels');
 
 		/** @var DatabaseCollection|Channel[] $channels */
-		$channels = $incomingServices->lists('channels');
-		$channels = $channels->collapse();
+		$channels = new DatabaseCollection($incomingServices->pluck('channels')->collapse());
 		$channels->load('streams');
 
 		// Filter to only have channels not recently checked

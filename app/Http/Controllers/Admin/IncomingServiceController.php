@@ -8,7 +8,8 @@ use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Services\Incoming\Service;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
-class IncomingServiceController extends AdminController {
+class IncomingServiceController extends AdminController
+{
 
 	/**
 	 * @var ServicesGatherer
@@ -19,7 +20,8 @@ class IncomingServiceController extends AdminController {
 	/**
 	 * @param ServicesGatherer $gatherer
 	 */
-	public function __construct(ServicesGatherer $gatherer) {
+	public function __construct(ServicesGatherer $gatherer)
+    {
 		parent::__construct();
 
 		$this->gatherer = $gatherer;
@@ -30,7 +32,8 @@ class IncomingServiceController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index()
+    {
 
 		/** @var Service[] $services */
 		$services = $this->gatherer->allIncomingServices();
@@ -47,7 +50,8 @@ class IncomingServiceController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function edit($class) {
+	public function edit($class)
+    {
 		$service = $this->gatherer->incomingService($class);
 
 		if (! $service) {
@@ -68,7 +72,8 @@ class IncomingServiceController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function update($class, Request $request) {
+	public function update($class, Request $request)
+    {
 		$service = $this->gatherer->incomingService($class);
 
 		if (! $service) {
@@ -85,11 +90,10 @@ class IncomingServiceController extends AdminController {
 		// Set service options
 		$this->validate($request, $service->serviceValidationRules());
 
-		$settings->options = $request->get('options');
+		$settings->options = $request->get('options') ?: [];
 
 		$settings->save();
 
 		return redirect()->route('admin.service.incoming.index')->with('status', 'Service has been updated');
 	}
-
 }

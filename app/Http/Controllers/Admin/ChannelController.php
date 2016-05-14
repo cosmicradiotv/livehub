@@ -8,14 +8,16 @@ use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
-class ChannelController extends AdminController {
+class ChannelController extends AdminController
+{
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index()
+	{
 		$channels = Channel::all()->load('service');
 		$title = 'Channels';
 
@@ -27,7 +29,8 @@ class ChannelController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function create() {
+	public function create()
+	{
 		$services = IncomingService::all();
 		$shows = Show::all();
 		$title = 'Create | Channel';
@@ -50,7 +53,8 @@ class ChannelController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function store(ChannelRequest $request) {
+	public function store(ChannelRequest $request)
+	{
 		$this->validateServiceRules($request);
 
 		$channel = new Channel($request->only([
@@ -65,7 +69,7 @@ class ChannelController extends AdminController {
 		$channel->save();
 
 		return redirect()->route('admin.channel.index')
-		                 ->with('status', 'Channel created');
+			->with('status', 'Channel created');
 	}
 
 	/**
@@ -75,7 +79,8 @@ class ChannelController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function edit(Channel $channel) {
+	public function edit(Channel $channel)
+	{
 		$services = IncomingService::all();
 		$shows = Show::all();
 		$title = 'Edit | Channel';
@@ -90,12 +95,13 @@ class ChannelController extends AdminController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param Channel        $channel
+	 * @param Channel $channel
 	 * @param ChannelRequest $request
 	 *
 	 * @return Response
 	 */
-	public function update(Channel $channel, ChannelRequest $request) {
+	public function update(Channel $channel, ChannelRequest $request)
+	{
 		$this->validateServiceRules($request);
 
 		$channel->fill($request->only(['incoming_service_id', 'name', 'video_url', 'chat_url', 'default_show_id']));
@@ -113,7 +119,8 @@ class ChannelController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function destroy(Channel $channel) {
+	public function destroy(Channel $channel)
+	{
 		$channel->delete();
 
 		return redirect()->route('admin.channel.index')->with('status', 'Channel deleted');
@@ -126,7 +133,8 @@ class ChannelController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function channelServiceSettings(IncomingService $service) {
+	public function channelServiceSettings(IncomingService $service)
+	{
 		return view('partials.service.settings', ['config' => $service->getService()->channelConfig()]);
 	}
 
@@ -135,10 +143,10 @@ class ChannelController extends AdminController {
 	 *
 	 * @param ChannelRequest $request
 	 */
-	protected function validateServiceRules(ChannelRequest $request) {
+	protected function validateServiceRules(ChannelRequest $request)
+	{
 		/** @var IncomingService $service */
 		$service = IncomingService::findOrFail($request->get('incoming_service_id'));
 		$this->validate($request, $service->getService()->channelValidationRules());
 	}
-
 }

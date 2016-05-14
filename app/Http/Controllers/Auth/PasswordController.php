@@ -5,7 +5,8 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
 
-class PasswordController extends Controller {
+class PasswordController extends Controller
+{
 
 	/*
 	|--------------------------------------------------------------------------
@@ -36,7 +37,8 @@ class PasswordController extends Controller {
 	 * @param \Illuminate\Contracts\Auth\Guard          $auth
 	 * @param \Illuminate\Contracts\Auth\PasswordBroker $passwords
 	 */
-	public function __construct(Guard $auth, PasswordBroker $passwords) {
+	public function __construct(Guard $auth, PasswordBroker $passwords)
+    {
 		$this->auth = $auth;
 		$this->passwords = $passwords;
 
@@ -48,8 +50,8 @@ class PasswordController extends Controller {
 	 *
 	 * @return string
 	 */
-	public function redirectPath() {
+	public function redirectPath()
+    {
 		return route('admin.index');
 	}
-
 }

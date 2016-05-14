@@ -1,7 +1,11 @@
 <?php
 $javascript = [
 	'module' => ['channel', 'edit'],
-	'service-settings-url' => route('admin.channel.service.settings'),
+	'service-settings-url' => str_replace(
+			'PLACEHOLDER',
+			'{incoming_service}',
+			route('admin.channel.service.settings', ['incoming_service' => 'PLACEHOLDER'])
+	),
 ]
 ?>
 

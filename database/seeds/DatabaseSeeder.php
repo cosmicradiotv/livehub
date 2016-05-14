@@ -3,7 +3,8 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class DatabaseSeeder extends Seeder {
+class DatabaseSeeder extends Seeder
+{
 
 	/**
 	 * Run the database seeds.
@@ -16,5 +17,4 @@ class DatabaseSeeder extends Seeder {
 
 		// $this->call('UserTableSeeder');
 	}
-
 }

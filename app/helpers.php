@@ -9,7 +9,8 @@ if (!function_exists('versioned')) {
 	 *
 	 * @return string
 	 */
-	function versioned($file) {
+	function versioned($file)
+	{
 		static $manifest = null;
 
 		$file_path = public_path() . '/rev-manifest.json';

@@ -7,7 +7,8 @@ use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Models\Stream;
 
-abstract class Service implements UrlRoutable {
+abstract class Service implements UrlRoutable
+{
 
 	protected $options;
 
@@ -30,21 +31,24 @@ abstract class Service implements UrlRoutable {
 	/**
 	 * @return object
 	 */
-	public function getOptions() {
+	public function getOptions()
+    {
 		return $this->options;
 	}
 
 	/**
 	 * @return IncomingService|null
 	 */
-	public function getSettings() {
+	public function getSettings()
+    {
 		return $this->settings;
 	}
 
 	/**
 	 * @param IncomingService|null $settings
 	 */
-	public function setSettings($settings) {
+	public function setSettings($settings)
+    {
 		$this->settings = $settings;
 
 		if ($settings) {
@@ -60,7 +64,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return array
 	 */
-	public function serviceConfig() {
+	public function serviceConfig()
+    {
 		return [];
 	}
 
@@ -69,7 +74,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return array
 	 */
-	public function serviceValidationRules() {
+	public function serviceValidationRules()
+    {
 		$rules = [];
 
 		foreach ($this->serviceConfig() as $input) {
@@ -84,7 +90,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return array
 	 */
-	public function channelConfig() {
+	public function channelConfig()
+    {
 		return [];
 	}
 
@@ -93,7 +100,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return array
 	 */
-	public function channelValidationRules() {
+	public function channelValidationRules()
+    {
 		$rules = [];
 
 		foreach ($this->channelConfig() as $input) {
@@ -111,7 +119,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return string
 	 */
-	public function getVideoUrl($channel = null, $stream = null) {
+	public function getVideoUrl($channel = null, $stream = null)
+    {
 		return route('helper.misconfigured');
 	}
 
@@ -123,7 +132,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return string
 	 */
-	public function getChatUrl($channel = null, $stream = null) {
+	public function getChatUrl($channel = null, $stream = null)
+    {
 		return route('helper.misconfigured');
 	}
 	/**
@@ -131,7 +141,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return mixed
 	 */
-	public function getRouteKey() {
+	public function getRouteKey()
+    {
 		return $this->id();
 	}
 
@@ -140,7 +151,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return string
 	 */
-	public function getRouteKeyName() {
+	public function getRouteKeyName()
+    {
 		return 'id';
 	}
 
@@ -149,7 +161,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return string
 	 */
-	public function id() {
+	public function id()
+    {
 		return class_basename($this);
 	}
 
@@ -158,7 +171,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return bool
 	 */
-	public function isCheckable() {
+	public function isCheckable()
+    {
 		return false;
 	}
 
@@ -169,7 +183,8 @@ abstract class Service implements UrlRoutable {
 	 *
 	 * @return PromiseInterface
 	 */
-	public function check(Channel $channel) {
+	public function check(Channel $channel)
+    {
 		return \GuzzleHttp\Promise\rejection_for(new \Exception('Not Implemented'));
 	}
 }

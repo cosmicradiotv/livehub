@@ -4,12 +4,14 @@ use Carbon\Carbon;
 use t2t2\LiveHub\Services\ShowData;
 use t2t2\LiveHub\Services\ShowRuleMatcher;
 
-class StartBetweenMatcherTest extends TestCase {
+class StartBetweenMatcherTest extends TestCase
+{
 
 	protected $startNormal;
 	protected $startOvernight;
 
-	function __construct() {
+	public function __construct()
+	{
 		$this->startNormal = new stdClass();
 		$this->startNormal->type = 'startBetween';
 		$this->startNormal->days = ['0']; // Sunday
@@ -23,7 +25,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->startOvernight->end = '04:00';
 	}
 
-	public function testTimeInRange() {
+	public function testTimeInRange()
+	{
 		$matcher = $this->getMatcher();
 
 		$data = new ShowData();
@@ -32,7 +35,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->assertEquals(1, $matcher->match($this->startNormal, $data));
 	}
 
-	public function testTimeNotInRange() {
+	public function testTimeNotInRange()
+	{
 		$matcher = $this->getMatcher();
 
 		$data = new ShowData();
@@ -41,7 +45,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->assertEquals(0, $matcher->match($this->startNormal, $data));
 	}
 
-	public function testTimeWrongDay() {
+	public function testTimeWrongDay()
+	{
 		$matcher = $this->getMatcher();
 
 		$rule = clone $this->startNormal;
@@ -53,7 +58,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->assertEquals(0, $matcher->match($rule, $data));
 	}
 
-	public function testTimeOvernightSameDay() {
+	public function testTimeOvernightSameDay()
+	{
 		$matcher = $this->getMatcher();
 
 		$data = new ShowData();
@@ -62,7 +68,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->assertEquals(1, $matcher->match($this->startOvernight, $data));
 	}
 
-	public function testTimeOvernightNextDay() {
+	public function testTimeOvernightNextDay()
+	{
 		$matcher = $this->getMatcher();
 
 		$data = new ShowData();
@@ -71,7 +78,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->assertEquals(1, $matcher->match($this->startOvernight, $data));
 	}
 
-	public function testTimeOvernightEarly() {
+	public function testTimeOvernightEarly()
+	{
 		$matcher = $this->getMatcher();
 
 		$data = new ShowData();
@@ -80,7 +88,8 @@ class StartBetweenMatcherTest extends TestCase {
 		$this->assertEquals(0, $matcher->match($this->startOvernight, $data));
 	}
 
-	public function testTimeOvernightLate() {
+	public function testTimeOvernightLate()
+	{
 		$matcher = $this->getMatcher();
 
 		$data = new ShowData();
@@ -94,9 +103,9 @@ class StartBetweenMatcherTest extends TestCase {
 	 *
 	 * @return ShowRuleMatcher
 	 */
-	protected function getMatcher() {
+	protected function getMatcher()
+	{
 		/** @var ShowRuleMatcher $matcher */
 		return $this->app->make(ShowRuleMatcher::class);
 	}
-
 }

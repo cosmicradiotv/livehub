@@ -6,7 +6,8 @@ use Illuminate\Support\Collection;
 use t2t2\LiveHub\Models\IncomingService;
 use t2t2\LiveHub\Services\Incoming\Service;
 
-class ServicesGatherer {
+class ServicesGatherer
+{
 
 	/**
 	 * @var Container
@@ -16,7 +17,8 @@ class ServicesGatherer {
 	/**
 	 * @param Container $app
 	 */
-	public function __construct(Container $app) {
+	public function __construct(Container $app)
+	{
 		$this->app = $app;
 	}
 
@@ -25,7 +27,8 @@ class ServicesGatherer {
 	 *
 	 * @return Collection|Service[]
 	 */
-	public function allIncomingServices() {
+	public function allIncomingServices()
+	{
 		/** @var Service[] $classes */
 		$classes = $this->app->tagged('livehub.services.incoming');
 		$settings = IncomingService::all()->keyBy('class');
@@ -47,10 +50,11 @@ class ServicesGatherer {
 	 *
 	 * @return null|Service
 	 */
-	public function incomingService($class) {
+	public function incomingService($class)
+	{
 		/** @var Service $class */
 		$class = $this->app->make("livehub.services.incoming.{$class}");
-		if (! $class) {
+		if (!$class) {
 			return null;
 		}
 

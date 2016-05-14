@@ -7,9 +7,9 @@
 				<a href="{{ $item['url'] }}">{{ $item['text'] }}</a>
 			</li>
 		@elseif(isset($item['children']))
-			<li class="has-dropdown{!! (isset($item['active']) && str_is($item['active'], Route::currentRouteName())) ? ' active' : '' !!}">
-				<a href="#">{{ $item['text'] }}</a>
-				<ul class="dropdown">
+			<li class="{!! (isset($item['active']) && str_is($item['active'], Route::currentRouteName())) ? ' active' : '' !!}">
+				<a>{{ $item['text'] }}</a>
+				<ul class="menu vertical">
 					@include('partials.nav', ['items' => $item['children']])
 				</ul>
 			</li>

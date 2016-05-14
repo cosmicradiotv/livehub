@@ -3,7 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStreamsTable extends Migration {
+class CreateStreamsTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -12,8 +13,7 @@ class CreateStreamsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('streams', function(Blueprint $table)
-		{
+		Schema::create('streams', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('channel_id');
 			$table->json('options');
@@ -25,7 +25,7 @@ class CreateStreamsTable extends Migration {
 			$table->timestamps();
 
 			$table->foreign('channel_id')->references('id')->on('channels')
-			      ->onUpdate('cascade')->onDelete('cascade');
+				->onUpdate('cascade')->onDelete('cascade');
 		});
 	}
 
@@ -38,5 +38,4 @@ class CreateStreamsTable extends Migration {
 	{
 		Schema::drop('streams');
 	}
-
 }

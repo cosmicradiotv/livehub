@@ -3,7 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIncomingServicesTable extends Migration {
+class CreateIncomingServicesTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -12,8 +13,7 @@ class CreateIncomingServicesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('incoming_services', function(Blueprint $table)
-		{
+		Schema::create('incoming_services', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('class')->unique();
 			$table->json('options');
@@ -30,5 +30,4 @@ class CreateIncomingServicesTable extends Migration {
 	{
 		Schema::drop('incoming_services');
 	}
-
 }

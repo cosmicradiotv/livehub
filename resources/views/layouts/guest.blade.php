@@ -4,36 +4,31 @@
 	<meta charset="UTF-8">
 	<title>{{ (isset($title) ? $title . ' | ' : '') . config('livehub.brand') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('assets/css/admin.css')) }}"/>
-
-	<script src="{{ asset(versioned('assets/js/head.js')) }}"></script>
+	<link rel="stylesheet" href="{{ asset(versioned('assets/admin.css')) }}"/>
 </head>
 <body>
-	<nav class="top-bar" data-topbar role="navigation">
-		<ul class="title-area">
-			<li class="name">
-				<h1><a href="{{ route('auth.login') }}">LiveHub</a></h1>
-			</li>
-			<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-		</ul>
-
-		<section class="top-bar-section">
-			<!-- Right Nav Section -->
-			<ul class="right">
+	<div class="top-bar">
+		<div class="top-bar-left">
+			<ul class="dropdown menu" data-dropdown-menu>
+				<li class="menu-text">LiveHub</li>
+			</ul>
+		</div>
+		<div class="top-bar-right">
+			<ul class="menu align-right">
 				<li><a href="{{ route('home') }}">Back to live</a></li>
 			</ul>
-		</section>
-	</nav>
+		</div>
+	</div>
 
 	@if (session('status'))
-		<div class="alert-box" data-alert>
+		<div class="callout" data-alert>
 			{{ session('status') }}
 			<a href="#" class="close">&times;</a>
 		</div>
 	@endif
 
 	@if(count($errors))
-		<div class="alert-box alert" data-alert>
+		<div class="callout alert" data-alert>
 			<strong>Whoaaaaa</strong> Something's not quite right
 			<ul>
 				@foreach($errors->all() as $error)
@@ -44,7 +39,5 @@
 	@endif
 
 	@yield('content')
-
-	<script src="{{ asset(versioned('assets/js/app.js')) }}"></script>
 </body>
 </html>

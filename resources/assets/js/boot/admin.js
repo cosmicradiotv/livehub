@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import 'foundation';
+import 'foundation-sites';
 import App from '../admin/app';
 
 $(function () {

@@ -1,15 +1,15 @@
 <?php
-$days = function($arrayOfDays) {
+$days = function ($arrayOfDays) {
 	$map = [
-		'Sun',
-		'Mon',
-		'Tue',
-		'Wed',
-		'Thu',
-		'Fri',
-		'Sat'
+			'Sun',
+			'Mon',
+			'Tue',
+			'Wed',
+			'Thu',
+			'Fri',
+			'Sat'
 	];
-	return implode(', ', array_map(function($key) use($map) {
+	return implode(', ', array_map(function ($key) use ($map) {
 		return $map[$key];
 	}, $arrayOfDays));
 }

@@ -12,13 +12,15 @@ use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\ShowData;
 
-class TwitchService extends Service {
+class TwitchService extends Service
+{
 
 	/**
 	 * Nice name for the user
 	 * @return string
 	 */
-	public function name() {
+	public function name()
+	{
 		return 'Twitch';
 	}
 
@@ -26,7 +28,8 @@ class TwitchService extends Service {
 	 * Description of the service to show to user
 	 * @return string
 	 */
-	public function description() {
+	public function description()
+	{
 		return 'Checking for twitch livestreams';
 	}
 
@@ -34,11 +37,12 @@ class TwitchService extends Service {
 	 * Get video URL for this service
 	 *
 	 * @param null|Channel $channel
-	 * @param null|Stream  $stream
+	 * @param null|Stream $stream
 	 *
 	 * @return string
 	 */
-	public function getVideoUrl($channel = null, $stream = null) {
+	public function getVideoUrl($channel = null, $stream = null)
+	{
 		if ($channel && $channel->options && isset($channel->options->channel_username)) {
 			return 'http://www.twitch.tv/' . $channel->options->channel_username . '/embed';
 		}
@@ -51,11 +55,12 @@ class TwitchService extends Service {
 	 * Get chat URL for this service
 	 *
 	 * @param null|Channel $channel
-	 * @param null|Stream  $stream
+	 * @param null|Stream $stream
 	 *
 	 * @return string
 	 */
-	public function getChatUrl($channel = null, $stream = null) {
+	public function getChatUrl($channel = null, $stream = null)
+	{
 		if ($channel && $channel->options && isset($channel->options->channel_username)) {
 			return 'http://www.twitch.tv/' . $channel->options->channel_username . '/chat?popout=';
 		}
@@ -67,15 +72,27 @@ class TwitchService extends Service {
 	 * Configuration setting available for this service
 	 * @return array
 	 */
-	public function serviceConfig() {
+	public function serviceConfig()
+	{
 		return [
-			['name' => 'client_key', 'type' => 'text', 'label' => 'Twitch Application Client ID', 'rules' => ['required']],
+			[
+				'name' => 'client_key',
+				'type' => 'text',
+				'label' => 'Twitch Application Client ID',
+				'rules' => ['required']
+			],
 		];
 	}
 
-	public function channelConfig() {
+	public function channelConfig()
+	{
 		return [
-			['name' => 'channel_username', 'type' => 'text', 'label' => 'Channel Username', 'rules' => ['required']],
+			[
+				'name' => 'channel_username',
+				'type' => 'text',
+				'label' => 'Channel Username',
+				'rules' => ['required']
+			],
 		];
 	}
 
@@ -83,7 +100,8 @@ class TwitchService extends Service {
 	 * Is the service configured to be checkable
 	 * @return bool
 	 */
-	public function isCheckable() {
+	public function isCheckable()
+	{
 		return isset($this->getOptions()->client_key) && strlen($this->getOptions()->client_key) > 0;
 	}
 
@@ -94,16 +112,17 @@ class TwitchService extends Service {
 	 *
 	 * @return PromiseInterface
 	 */
-	public function check(Channel $channel) {
+	public function check(Channel $channel)
+	{
 		$username = $channel->options->channel_username;
 
 		$client = new Client([
 			'base_uri' => 'https://api.twitch.tv/kraken/',
 			'headers' => [
-				'Accept'    => 'application/vnd.twitchtv.v3+json',
+				'Accept' => 'application/vnd.twitchtv.v3+json',
 				'Client-ID' => $this->getOptions()->client_key,
 			],
-			'query'   => [
+			'query' => [
 			],
 		]);
 
@@ -122,7 +141,8 @@ class TwitchService extends Service {
 	 *
 	 * @returns PromiseInterface
 	 */
-	protected function requestChannelInformation(Client $client, $username) {
+	protected function requestChannelInformation(Client $client, $username)
+	{
 		return $client->getAsync('streams/' . $username);
 	}
 
@@ -133,14 +153,15 @@ class TwitchService extends Service {
 	 *
 	 * @return PromiseInterface
 	 */
-	protected function transformStreamDataToLocal(PromiseInterface $promise) {
-		return $promise->then(function(ResponseInterface $response) {
+	protected function transformStreamDataToLocal(PromiseInterface $promise)
+	{
+		return $promise->then(function (ResponseInterface $response) {
 			$results = json_decode($response->getBody(), true);
 			$stream = $results['stream'];
 
 			$streams = new Collection();
 
-			if($stream) {
+			if ($stream) {
 				$data = new ShowData();
 				$data->service_info = $stream['channel']['name'];
 				$data->title = $stream['channel']['status'];
@@ -161,7 +182,8 @@ class TwitchService extends Service {
 	 *
 	 * @return PromiseInterface
 	 */
-	protected function reformatServiceErrors(PromiseInterface $promise) {
+	protected function reformatServiceErrors(PromiseInterface $promise)
+	{
 		return $promise->otherwise(function (RequestException $e) {
 			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
@@ -173,5 +195,4 @@ class TwitchService extends Service {
 			throw $e;
 		});
 	}
-
 }

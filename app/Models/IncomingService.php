@@ -21,7 +21,8 @@ use t2t2\LiveHub\Services\Incoming\Service;
  * @method static Builder|IncomingService whereCreatedAt($value)
  * @method static Builder|IncomingService whereUpdatedAt($value)
  */
-class IncomingService extends Model {
+class IncomingService extends Model
+{
 
 	protected $casts = ['options' => 'object'];
 
@@ -33,7 +34,8 @@ class IncomingService extends Model {
 
 	// Relations
 
-	public function channels() {
+	public function channels()
+    {
 		return $this->hasMany('t2t2\LiveHub\Models\Channel', 'incoming_service_id');
 	}
 
@@ -42,7 +44,8 @@ class IncomingService extends Model {
 	 *
 	 * @return Service
 	 */
-	public function getService() {
+	public function getService()
+    {
 		/** @var Service $class */
 		$class = app("livehub.services.incoming.{$this->class}");
 

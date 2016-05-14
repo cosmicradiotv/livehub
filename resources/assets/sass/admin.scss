@@ -1,25 +1,41 @@
-// Import normalize.css
-@import "vendor/normalize";
-
 // Import foundation
-@import "../bower/foundation/scss/foundation";
+@import "~foundation-sites/scss/foundation";
+
+@include foundation-everything(true);
+
+.no-js {
+	@include breakpoint(small only) {
+		.top-bar {
+			display: none;
+		}
+	}
+
+	@include breakpoint(medium) {
+		.title-bar {
+			display: none;
+		}
+	}
+}
 
 .no-margin {
 	margin-bottom: 0 !important;
 }
+
 .top-margin {
 	margin-top: $form-spacing;
 }
+
 .bottom-margin {
 	margin-bottom: $form-spacing;
 }
+
 .vertical-margin {
 	margin-top: $form-spacing;
 	margin-bottom: $form-spacing;
 }
 
 form .help {
-	color: $subheader-font-color;
+	color: #000000;
 }
 
 .checklist > label {

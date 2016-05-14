@@ -14,18 +14,21 @@
 			color: #ffffff;
 			font-size: 4vw;
 		}
+
 		h1 {
 			font-size: 4em;
 			height: 40vh;
 			line-height: 40vh;
 			margin: 0;
 		}
+
 		h2 {
 			font-size: 2em;
 			height: 30vh;
 			line-height: 30vh;
 			margin: 0;
 		}
+
 		p {
 			font-size: 1em;
 			height: 20vh;

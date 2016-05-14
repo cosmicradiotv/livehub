@@ -4,14 +4,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use t2t2\LiveHub\Models\Show;
 
-class CreateShowsTable extends Migration {
+class CreateShowsTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-	public function up() {
+	public function up()
+	{
 		DB::transaction(function () {
 
 			Schema::create('shows', function (Blueprint $table) {
@@ -46,8 +48,8 @@ class CreateShowsTable extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down() {
-
+	public function down()
+	{
 		DB::transaction(function () {
 			Schema::table('streams', function (Blueprint $table) {
 				$table->dropForeign('streams_show_id_foreign');
@@ -56,7 +58,5 @@ class CreateShowsTable extends Migration {
 
 			Schema::drop('shows');
 		});
-
 	}
-
 }

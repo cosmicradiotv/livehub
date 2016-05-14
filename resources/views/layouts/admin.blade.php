@@ -9,22 +9,22 @@ if (! isset($javascript)) {
 	<meta charset="UTF-8">
 	<title>{{ (isset($title) ? $title . ' | ' : '') . config('livehub.brand') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('assets/css/admin.css')) }}"/>
-
-	<script src="{{ asset(versioned('assets/js/head.js')) }}"></script>
+	<link rel="stylesheet" href="{{ asset(versioned('assets/admin.css')) }}"/>
 </head>
-<body data-config="{{ json_encode($javascript) }}">
+<body class="no-js" data-config="{{ json_encode($javascript) }}">
 	@include('partials.admin.navbar')
 
 	@if (session('status'))
-		<div class="alert-box" data-alert>
+		<div class="callout" data-closable>
 			{{ session('status') }}
-			<a href="#" class="close">&times;</a>
+			<button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 	@endif
 
 	@if(count($errors))
-		<div class="alert-box alert" data-alert>
+		<div class="callout alert">
 			<strong>Whoaaaaa</strong> Something's not quite right
 			<ul>
 				@foreach($errors->all() as $error)
@@ -36,6 +36,6 @@ if (! isset($javascript)) {
 
 	@yield('content')
 
-	<script src="{{ asset(versioned('assets/js/admin.js')) }}"></script>
+	<script src="{{ asset(versioned('assets/admin.js')) }}"></script>
 </body>
 </html>

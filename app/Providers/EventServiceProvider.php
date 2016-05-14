@@ -3,7 +3,8 @@
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-class EventServiceProvider extends ServiceProvider {
+class EventServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * The event handler mappings for the application.
@@ -21,10 +22,10 @@ class EventServiceProvider extends ServiceProvider {
 	 *
 	 * @param DispatcherContract $events
 	 */
-	public function boot(DispatcherContract $events) {
+	public function boot(DispatcherContract $events)
+    {
 		parent::boot($events);
 
 		//
 	}
-
 }

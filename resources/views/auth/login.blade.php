@@ -2,8 +2,8 @@
 
 @section('content')
 
-	<div class="row">
-		<div class="medium-6 columns small-centered">
+	<div class="row align-center align-middle">
+		<div class="medium-4 columns">
 			<div class="panel">
 				<h2>Login</h2>
 
@@ -36,7 +36,7 @@
 							<a href="{{ route('auth.email.form') }}">Forgot Password</a>
 						</div>
 						<div class="small-6 columns">
-							{!! Form::submit('Login', ['class' => 'button right']) !!}
+							{!! Form::submit('Login', ['class' => 'button float-right']) !!}
 						</div>
 					</div>
 

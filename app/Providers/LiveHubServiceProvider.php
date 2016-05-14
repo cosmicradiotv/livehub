@@ -1,15 +1,21 @@
 <?php namespace t2t2\LiveHub\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use t2t2\LiveHub\Services\Incoming\DumbService;
+use t2t2\LiveHub\Services\Incoming\HlsService;
+use t2t2\LiveHub\Services\Incoming\TwitchService;
+use t2t2\LiveHub\Services\Incoming\YoutubeService;
 
-class LiveHubServiceProvider extends ServiceProvider {
+class LiveHubServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Bootstrap the application services.
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot()
+    {
 	}
 
 	/**
@@ -17,11 +23,12 @@ class LiveHubServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$this->app->alias(\t2t2\LiveHub\Services\Incoming\DumbService::class, 'livehub.services.incoming.DumbService');
-		$this->app->alias(\t2t2\LiveHub\Services\Incoming\YoutubeService::class, 'livehub.services.incoming.YoutubeService');
-		$this->app->alias(\t2t2\LiveHub\Services\Incoming\TwitchService::class, 'livehub.services.incoming.TwitchService');
-		$this->app->alias(\t2t2\LiveHub\Services\Incoming\HlsService::class, 'livehub.services.incoming.HlsService');
+	public function register()
+    {
+		$this->app->alias(DumbService::class, 'livehub.services.incoming.DumbService');
+		$this->app->alias(YoutubeService::class, 'livehub.services.incoming.YoutubeService');
+		$this->app->alias(TwitchService::class, 'livehub.services.incoming.TwitchService');
+		$this->app->alias(HlsService::class, 'livehub.services.incoming.HlsService');
 
 
 		$this->app->tag([
@@ -31,5 +38,4 @@ class LiveHubServiceProvider extends ServiceProvider {
 			'livehub.services.incoming.HlsService',
 		], 'livehub.services.incoming');
 	}
-
 }

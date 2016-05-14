@@ -1,16 +1,17 @@
 <?php namespace t2t2\LiveHub\Http\Requests;
 
-use Illuminate\Auth\Guard;
-use t2t2\LiveHub\Http\Requests\Request;
+use Illuminate\Contracts\Auth\Guard;
 
-class StreamRequest extends Request {
+class StreamRequest extends Request
+{
 
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
-	public function authorize(Guard $auth) {
+	public function authorize(Guard $auth)
+    {
 		return $auth->check();
 	}
 
@@ -19,7 +20,8 @@ class StreamRequest extends Request {
 	 *
 	 * @return array
 	 */
-	public function rules() {
+	public function rules()
+    {
 		return [
 			'title'      => ['required', 'max:255'],
 			'channel_id' => ['required', 'exists:channels,id'],
@@ -30,5 +32,4 @@ class StreamRequest extends Request {
 			'chat_url'   => ['url'],
 		];
 	}
-
 }

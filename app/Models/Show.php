@@ -20,9 +20,10 @@ use t2t2\LiveHub\Models\Channel;
  * @method static Builder|Show whereSlug($value)
  * @method static Builder|Show whereCreatedAt($value)
  * @method static Builder|Show whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany 
+ * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
  */
-class Show extends Model {
+class Show extends Model
+{
 
 	protected $fillable = ['name', 'slug', 'default'];
 
@@ -34,7 +35,8 @@ class Show extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
-	public function channels() {
+	public function channels()
+    {
 		return $this->belongsToMany('t2t2\LiveHub\Models\Channel')->withPivot('rules')->withTimestamps();
 	}
 
@@ -43,7 +45,8 @@ class Show extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function defaultFor() {
+	public function defaultFor()
+    {
 		return $this->hasMany('t2t2\LiveHub\Models\Channel', 'default_show_id');
 	}
 }

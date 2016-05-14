@@ -5,7 +5,8 @@ use t2t2\LiveHub\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
 	/**
 	 * The Guard implementation.
@@ -19,7 +20,8 @@ class AuthController extends Controller {
 	 *
 	 * @param Guard $auth
 	 */
-	public function __construct(Guard $auth) {
+	public function __construct(Guard $auth)
+    {
 		$this->auth = $auth;
 
 		$this->middleware('guest', ['except' => ['leave', 'logout']]);
@@ -31,7 +33,8 @@ class AuthController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function enter() {
+	public function enter()
+    {
 
 		return view('auth.login', [
 			'title' => 'Login',
@@ -45,7 +48,8 @@ class AuthController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function login(Request $request) {
+	public function login(Request $request)
+    {
 		$this->validate($request, [
 			'username'    => 'required',
 			'password' => 'required',
@@ -74,7 +78,8 @@ class AuthController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function leave() {
+	public function leave()
+    {
 
 		return view('auth.logout', [
 			'title' => 'Logout',
@@ -87,10 +92,10 @@ class AuthController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function logout() {
+	public function logout()
+    {
 		$this->auth->logout();
 
 		return redirect()->route('home');
 	}
-
 }

@@ -2,7 +2,6 @@
 
 namespace t2t2\LiveHub\Services;
 
-
 use Carbon\Carbon;
 
 /**
@@ -10,7 +9,8 @@ use Carbon\Carbon;
  *
  * @package t2t2\LiveHub\Services\Incoming
  */
-class ShowData {
+class ShowData
+{
 
 	/**
 	 * @var string Identifier that service can use to check for duplicates
