@@ -12,7 +12,7 @@ _ide_helper_models.php
 
 # Built
 /public/assets/*
-/public/rev-manifest.json
+/public/manifest.json
 
 # General
 npm-debug.log*
