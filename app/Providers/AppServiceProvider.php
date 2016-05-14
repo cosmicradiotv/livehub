@@ -30,9 +30,6 @@ class AppServiceProvider extends ServiceProvider
 		// Dev
 		if ($this->app->environment('local')) {
 			$this->registerIDEHelper();
-		} elseif ($this->app->environment('testing')) {
-			$config->set('database.default', 'sqlite');
-			$config->set('database.connections.sqlite.database', ':memory:');
 		}
 	}
 

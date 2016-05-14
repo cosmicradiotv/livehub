@@ -21,6 +21,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
 		$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
+		$app->make(Illuminate\Contracts\Console\Kernel::class)->call('migrate:install');
+
 		return $app;
 	}
 }
