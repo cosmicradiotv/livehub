@@ -14,14 +14,14 @@ class ValidatorRules
 	 */
 	public function parseableDate($attribute, $value)
 	{
-		if ($value instanceof DateTime) {
+		if ($value instanceof \DateTime) {
 			return true;
 		}
 
 		try {
 			Carbon::parse($value); // Catches most stupidity
 			return true;
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 	}

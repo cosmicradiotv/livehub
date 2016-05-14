@@ -23,10 +23,6 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		/** @var Repository $config */
-		$config = $this->app->make('config');
-
-
 		// Dev
 		if ($this->app->environment('local')) {
 			$this->registerIDEHelper();
