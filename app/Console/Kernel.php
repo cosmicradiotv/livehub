@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('services:cron')->cron('* * * * * *')->environments('production')->when(function () {
+		// Every five minutes until rate limiting / batching happens
+		$schedule->command('services:cron')->everyFiveMinutes()->environments('production')->when(function () {
 			return config('livehub.checker') == 'cron';
 		})->withoutOverlapping();
 	}
