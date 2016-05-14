@@ -34,9 +34,9 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function customValidator()
 	{
-		\Validator::extend('date_parseable', 'Custom\ValidatorRules@parseableDate');
-		\Validator::extend('valid_regex', 'Custom\ValidatorRules@validRegex');
-		\Validator::extend('time', 'Custom\ValidatorRules@time');
+		\Validator::extend('date_parseable', 't2t2\LiveHub\Custom\ValidatorRules@parseableDate');
+		\Validator::extend('valid_regex', 't2t2\LiveHub\Custom\ValidatorRules@validRegex');
+		\Validator::extend('time', 't2t2\LiveHub\Custom\ValidatorRules@time');
 	}
 
 	/**

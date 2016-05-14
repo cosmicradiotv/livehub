@@ -27,7 +27,7 @@ class StreamRequest extends Request
 			'channel_id' => ['required', 'exists:channels,id'],
 			'show_id'    => ['required', 'exists:shows,id'],
 			'state'      => ['required', 'in:next,live'],
-			'start_time' => ['required', 'date'],
+			'start_time' => ['required', 'date_parseable'],
 			'video_url'  => ['url'],
 			'chat_url'   => ['url'],
 		];

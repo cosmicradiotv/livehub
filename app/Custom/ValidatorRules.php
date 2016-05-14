@@ -2,6 +2,8 @@
 
 namespace t2t2\LiveHub\Custom;
 
+use Carbon\Carbon;
+
 class ValidatorRules
 {
 	/**
