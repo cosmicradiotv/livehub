@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>{{ (isset($title) ? $title . ' | ' : '') . config('livehub.brand') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('assets/admin.css')) }}"/>
+	<link rel="stylesheet" href="{{ asset(versioned('/assets/admin.css')) }}"/>
 </head>
 <body>
 	<div class="top-bar">

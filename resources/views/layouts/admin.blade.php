@@ -9,7 +9,7 @@ if (! isset($javascript)) {
 	<meta charset="UTF-8">
 	<title>{{ (isset($title) ? $title . ' | ' : '') . config('livehub.brand') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('assets/admin.css')) }}"/>
+	<link rel="stylesheet" href="{{ asset(versioned('/assets/admin.css')) }}"/>
 </head>
 <body class="no-js" data-config="{{ json_encode($javascript) }}">
 	@include('partials.admin.navbar')
@@ -36,6 +36,6 @@ if (! isset($javascript)) {
 
 	@yield('content')
 
-	<script src="{{ asset(versioned('assets/admin.js')) }}"></script>
+	<script src="{{ asset(versioned('/assets/admin.js')) }}"></script>
 </body>
 </html>

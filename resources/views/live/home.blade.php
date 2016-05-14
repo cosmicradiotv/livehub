@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{ config('livehub.brand') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('assets/live.css')) }}"/>
+	<link rel="stylesheet" href="{{ asset(versioned('/assets/live.css')) }}"/>
 </head>
 <body data-livehub data-livehub-config="{{ route('live.config') }}">
 	<div id="app" class="container">
@@ -22,6 +22,6 @@
 		</div>
 	</div>
 
-	<script src="{{ asset(versioned('assets/live.js')) }}"></script>
+	<script src="{{ asset(versioned('/assets/live.js')) }}"></script>
 </body>
 </html>
