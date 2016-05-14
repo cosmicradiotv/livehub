@@ -10,8 +10,7 @@
 <body data-livehub data-livehub-config="{{ route('live.config') }}">
 	<div id="app" class="container">
 		<div class="header">
-			<a href="#">{{ config('livehub.brand') }}</a>
-			<p>Pardon the dust, still fixing a few things</p>
+			{{ config('livehub.brand') }}
 		</div>
 		<div class="content-wrapper">
 			<div class="live-container iframe-container">
