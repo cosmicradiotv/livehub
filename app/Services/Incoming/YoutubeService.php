@@ -21,7 +21,7 @@ class YoutubeService extends Service
 	 * @return string
 	 */
 	public function name()
-    {
+	{
 		return 'Youtube Live';
 	}
 
@@ -31,7 +31,7 @@ class YoutubeService extends Service
 	 * @return string
 	 */
 	public function description()
-    {
+	{
 		return 'Checking for youtube livestreams';
 	}
 
@@ -39,12 +39,12 @@ class YoutubeService extends Service
 	 * Get video URL for this service
 	 *
 	 * @param null|Channel $channel
-	 * @param null|Stream  $stream
+	 * @param null|Stream $stream
 	 *
 	 * @return string
 	 */
 	public function getVideoUrl($channel = null, $stream = null)
-    {
+	{
 		if ($stream->service_info) {
 			return 'http://www.youtube.com/embed/' . $stream->service_info . '?autohide=1&autoplay=1';
 		}
@@ -58,14 +58,14 @@ class YoutubeService extends Service
 	 * @return array
 	 */
 	public function serviceConfig()
-    {
+	{
 		return [
 			['name' => 'api_key', 'type' => 'text', 'label' => 'Youtube API Key', 'rules' => ['required']],
 		];
 	}
 
 	public function channelConfig()
-    {
+	{
 		return [
 			['name' => 'channel_id', 'type' => 'text', 'label' => 'Channel ID', 'rules' => ['required']],
 		];
@@ -77,7 +77,7 @@ class YoutubeService extends Service
 	 * @return bool
 	 */
 	public function isCheckable()
-    {
+	{
 		return isset($this->getOptions()->api_key) && strlen($this->getOptions()->api_key) > 0;
 	}
 
@@ -89,21 +89,22 @@ class YoutubeService extends Service
 	 * @return PromiseInterface
 	 */
 	public function check(Channel $channel)
-    {
+	{
 		$channel_id = $channel->options->channel_id;
 
 		$client = new Client([
 			'base_uri' => 'https://www.googleapis.com/youtube/v3/',
-			'query'  => [
+			'query' => [
 				'key' => $this->getOptions()->api_key,
 			],
 		]);
 
 		$promise = \GuzzleHttp\Promise\all(
 			array_map(
-                $this->requestLiveOfTypeCallback($client, $channel_id),
-                ['upcoming', 'live']
-            )
+				$this->requestLiveOfTypeCallback($client, $channel_id),
+//				['upcoming', 'live']
+				['live'] // Check live only until better rate limiting is figured out
+			)
 		);
 		$promise = $this->findVideoIDsFromRequest($promise);
 		$promise = $this->requestDataForVideoIDs($promise, $client);
@@ -122,16 +123,16 @@ class YoutubeService extends Service
 	 * @return callable
 	 */
 	protected function requestLiveOfTypeCallback(Client $client, $channel_id)
-    {
+	{
 		return function ($type) use ($client, $channel_id) {
 			// Get live videos that are upcoming or live
 			return $client->getAsync('search', [
-				'query'  => $client->getConfig('query') + [
-					'part'      => 'snippet',
-					'channelId' => $channel_id,
-					'type'      => 'video',
-					'eventType' => $type,
-				],
+				'query' => $client->getConfig('query') + [
+						'part' => 'snippet',
+						'channelId' => $channel_id,
+						'type' => 'video',
+						'eventType' => $type,
+					],
 			]);
 		};
 	}
@@ -144,7 +145,7 @@ class YoutubeService extends Service
 	 * @return PromiseInterface
 	 */
 	protected function findVideoIDsFromRequest(PromiseInterface $promise)
-    {
+	{
 		return $promise->then(function ($responses) {
 			// Find the video IDs
 			$ids = [];
@@ -167,12 +168,12 @@ class YoutubeService extends Service
 	 * Gets data from youtube API about the list of video IDs
 	 *
 	 * @param PromiseInterface $promise
-	 * @param Client                   $client
+	 * @param Client $client
 	 *
 	 * @return PromiseInterface
 	 */
 	protected function requestDataForVideoIDs(PromiseInterface $promise, Client $client)
-    {
+	{
 		return $promise->then(function ($ids) use ($client) {
 			// Get data for all of the found videos
 			if (count($ids) == 0) {
@@ -180,10 +181,10 @@ class YoutubeService extends Service
 			}
 
 			return $client->getAsync('videos', [
-				'query'  => $client->getConfig('query') + [
-					'part' => 'snippet,liveStreamingDetails',
-					'id'   => implode(',', $ids),
-				],
+				'query' => $client->getConfig('query') + [
+						'part' => 'snippet,liveStreamingDetails',
+						'id' => implode(',', $ids),
+					],
 			]);
 		});
 	}
@@ -196,7 +197,7 @@ class YoutubeService extends Service
 	 * @return PromiseInterface
 	 */
 	protected function tranformVideoDataToLocal(PromiseInterface $promise)
-    {
+	{
 		return $promise->then(function ($response) {
 			// Skip if no videos
 			if ($response instanceof Collection) {
@@ -210,7 +211,7 @@ class YoutubeService extends Service
 			$videos = array_map(function ($item) {
 				/* Youtube bug: Search results may return cached response where live videos are listed
 				even way after they're over. This does not happen in /videos (here) */
-				if (! $item['snippet']['liveBroadcastContent'] || $item['snippet']['liveBroadcastContent'] == 'none') {
+				if (!$item['snippet']['liveBroadcastContent'] || $item['snippet']['liveBroadcastContent'] == 'none') {
 					return null;
 				}
 
@@ -241,7 +242,7 @@ class YoutubeService extends Service
 	 * @return PromiseInterface
 	 */
 	protected function reformatServiceErrors(PromiseInterface $promise)
-    {
+	{
 		return $promise->otherwise(function (RequestException $e) {
 			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
