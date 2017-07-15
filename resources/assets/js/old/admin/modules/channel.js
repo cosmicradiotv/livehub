@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-var Channel = module.exports = function (app) {
+var Channel = function (app) {
 	this.app = app;
 };
 
@@ -39,3 +39,5 @@ Channel.prototype.loadServiceSettings = function (service_id, $target) {
 		$target.html('Server error');
 	});
 };
+
+export default Channel;

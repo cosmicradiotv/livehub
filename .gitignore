@@ -16,3 +16,5 @@ _ide_helper_models.php
 
 # General
 npm-debug.log*
+
+/public/mix-manifest.json

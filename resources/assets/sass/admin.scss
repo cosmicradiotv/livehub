@@ -2,6 +2,8 @@
 @import "~foundation-sites/scss/foundation";
 
 @include foundation-everything(true);
+@include foundation-flex-classes;
+@include foundation-flex-grid;
 
 .no-js {
 	@include breakpoint(small only) {
