@@ -4,9 +4,13 @@ namespace t2t2\LiveHub\Transformers;
 use League\Fractal\TransformerAbstract;
 use t2t2\LiveHub\Models\Stream;
 
-class StreamsTransformer extends TransformerAbstract
-{
+class StreamsTransformer extends TransformerAbstract {
 
+	/**
+	 * Resources that can be included if requested.
+	 *
+	 * @var array
+	 */
 	protected $availableIncludes = [
 		'show'
 	];
@@ -14,12 +18,11 @@ class StreamsTransformer extends TransformerAbstract
 	/**
 	 * Turn the object into a generic array
 	 *
-	 * @param Stream $stream
+	 * @param \t2t2\LiveHub\Models\Stream $stream
 	 *
 	 * @return array
 	 */
-	public function transform(Stream $stream)
-	{
+	public function transform(Stream $stream) {
 		return [
 			'id' => $stream->id,
 			'show_id' => $stream->show_id,
@@ -34,14 +37,14 @@ class StreamsTransformer extends TransformerAbstract
 	/**
 	 * Include show data
 	 *
-	 * @param Stream $stream
+	 * @param \t2t2\LiveHub\Models\Stream $stream
 	 *
 	 * @return \League\Fractal\Resource\Item
 	 */
-	public function includeShow(Stream $stream)
-	{
+	public function includeShow(Stream $stream) {
 		$show = $stream->show;
 
-		return $this->item($show, new ShowTransformer, 'show');
+		return $this->item($show, new ShowTransformer(), 'show');
 	}
+
 }

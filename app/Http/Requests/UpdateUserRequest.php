@@ -1,20 +1,17 @@
 <?php namespace t2t2\LiveHub\Http\Requests;
 
 use Illuminate\Contracts\Auth\Guard;
-use t2t2\LiveHub\Models\User;
 
-class UpdateUserRequest extends Request
-{
+class UpdateUserRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
-	 * @param Guard $auth
+	 * @param \Illuminate\Contracts\Auth\Guard $auth
 	 *
 	 * @return bool
 	 */
-	public function authorize(Guard $auth)
-    {
+	public function authorize(Guard $auth) {
 		return $auth->check();
 	}
 
@@ -23,9 +20,8 @@ class UpdateUserRequest extends Request
 	 *
 	 * @return array
 	 */
-	public function rules()
-    {
-		/** @var User $user */
+	public function rules() {
+		/* @var \t2t2\LiveHub\Models\User $user */
 		$user = $this->route('user');
 
 		return [
@@ -33,4 +29,5 @@ class UpdateUserRequest extends Request
 			'email' => ['required', 'email', 'max:255', "unique:users,email,{$user->id}"],
 		];
 	}
+
 }

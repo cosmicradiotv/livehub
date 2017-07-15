@@ -3,11 +3,10 @@
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Validation\Factory as ValidationFactory;
-use t2t2\LiveHub\Jobs\CreateUserCommand;
 use t2t2\LiveHub\Http\Requests\CreateUserRequest;
+use t2t2\LiveHub\Jobs\CreateUserCommand;
 
-class CreateUser extends Command
-{
+class CreateUser extends Command {
 
 	use DispatchesJobs;
 
@@ -26,17 +25,16 @@ class CreateUser extends Command
 	protected $description = 'Create an user for logging in with';
 
 	/**
-	 * @var ValidationFactory
+	 * @var \Illuminate\Validation\Factory
 	 */
 	private $validator;
 
 	/**
 	 * Create a new command instance.
 	 *
-	 * @param ValidationFactory $validator
+	 * @param \Illuminate\Validation\Factory $validator
 	 */
-	public function __construct(ValidationFactory $validator)
-	{
+	public function __construct(ValidationFactory $validator) {
 		parent::__construct();
 
 		$this->validator = $validator;
@@ -47,8 +45,7 @@ class CreateUser extends Command
 	 *
 	 * @return mixed
 	 */
-	public function handle()
-	{
+	public function handle() {
 		$credentials = [];
 		$credentials['username'] = $this->ask('Username');
 		$credentials['email'] = $this->ask('E-mail');
@@ -74,4 +71,5 @@ class CreateUser extends Command
 			}
 		}
 	}
+
 }

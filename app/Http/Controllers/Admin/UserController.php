@@ -1,22 +1,18 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
-use Illuminate\Http\Response;
-use t2t2\LiveHub\Jobs\CreateUserCommand;
-use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\CreateUserRequest;
 use t2t2\LiveHub\Http\Requests\UpdateUserRequest;
+use t2t2\LiveHub\Jobs\CreateUserCommand;
 use t2t2\LiveHub\Models\User;
 
-class UserController extends AdminController
-{
+class UserController extends AdminController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
-    {
+	public function index() {
 		$users = User::all();
 
 		$title = 'Users | Admin';
@@ -27,11 +23,9 @@ class UserController extends AdminController
 	/**
 	 * Show the form for creating a new resource.
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
-    {
-
+	public function create() {
 		$title = 'Create | User | Admin';
 
 		return view('admin.user.create', compact('title'));
@@ -40,11 +34,10 @@ class UserController extends AdminController
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @return Response
+	 * @param \t2t2\LiveHub\Http\Requests\CreateUserRequest $request
+	 * @return \Illuminate\Http\Response
 	 */
-	public function store(CreateUserRequest $request)
-    {
-
+	public function store(CreateUserRequest $request) {
 		$this->dispatchFrom(CreateUserCommand::class, $request);
 
 		return redirect()->route('admin.user.index')
@@ -54,12 +47,11 @@ class UserController extends AdminController
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  User $user
+	 * @param  \t2t2\LiveHub\Models\User $user
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(User $user)
-    {
+	public function edit(User $user) {
 		$title = 'Edit | Users | Admin';
 
 		return view('admin.user.edit', compact('user', 'title'));
@@ -68,14 +60,12 @@ class UserController extends AdminController
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param User              $user
-	 * @param UpdateUserRequest $request
+	 * @param \t2t2\LiveHub\Models\User              $user
+	 * @param \t2t2\LiveHub\Http\Requests\UpdateUserRequest $request
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function update(User $user, UpdateUserRequest $request)
-    {
-
+	public function update(User $user, UpdateUserRequest $request) {
 		$user->fill($request->only(['username', 'email']));
 
 		if ($user->isDirty()) {
@@ -90,14 +80,14 @@ class UserController extends AdminController
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param User $user
+	 * @param \t2t2\LiveHub\Models\User $user
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(User $user)
-    {
+	public function destroy(User $user) {
 		$user->delete();
 
 		return redirect()->route('admin.user.index')->with('status', 'User deleted');
 	}
+
 }

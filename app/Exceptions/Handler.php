@@ -1,11 +1,10 @@
 <?php namespace t2t2\LiveHub\Exceptions;
 
 use Exception;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler {
 
 	/**
 	 * A list of the exception types that should not be reported.
@@ -24,8 +23,7 @@ class Handler extends ExceptionHandler
 	 *
 	 * @return void
 	 */
-	public function report(Exception $e)
-	{
+	public function report(Exception $e) {
 		return parent::report($e);
 	}
 
@@ -37,8 +35,8 @@ class Handler extends ExceptionHandler
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function render($request, Exception $e)
-	{
+	public function render($request, Exception $e) {
 		return parent::render($request, $e);
 	}
+
 }

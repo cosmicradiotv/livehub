@@ -4,18 +4,16 @@ namespace t2t2\LiveHub\Custom;
 
 use Carbon\Carbon;
 
-class ValidatorRules
-{
+class ValidatorRules {
 	/**
 	 * Can the date be parsed
 	 *
-	 * @param $attribute
-	 * @param $value
+	 * @param string $attribute
+	 * @param \DateTime|string $value
 	 *
 	 * @return bool
 	 */
-	public function parseableDate($attribute, $value)
-	{
+	public function parseableDate($attribute, $value) {
 		if ($value instanceof \DateTime) {
 			return true;
 		}
@@ -33,15 +31,14 @@ class ValidatorRules
 	 *
 	 * http://stackoverflow.com/a/26777713
 	 *
-	 * @param $attribute
-	 * @param $value
+	 * @param string $attribute
+	 * @param string $value
 	 * @return bool
 	 */
-	public function validRegex($attribute, $value)
-	{
+	public function validRegex($attribute, $value) {
 		set_error_handler(function () {
 		}, E_WARNING);
-		$isRegEx = preg_match($value, "") !== false;
+		$isRegEx = preg_match($value, '') !== false;
 		restore_error_handler();
 
 		return $isRegEx;
@@ -50,12 +47,12 @@ class ValidatorRules
 	/**
 	 * Tests if value is a time (HH:MM(:SS))
 	 *
-	 * @param $attribute
-	 * @param $value
+	 * @param string $attribute
+	 * @param string $value
 	 * @return mixed
 	 */
-	public function time($attribute, $value)
-	{
+	public function time($attribute, $value) {
 		return preg_match('/^([01][0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?$/', $value);
 	}
+
 }

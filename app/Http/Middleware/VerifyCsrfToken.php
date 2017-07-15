@@ -4,8 +4,7 @@ namespace t2t2\LiveHub\Http\Middleware;
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 
-class VerifyCsrfToken extends BaseVerifier
-{
+class VerifyCsrfToken extends BaseVerifier {
 
 	/**
 	 * Handle an incoming request.
@@ -15,8 +14,8 @@ class VerifyCsrfToken extends BaseVerifier
 	 *
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next)
-    {
+	public function handle($request, Closure $next) {
 		return parent::handle($request, $next);
 	}
+
 }

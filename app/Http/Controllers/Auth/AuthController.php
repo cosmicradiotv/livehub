@@ -1,27 +1,24 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Auth;
 
-use Illuminate\Http\Response;
-use t2t2\LiveHub\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
+use t2t2\LiveHub\Http\Controllers\Controller;
 
-class AuthController extends Controller
-{
+class AuthController extends Controller {
 
 	/**
 	 * The Guard implementation.
 	 *
-	 * @var Guard
+	 * @var \Illuminate\Contracts\Auth\Guard
 	 */
 	protected $auth;
 
 	/**
 	 * Create a new authentication controller instance.
 	 *
-	 * @param Guard $auth
+	 * @param \Illuminate\Contracts\Auth\Guard $auth
 	 */
-	public function __construct(Guard $auth)
-    {
+	public function __construct(Guard $auth) {
 		$this->auth = $auth;
 
 		$this->middleware('guest', ['except' => ['leave', 'logout']]);
@@ -31,11 +28,9 @@ class AuthController extends Controller
 	/**
 	 * Get the login form
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function enter()
-    {
-
+	public function enter() {
 		return view('auth.login', [
 			'title' => 'Login',
 		]);
@@ -44,14 +39,13 @@ class AuthController extends Controller
 	/**
 	 * Login the user
 	 *
-	 * @param Request $request
+	 * @param \Illuminate\Http\Request $request
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function login(Request $request)
-    {
+	public function login(Request $request) {
 		$this->validate($request, [
-			'username'    => 'required',
+			'username' => 'required',
 			'password' => 'required',
 		]);
 
@@ -76,26 +70,23 @@ class AuthController extends Controller
 	/**
 	 * Logout form
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function leave()
-    {
-
+	public function leave() {
 		return view('auth.logout', [
 			'title' => 'Logout',
 		]);
-
 	}
 
 	/**
 	 * Log the user out
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function logout()
-    {
+	public function logout() {
 		$this->auth->logout();
 
 		return redirect()->route('home');
 	}
+
 }

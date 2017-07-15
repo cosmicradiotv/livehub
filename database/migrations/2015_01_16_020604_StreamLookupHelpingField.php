@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class StreamLookupHelpingField extends Migration
-{
+class StreamLookupHelpingField extends Migration {
 
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
+	public function up() {
 		DB::transaction(function () {
 			Schema::table('streams', function (Blueprint $table) {
 				$table->dropColumn('options');
@@ -29,8 +27,7 @@ class StreamLookupHelpingField extends Migration
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
+	public function down() {
 		DB::transaction(function () {
 			Schema::table('streams', function (Blueprint $table) {
 				$table->dropColumn('service_info');
@@ -40,4 +37,5 @@ class StreamLookupHelpingField extends Migration
 			});
 		});
 	}
+
 }

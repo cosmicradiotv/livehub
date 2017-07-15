@@ -92,7 +92,6 @@ $router->group(['middleware' => ['backend']], function (Router $router) {
 			'uses' => 'Admin\\HomeController@index'
 		]);
 
-
 		$router->post('quick/stream', [
 			'as' => 'admin.quick.stream.add',
 			'uses' => 'Admin\\HomeController@addStream'
@@ -168,7 +167,6 @@ $router->group(['middleware' => ['backend']], function (Router $router) {
 			'as' => 'admin.service.incoming.update',
 			'uses' => 'Admin\\IncomingServiceController@update'
 		]);
-
 
 		/**
 		 * Users

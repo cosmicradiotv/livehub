@@ -1,9 +1,6 @@
 <?php namespace t2t2\LiveHub\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
-use t2t2\LiveHub\Models\Channel;
 
 /**
  * t2t2\LiveHub\Models\Show
@@ -14,7 +11,7 @@ use t2t2\LiveHub\Models\Channel;
  * @property \Carbon\Carbon            $created_at
  * @property \Carbon\Carbon            $updated_at
  * @property-read Collection|Channel[] $channels
- * @property-read Channel|null         $defaultFor
+ * @property-read Channel|null $defaultFor
  * @method static Builder|Show whereId($value)
  * @method static Builder|Show whereName($value)
  * @method static Builder|Show whereSlug($value)
@@ -22,21 +19,28 @@ use t2t2\LiveHub\Models\Channel;
  * @method static Builder|Show whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
  */
-class Show extends Model
-{
+class Show extends Model {
 
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
 	protected $fillable = ['name', 'slug', 'default'];
 
+	/**
+	 * The table associated with the model.
+	 *
+	 * @var string
+	 */
 	protected $table = 'shows';
-
 
 	/**
 	 * Show - Channels many-to-many relationship. Doesn't include which it's default for.
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
-	public function channels()
-    {
+	public function channels() {
 		return $this->belongsToMany('t2t2\LiveHub\Models\Channel')->withPivot('rules')->withTimestamps();
 	}
 
@@ -45,8 +49,8 @@ class Show extends Model
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function defaultFor()
-    {
+	public function defaultFor() {
 		return $this->hasMany('t2t2\LiveHub\Models\Channel', 'default_show_id');
 	}
+
 }

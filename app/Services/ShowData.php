@@ -2,15 +2,10 @@
 
 namespace t2t2\LiveHub\Services;
 
-use Carbon\Carbon;
-
 /**
  * Class ShowData
- *
- * @package t2t2\LiveHub\Services\Incoming
  */
-class ShowData
-{
+class ShowData {
 
 	/**
 	 * @var string Identifier that service can use to check for duplicates
@@ -28,7 +23,8 @@ class ShowData
 	public $state;
 
 	/**
-	 * @var Carbon Start time for the show (scheduled or real)
+	 * @var \Carbon\Carbon Start time for the show (scheduled or real)
 	 */
 	public $start_time;
+
 }

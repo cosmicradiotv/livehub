@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
-<ruleset name="Livehub">
-	<description>The coding standard for LiveHub.</description>
-
+<ruleset name="Project">
 	<file>./app</file>
+	<file>./bootstrap/app.php</file>
+	<file>./bootstrap/autoload.php</file>
 	<file>./config</file>
 	<file>./database</file>
-<!--	<file>./resources/views</file> -->
+	<file>./resources/lang</file>
+	<file>./resources/views</file>
+<!--	<file>./routes</file> -->
 	<file>./tests</file>
+	<file>./server.php</file>
 
-	<arg value="p"/>
+	<arg value="p" phpcs-only="true" />
 
-	<rule ref="PSR2">
-		<exclude name="Generic.WhiteSpace.DisallowTabIndent"></exclude>
-	</rule>
+	<rule ref="./vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml" />
 
-	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+	<rule ref="PSR2R.Classes.ClassFileName.NoMatch">
 		<exclude-pattern>*/database/*</exclude-pattern>
-		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
 
 	<rule ref="Internal.NoCodeFound">

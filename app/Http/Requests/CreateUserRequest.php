@@ -2,18 +2,15 @@
 
 use Illuminate\Contracts\Auth\Guard;
 
-class CreateUserRequest extends Request
-{
+class CreateUserRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
-	 * @param Guard $auth
-	 *
+	 * @param \Illuminate\Contracts\Auth\Guard $auth
 	 * @return bool
 	 */
-	public function authorize(Guard $auth)
-    {
+	public function authorize(Guard $auth) {
 		return $auth->check();
 	}
 
@@ -22,12 +19,12 @@ class CreateUserRequest extends Request
 	 *
 	 * @return array
 	 */
-	public function rules()
-    {
+	public function rules() {
 		return [
 			'username' => ['required', 'alpha_dash', 'max:255', 'unique:users,username'],
 			'email' => ['required', 'email', 'max:255', 'unique:users,email'],
 			'password' => ['required', 'confirmed', 'min:6'],
 		];
 	}
+
 }

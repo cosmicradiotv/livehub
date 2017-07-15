@@ -4,19 +4,17 @@ namespace t2t2\LiveHub\Services;
 
 use Carbon\Carbon;
 
-class ShowRuleMatcher
-{
+class ShowRuleMatcher {
 
 	/**
 	 * Tests if show data matches for the rule
 	 *
-	 * @param          $rule
-	 * @param ShowData $data
+	 * @param \stdClass $rule
+	 * @param \t2t2\LiveHub\Services\ShowData $data
 	 *
 	 * @return int
 	 */
-	public function match($rule, ShowData $data)
-	{
+	public function match($rule, ShowData $data) {
 		$method = 'matches' . studly_case($rule->type);
 		if (method_exists($this, $method)) {
 			return $this->$method($rule, $data);
@@ -28,38 +26,36 @@ class ShowRuleMatcher
 	/**
 	 * Test if title matches the regex rule
 	 *
-	 * @param          $settings
-	 * @param ShowData $data
+	 * @param \stdClass $settings
+	 * @param \t2t2\LiveHub\Services\ShowData $data
 	 *
 	 * @return int
 	 */
-	protected function matchesTitle($settings, ShowData $data)
-	{
+	protected function matchesTitle($settings, ShowData $data) {
 		if (preg_match($settings->rule, $data->title)) {
 			return 1;
-		} else {
-			return 0;
 		}
+
+		return 0;
 	}
 
 	/**
 	 * Checks if start time is in range
 	 *
-	 * @param          $settings
-	 * @param ShowData $data
+	 * @param \stdClass $settings
+	 * @param \t2t2\LiveHub\Services\ShowData $data
 	 *
 	 * @return int
 	 */
-	protected function matchesStartBetween($settings, ShowData $data)
-	{
+	protected function matchesStartBetween($settings, ShowData $data) {
 		$time = $data->start_time ?: Carbon::now();
 		$timeStart = $this->explodeTime($settings->start);
 		$timeEnd = $this->explodeTime($settings->end);
 
-		/**
+		/*
 		 * Check if time is in range
 		 */
-		/** @var Carbon[] $range */
+		/* @var \Carbon\Carbon[] $range */
 		$range = [
 			Carbon::create($time->year, $time->month, $time->day, $timeStart[0], $timeStart[1], $timeStart[2]),
 			Carbon::create($time->year, $time->month, $time->day, $timeEnd[0], $timeEnd[1], $timeEnd[2])
@@ -92,14 +88,14 @@ class ShowRuleMatcher
 	/**
 	 * Explode time into array
 	 *
-	 * @param $string
+	 * @param string $string
 	 *
 	 * @return array
 	 */
-	protected function explodeTime($string)
-	{
+	protected function explodeTime($string) {
 		$parts = explode(':', $string);
 
-		return [intval($parts[0]), intval($parts[1]), isset($parts[2]) ? intval($parts[2]) : 0];
+		return [(int)($parts[0]), (int)($parts[1]), isset($parts[2]) ? (int)($parts[2]) : 0];
 	}
+
 }

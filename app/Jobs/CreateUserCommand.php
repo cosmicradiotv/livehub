@@ -3,33 +3,31 @@
 use Illuminate\Contracts\Hashing\Hasher;
 use t2t2\LiveHub\Models\User;
 
-class CreateUserCommand extends Job
-{
+class CreateUserCommand extends Job {
 
 	/**
-	 * @var
+	 * @var string E-mail
 	 */
 	public $email;
 
 	/**
-	 * @var
+	 * @var string Password
 	 */
 	public $password;
 
 	/**
-	 * @var
+	 * @var string Username
 	 */
 	public $username;
 
 	/**
 	 * Create the job instance.
 	 *
-	 * @param $username
-	 * @param $email
-	 * @param $password
+	 * @param string $username
+	 * @param string $email
+	 * @param string $password
 	 */
-	public function __construct($username, $email, $password)
-	{
+	public function __construct($username, $email, $password) {
 		$this->username = $username;
 		$this->email = $email;
 		$this->password = $password;
@@ -38,10 +36,10 @@ class CreateUserCommand extends Job
 	/**
 	 * Handle the command.
 	 *
-	 * @param Hasher $crypt
+	 * @param \Illuminate\Contracts\Hashing\Hasher $crypt
+	 * @return void
 	 */
-	public function handle(Hasher $crypt)
-	{
+	public function handle(Hasher $crypt) {
 		$user = new User([
 			'username' => $this->username,
 			'email' => $this->email,
@@ -50,4 +48,5 @@ class CreateUserCommand extends Job
 
 		$user->save();
 	}
+
 }

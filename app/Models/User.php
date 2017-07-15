@@ -1,7 +1,6 @@
 <?php namespace t2t2\LiveHub\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Query\Builder;
 
 /**
  * t2t2\LiveHub\Models\User
@@ -22,8 +21,8 @@ use Illuminate\Database\Query\Builder;
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
  */
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -44,4 +43,5 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
 }

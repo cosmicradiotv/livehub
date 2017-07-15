@@ -1,15 +1,11 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
-use Carbon\Carbon;
-use Illuminate\Http\Response;
-use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\StreamRequest;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 
-class StreamController extends AdminController
-{
+class StreamController extends AdminController {
 
 	/**
 	 * Fields that can be filled on the model
@@ -30,10 +26,9 @@ class StreamController extends AdminController
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
-    {
+	public function index() {
 		$streams = Stream::all()->load('channel', 'show');
 		$title = 'Streams';
 
@@ -43,10 +38,9 @@ class StreamController extends AdminController
 	/**
 	 * Show the form for creating a new resource.
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
-    {
+	public function create() {
 		$channels = Channel::all();
 		$shows = Show::all();
 		$title = 'Create | Streams';
@@ -57,12 +51,11 @@ class StreamController extends AdminController
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param StreamRequest $request
+	 * @param \t2t2\LiveHub\Http\Requests\StreamRequest $request
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function store(StreamRequest $request)
-    {
+	public function store(StreamRequest $request) {
 		$stream = new Stream($request->only($this->fillable));
 
 		$stream->save();
@@ -74,12 +67,11 @@ class StreamController extends AdminController
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  Stream $stream
+	 * @param  \t2t2\LiveHub\Models\Stream $stream
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Stream $stream)
-    {
+	public function edit(Stream $stream) {
 		$channels = Channel::all();
 		$shows = Show::all();
 		$title = 'Edit | Stream';
@@ -90,13 +82,12 @@ class StreamController extends AdminController
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  Stream       $stream
-	 * @param StreamRequest $request
+	 * @param  \t2t2\LiveHub\Models\Stream       $stream
+	 * @param \t2t2\LiveHub\Http\Requests\StreamRequest $request
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Stream $stream, StreamRequest $request)
-    {
+	public function update(Stream $stream, StreamRequest $request) {
 		$stream->fill($request->only($this->fillable));
 
 		$stream->save();
@@ -108,15 +99,15 @@ class StreamController extends AdminController
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  Stream $stream
+	 * @param  \t2t2\LiveHub\Models\Stream $stream
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Stream $stream)
-    {
+	public function destroy(Stream $stream) {
 		$stream->delete();
 
 		return redirect()->route('admin.stream.index')
 		                 ->with('status', 'Stream deleted');
 	}
+
 }

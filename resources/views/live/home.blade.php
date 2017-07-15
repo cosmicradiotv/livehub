@@ -14,7 +14,7 @@
 		</div>
 		<div class="content-wrapper">
 			<div class="live-container iframe-container">
-				<iframe id="live-frame" src="{{ $stream ? $stream->getVideoUrl() : 'about:blank' }}" frameborder="0"></iframe>
+				<iframe id="live-frame" src="{{ $stream ? $stream->getVideoUrl() : 'about:blank' }}" frameborder="0" allowfullscreen></iframe>
 			</div>
 			<div class="chat-container iframe-container">
 				<iframe id="chat-frame" src="{{ $stream ? $stream->getChatUrl() : 'about:blank' }}" frameborder="0"></iframe>

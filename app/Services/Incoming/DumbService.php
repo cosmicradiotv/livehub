@@ -1,16 +1,14 @@
 <?php
 namespace t2t2\LiveHub\Services\Incoming;
 
-class DumbService extends Service
-{
+class DumbService extends Service {
 
 	/**
 	 * Nice name for the user
 	 *
 	 * @return string
 	 */
-	public function name()
-    {
+	public function name() {
 		return 'Dumb service';
 	}
 
@@ -19,8 +17,8 @@ class DumbService extends Service
 	 *
 	 * @return string
 	 */
-	public function description()
-    {
+	public function description() {
 		return "This service is a dummy for attaching channels that don't have a livechecking service available";
 	}
+
 }

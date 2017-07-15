@@ -1,12 +1,11 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Auth;
 
-use t2t2\LiveHub\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use t2t2\LiveHub\Http\Controllers\Controller;
 
-class PasswordController extends Controller
-{
+class PasswordController extends Controller {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -22,12 +21,12 @@ class PasswordController extends Controller
 	use ResetsPasswords;
 
 	/**
-	 * @var Guard
+	 * @var \Illuminate\Contracts\Auth\Guard
 	 */
 	protected $auth;
 
 	/**
-	 * @var PasswordBroker
+	 * @var \Illuminate\Contracts\Auth\PasswordBroker
 	 */
 	protected $passwords;
 
@@ -37,8 +36,7 @@ class PasswordController extends Controller
 	 * @param \Illuminate\Contracts\Auth\Guard          $auth
 	 * @param \Illuminate\Contracts\Auth\PasswordBroker $passwords
 	 */
-	public function __construct(Guard $auth, PasswordBroker $passwords)
-    {
+	public function __construct(Guard $auth, PasswordBroker $passwords) {
 		$this->auth = $auth;
 		$this->passwords = $passwords;
 
@@ -50,8 +48,8 @@ class PasswordController extends Controller
 	 *
 	 * @return string
 	 */
-	public function redirectPath()
-    {
+	public function redirectPath() {
 		return route('admin.index');
 	}
+
 }

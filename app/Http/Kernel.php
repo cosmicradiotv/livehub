@@ -13,8 +13,8 @@ use t2t2\LiveHub\Http\Middleware\EncryptCookies;
 use t2t2\LiveHub\Http\Middleware\RedirectIfAuthenticated;
 use t2t2\LiveHub\Http\Middleware\VerifyCsrfToken;
 
-class Kernel extends HttpKernel
-{
+class Kernel extends HttpKernel {
+
 	/**
 	 * The application's global HTTP middleware stack.
 	 *
@@ -55,4 +55,5 @@ class Kernel extends HttpKernel
 		'guest' => RedirectIfAuthenticated::class,
 		'throttle' => ThrottleRequests::class,
 	];
+
 }

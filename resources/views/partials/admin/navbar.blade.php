@@ -14,7 +14,7 @@
 					['text' => 'Streams', 'url' => route('admin.stream.index'), 'active' => 'admin.stream.*'],
 					['text' => 'Shows', 'url' => route('admin.show.index'), 'active' => 'admin.show.*'],
 					['text' => 'Channels', 'url' => route('admin.channel.index'), 'active' => 'admin.channel.*'],
-					['text' => 'Incoming Service', 'url' => route('admin.service.incoming.index'), 'active' => 'admin.service.incoming.*' ],
+					['text' => 'Incoming Service', 'url' => route('admin.service.incoming.index'), 'active' => 'admin.service.incoming.*'],
 					['text' => 'Users', 'url' => route('admin.user.index'), 'active' => 'admin.user.*'],
 			];
 			?>

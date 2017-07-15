@@ -7,21 +7,17 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Collection;
-use Psr\Http\Message\ResponseInterface;
 use t2t2\LiveHub\Models\Channel;
-use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\ShowData;
 
-class YoutubeService extends Service
-{
+class YoutubeService extends Service {
 
 	/**
 	 * Nice name for the user
 	 *
 	 * @return string
 	 */
-	public function name()
-	{
+	public function name() {
 		return 'Youtube Live';
 	}
 
@@ -30,21 +26,19 @@ class YoutubeService extends Service
 	 *
 	 * @return string
 	 */
-	public function description()
-	{
+	public function description() {
 		return 'Checking for youtube livestreams';
 	}
 
 	/**
 	 * Get video URL for this service
 	 *
-	 * @param null|Channel $channel
-	 * @param null|Stream $stream
+	 * @param null|\t2t2\LiveHub\Models\Channel $channel
+	 * @param null|\t2t2\LiveHub\Models\Stream $stream
 	 *
 	 * @return string
 	 */
-	public function getVideoUrl($channel = null, $stream = null)
-	{
+	public function getVideoUrl($channel = null, $stream = null) {
 		if ($stream->service_info) {
 			return 'http://www.youtube.com/embed/' . $stream->service_info . '?autohide=1&autoplay=1';
 		}
@@ -55,13 +49,12 @@ class YoutubeService extends Service
 	/**
 	 * Get chat URL for this service
 	 *
-	 * @param null|Channel $channel
-	 * @param null|Stream $stream
+	 * @param null|\t2t2\LiveHub\Models\Channel $channel
+	 * @param null|\t2t2\LiveHub\Models\Stream $stream
 	 *
 	 * @return string
 	 */
-	public function getChatUrl($channel = null, $stream = null)
-	{
+	public function getChatUrl($channel = null, $stream = null) {
 		if ($stream->service_info) {
 			$domain_parts = explode('://', config('app.url'));
 			if (count($domain_parts) > 1) {
@@ -80,15 +73,13 @@ class YoutubeService extends Service
 	 *
 	 * @return array
 	 */
-	public function serviceConfig()
-	{
+	public function serviceConfig() {
 		return [
 			['name' => 'api_key', 'type' => 'text', 'label' => 'Youtube API Key', 'rules' => ['required']],
 		];
 	}
 
-	public function channelConfig()
-	{
+	public function channelConfig() {
 		return [
 			['name' => 'channel_id', 'type' => 'text', 'label' => 'Channel ID', 'rules' => ['required']],
 		];
@@ -99,20 +90,18 @@ class YoutubeService extends Service
 	 *
 	 * @return bool
 	 */
-	public function isCheckable()
-	{
+	public function isCheckable() {
 		return isset($this->getOptions()->api_key) && strlen($this->getOptions()->api_key) > 0;
 	}
 
 	/**
 	 * Check channel for live streams
 	 *
-	 * @param Channel $channel
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	public function check(Channel $channel)
-	{
+	public function check(Channel $channel) {
 		$channel_id = $channel->options->channel_id;
 
 		$client = new Client([
@@ -140,13 +129,12 @@ class YoutubeService extends Service
 	/**
 	 * Returns a callback that finds live videos from channel depending on livestatus
 	 *
-	 * @param Client $client
+	 * @param \GuzzleHttp\Client $client
 	 * @param string $channel_id
 	 *
 	 * @return callable
 	 */
-	protected function requestLiveOfTypeCallback(Client $client, $channel_id)
-	{
+	protected function requestLiveOfTypeCallback(Client $client, $channel_id) {
 		return function ($type) use ($client, $channel_id) {
 			// Get live videos that are upcoming or live
 			return $client->getAsync('search', [
@@ -163,16 +151,15 @@ class YoutubeService extends Service
 	/**
 	 * Finds video IDs from youtube search request
 	 *
-	 * @param $promise
+	 * @param \GuzzleHttp\Promise\PromiseInterface $promise
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	protected function findVideoIDsFromRequest(PromiseInterface $promise)
-	{
+	protected function findVideoIDsFromRequest(PromiseInterface $promise) {
 		return $promise->then(function ($responses) {
 			// Find the video IDs
 			$ids = [];
-			/** @var ResponseInterface[] $responses */
+			/* @var \Psr\Http\Message\ResponseInterface[] $responses */
 			foreach ($responses as $response) {
 				$results = json_decode($response->getBody(), true);
 				foreach ($results['items'] as $item) {
@@ -190,13 +177,12 @@ class YoutubeService extends Service
 	/**
 	 * Gets data from youtube API about the list of video IDs
 	 *
-	 * @param PromiseInterface $promise
-	 * @param Client $client
+	 * @param \GuzzleHttp\Promise\PromiseInterface $promise
+	 * @param \GuzzleHttp\Client $client
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	protected function requestDataForVideoIDs(PromiseInterface $promise, Client $client)
-	{
+	protected function requestDataForVideoIDs(PromiseInterface $promise, Client $client) {
 		return $promise->then(function ($ids) use ($client) {
 			// Get data for all of the found videos
 			if (count($ids) == 0) {
@@ -215,12 +201,11 @@ class YoutubeService extends Service
 	/**
 	 * Converts data from videos list to data livehub can use
 	 *
-	 * @param PromiseInterface $promise
+	 * @param \GuzzleHttp\Promise\PromiseInterface $promise
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	protected function tranformVideoDataToLocal(PromiseInterface $promise)
-	{
+	protected function tranformVideoDataToLocal(PromiseInterface $promise) {
 		return $promise->then(function ($response) {
 			// Skip if no videos
 			if ($response instanceof Collection) {
@@ -228,7 +213,7 @@ class YoutubeService extends Service
 			}
 
 			// Format data from the videos to universal updater
-			/** @var ResponseInterface $response */
+			/* @var \Psr\Http\Message\ResponseInterface $response */
 			$results = json_decode($response->getBody(), true);
 
 			$videos = array_map(function ($item) {
@@ -260,12 +245,11 @@ class YoutubeService extends Service
 	/**
 	 * Reformat any service errors that may have happened
 	 *
-	 * @param PromiseInterface $promise
+	 * @param \GuzzleHttp\Promise\PromiseInterface $promise
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	protected function reformatServiceErrors(PromiseInterface $promise)
-	{
+	protected function reformatServiceErrors(PromiseInterface $promise) {
 		return $promise->otherwise(function (RequestException $e) {
 			// If request error happens anywhere, try to find the error message and use that
 			if ($e->hasResponse()) {
@@ -277,4 +261,5 @@ class YoutubeService extends Service
 			throw $e;
 		});
 	}
+
 }

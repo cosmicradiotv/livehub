@@ -1,7 +1,7 @@
 <?php
 
 return [
-    /*
+	/*
      |--------------------------------------------------------------------------
      | Laravel CORS
      |--------------------------------------------------------------------------
@@ -11,12 +11,12 @@ return [
      | to accept any value.
      |
      */
-    'supportsCredentials' => false,
+	'supportsCredentials' => false,
 //    'allowedOrigins' => ['*'],
-    'allowedOrigins' => explode(',', env('CORS_ALLOWED_ORIGINS', '')),
-    'allowedHeaders' => ['Accept', 'Content-Type', 'Origin'],
-    'allowedMethods' => ['*'],
-    'exposedHeaders' => [],
-    'maxAge' => 0,
-    'hosts' => [],
+	'allowedOrigins' => explode(',', env('CORS_ALLOWED_ORIGINS', '')),
+	'allowedHeaders' => ['Accept', 'Content-Type', 'Origin'],
+	'allowedMethods' => ['*'],
+	'exposedHeaders' => [],
+	'maxAge' => 0,
+	'hosts' => [],
 ];

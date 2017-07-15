@@ -4,32 +4,28 @@ namespace t2t2\LiveHub\Services;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Collection;
 use t2t2\LiveHub\Models\IncomingService;
-use t2t2\LiveHub\Services\Incoming\Service;
 
-class ServicesGatherer
-{
+class ServicesGatherer {
 
 	/**
-	 * @var Container
+	 * @var \Illuminate\Contracts\Container\Container
 	 */
 	private $app;
 
 	/**
-	 * @param Container $app
+	 * @param \Illuminate\Contracts\Container\Container $app
 	 */
-	public function __construct(Container $app)
-	{
+	public function __construct(Container $app) {
 		$this->app = $app;
 	}
 
 	/**
 	 * Return all services, fully configured
 	 *
-	 * @return Collection|Service[]
+	 * @return \Illuminate\Support\Collection|\t2t2\LiveHub\Services\Incoming\Service[]
 	 */
-	public function allIncomingServices()
-	{
-		/** @var Service[] $classes */
+	public function allIncomingServices() {
+		/* @var \t2t2\LiveHub\Services\Incoming\Service[] $classes */
 		$classes = $this->app->tagged('livehub.services.incoming');
 		$settings = IncomingService::all()->keyBy('class');
 
@@ -46,13 +42,12 @@ class ServicesGatherer
 	/**
 	 * Find service class by class name
 	 *
-	 * @param $class
+	 * @param string $class
 	 *
-	 * @return null|Service
+	 * @return null|\t2t2\LiveHub\Services\Incoming\Service
 	 */
-	public function incomingService($class)
-	{
-		/** @var Service $class */
+	public function incomingService($class) {
+		/* @var \t2t2\LiveHub\Services\Incoming\Service $class */
 		$class = $this->app->make("livehub.services.incoming.{$class}");
 		if (!$class) {
 			return null;
@@ -61,4 +56,5 @@ class ServicesGatherer
 		$class->setSettings(IncomingService::whereClass(class_basename($class))->first());
 		return $class;
 	}
+
 }

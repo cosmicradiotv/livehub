@@ -4,8 +4,7 @@ namespace t2t2\LiveHub\Jobs;
 
 use Illuminate\Bus\Queueable;
 
-abstract class Job
-{
+abstract class Job {
 	/*
 	|--------------------------------------------------------------------------
 	| Queueable Jobs
@@ -18,4 +17,5 @@ abstract class Job
 	*/
 
 	use Queueable;
+
 }

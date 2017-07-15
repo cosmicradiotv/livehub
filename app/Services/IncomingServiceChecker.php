@@ -5,37 +5,35 @@ namespace t2t2\LiveHub\Services;
 use Carbon\Carbon;
 use DB;
 use Exception;
-use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\RejectedPromise;
 use Illuminate\Support\Collection;
+use Log;
 use t2t2\LiveHub\Models\Channel;
-use t2t2\LiveHub\Models\Show;
 use t2t2\LiveHub\Models\Stream;
 use t2t2\LiveHub\Services\Incoming\Service;
 
-class IncomingServiceChecker
-{
+class IncomingServiceChecker {
 
 	/**
-	 * @var ServicesGatherer
+	 * @var \t2t2\LiveHub\Services\ServicesGatherer
 	 */
 	private $gatherer;
 
 	/**
-	 * @var Collection|Service[]
+	 * @var \Illuminate\Support\Collection|\t2t2\LiveHub\Services\Incoming\Service[]
 	 */
 	protected $services;
+
 	/**
-	 * @var ShowRuleMatcher
+	 * @var \t2t2\LiveHub\Services\ShowRuleMatcher
 	 */
 	private $matcher;
 
 	/**
-	 * @param ServicesGatherer $gatherer
-	 * @param ShowRuleMatcher $matcher
+	 * @param \t2t2\LiveHub\Services\ServicesGatherer $gatherer
+	 * @param \t2t2\LiveHub\Services\ShowRuleMatcher $matcher
 	 */
-	public function __construct(ServicesGatherer $gatherer, ShowRuleMatcher $matcher)
-	{
+	public function __construct(ServicesGatherer $gatherer, ShowRuleMatcher $matcher) {
 		$this->gatherer = $gatherer;
 		$this->matcher = $matcher;
 	}
@@ -43,12 +41,11 @@ class IncomingServiceChecker
 	/**
 	 * Checks services for new streams in channel
 	 *
-	 * @param Channel $channel
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	public function check(Channel $channel)
-	{
+	public function check(Channel $channel) {
 		if (!$this->services) {
 			$this->readServices();
 		}
@@ -82,10 +79,11 @@ class IncomingServiceChecker
 
 	/**
 	 * Read incoming services into cache
+	 *
+	 * @return \Illuminate\Support\Collection|\t2t2\LiveHub\Services\Incoming\Service[]
 	 */
-	public function readServices()
-	{
-		/** @var Collection|Service[] $services */
+	public function readServices() {
+		/* @var \Illuminate\Support\Collection|\t2t2\LiveHub\Services\Incoming\Service[] $services */
 		$this->services = $this->gatherer->allIncomingServices()->filter(function (Service $service) {
 			return $service->getSettings() && $service->isCheckable();
 		})->keyBy(function (Service $service) {
@@ -99,12 +97,10 @@ class IncomingServiceChecker
 	 * Removes streams that have ended
 	 *
 	 * @param array $streamIDs
-	 * @param Channel $channel
-	 *
-	 * @internal param DatabaseCollection|\t2t2\LiveHub\Models\Stream[] $channel_streams
+	 * @param \t2t2\LiveHub\Models\Channel $channel
+	 * @return void
 	 */
-	protected function removeEndedStreams($streamIDs, Channel $channel)
-	{
+	protected function removeEndedStreams($streamIDs, Channel $channel) {
 		foreach ($streamIDs as $endedID) {
 			$stream = $channel->streams->first(function ($key, Stream $stream) use ($endedID) {
 				return $stream->service_info == $endedID;
@@ -123,11 +119,11 @@ class IncomingServiceChecker
 	/**
 	 * Updates and creates streams
 	 *
-	 * @param Collection|ShowData[] $streams
-	 * @param Channel $channel
+	 * @param \Illuminate\Support\Collection|\t2t2\LiveHub\Services\ShowData[] $streams
+	 * @param \t2t2\LiveHub\Models\Channel $channel
+	 * @return void
 	 */
-	protected function updateStreams(Collection $streams, Channel $channel)
-	{
+	protected function updateStreams(Collection $streams, Channel $channel) {
 		$streams->map(function (ShowData $data) use ($channel) {
 			$stream = $this->getStream($data, $channel);
 			if (!$stream) {
@@ -143,50 +139,47 @@ class IncomingServiceChecker
 				// TODO: Update event
 			}
 		});
-
 	}
 
 	/**
 	 * Get stream object for the show data
 	 *
-	 * @param ShowData $data
-	 * @param Channel $channel
+	 * @param \t2t2\LiveHub\Services\ShowData $data
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return Stream|null
+	 * @return \t2t2\LiveHub\Models\Stream|null
 	 */
-	protected function getStream(ShowData $data, Channel $channel)
-	{
+	protected function getStream(ShowData $data, Channel $channel) {
 		$stream = $channel->streams->first(function ($key, Stream $stream) use ($data) {
 			return $stream->service_info == $data->service_info;
 		});
 		if ($stream) {
 			return $stream;
-		} else {
-			$matching_show = $this->matchesShow($data, $channel);
-
-			if ($matching_show) {
-				$stream = new Stream();
-				$stream->channel_id = $channel->id;
-				$stream->service_info = $data->service_info;
-				$stream->show_id = $matching_show->id;
-
-				return $stream;
-			} else {
-				return null;
-			}
 		}
+
+		$matching_show = $this->matchesShow($data, $channel);
+
+		if ($matching_show) {
+			$stream = new Stream();
+			$stream->channel_id = $channel->id;
+			$stream->service_info = $data->service_info;
+			$stream->show_id = $matching_show->id;
+
+			return $stream;
+		}
+
+		return null;
 	}
 
 	/**
 	 * Find the show that best matches the given ShowData
 	 *
-	 * @param ShowData $data
-	 * @param Channel $channel
+	 * @param \t2t2\LiveHub\Services\ShowData $data
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return Show
+	 * @return \t2t2\LiveHub\Models\Show
 	 */
-	protected function matchesShow(ShowData $data, Channel $channel)
-	{
+	protected function matchesShow(ShowData $data, Channel $channel) {
 		$matched = 0;
 		$matchedShow = null;
 		// Find best matching show
@@ -205,19 +198,19 @@ class IncomingServiceChecker
 
 		if ($matched > 0) {
 			return $matchedShow;
-		} else {
-			return $channel->defaultShow;
 		}
+
+		return $channel->defaultShow;
 	}
 
 	/**
 	 * Log errors that happen when checking the stream
 	 *
-	 * @param Exception $e
-	 * @param Channel $channel
+	 * @param \Exception $e
+	 * @param \t2t2\LiveHub\Models\Channel $channel
+	 * @return void
 	 */
-	protected function logError(Exception $e, Channel $channel)
-	{
+	protected function logError(Exception $e, Channel $channel) {
 		// Log to database
 		DB::table('errors')->insert(
 			[
@@ -228,9 +221,10 @@ class IncomingServiceChecker
 		);
 
 		// Log error
-		\Log::error(
-            'Error retrieving info from service',
-            ['message' => $e->getMessage(), 'channel' => $channel->id, 'code' => $e->getCode()]
-        );
+		Log::error(
+			'Error retrieving info from service',
+			['message' => $e->getMessage(), 'channel' => $channel->id, 'code' => $e->getCode()]
+		);
 	}
+
 }

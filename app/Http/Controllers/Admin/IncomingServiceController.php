@@ -1,27 +1,21 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Models\IncomingService;
-use t2t2\LiveHub\Services\Incoming\Service;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
-class IncomingServiceController extends AdminController
-{
+class IncomingServiceController extends AdminController {
 
 	/**
-	 * @var ServicesGatherer
+	 * @var \t2t2\LiveHub\Services\ServicesGatherer
 	 */
 	private $gatherer;
 
-
 	/**
-	 * @param ServicesGatherer $gatherer
+	 * @param \t2t2\LiveHub\Services\ServicesGatherer $gatherer
 	 */
-	public function __construct(ServicesGatherer $gatherer)
-    {
+	public function __construct(ServicesGatherer $gatherer) {
 		parent::__construct();
 
 		$this->gatherer = $gatherer;
@@ -30,12 +24,10 @@ class IncomingServiceController extends AdminController
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
-    {
-
-		/** @var Service[] $services */
+	public function index() {
+		/* @var \t2t2\LiveHub\Services\Incoming\Service[] $services */
 		$services = $this->gatherer->allIncomingServices();
 
 		$title = 'Incoming Services';
@@ -48,14 +40,13 @@ class IncomingServiceController extends AdminController
 	 *
 	 * @param  string $class
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($class)
-    {
+	public function edit($class) {
 		$service = $this->gatherer->incomingService($class);
 
-		if (! $service) {
-			throw new NotFoundHttpException;
+		if (!$service) {
+			throw new NotFoundHttpException();
 		}
 
 		$settings = $service->getSettings();
@@ -68,20 +59,19 @@ class IncomingServiceController extends AdminController
 	 * Update the specified resource in storage.
 	 *
 	 * @param string  $class
-	 * @param Request $request
+	 * @param \Illuminate\Http\Request $request
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function update($class, Request $request)
-    {
+	public function update($class, Request $request) {
 		$service = $this->gatherer->incomingService($class);
 
-		if (! $service) {
-			throw new NotFoundHttpException;
+		if (!$service) {
+			throw new NotFoundHttpException();
 		}
 
 		$settings = $service->getSettings();
-		if (! $settings) {
+		if (!$settings) {
 			$settings = new IncomingService();
 			$settings->class = $service->id();
 			$service->setSettings($settings);
@@ -96,4 +86,5 @@ class IncomingServiceController extends AdminController
 
 		return redirect()->route('admin.service.incoming.index')->with('status', 'Service has been updated');
 	}
+
 }

@@ -9,13 +9,12 @@ if (!function_exists('versioned')) {
 	 *
 	 * @return string
 	 */
-	function versioned($file)
-	{
+	function versioned($file) {
 		static $manifest = null;
 
 		$file_path = public_path('manifest.json');
 
-		if (is_null($manifest) && file_exists($file_path)) {
+		if ($manifest === null && file_exists($file_path)) {
 			$manifest = json_decode(file_get_contents($file_path), true);
 		}
 

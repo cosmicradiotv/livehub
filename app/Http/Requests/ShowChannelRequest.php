@@ -2,20 +2,16 @@
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Validation\Factory;
-use Illuminate\Validation\Validator;
 
-class ShowChannelRequest extends Request
-{
-
-	protected $allData;
+class ShowChannelRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
+	 * @param \Illuminate\Contracts\Auth\Guard $auth
 	 * @return bool
 	 */
-	public function authorize(Guard $auth)
-    {
+	public function authorize(Guard $auth) {
 		return $auth->check();
 	}
 
@@ -24,8 +20,7 @@ class ShowChannelRequest extends Request
 	 *
 	 * @return array
 	 */
-	public function rules()
-    {
+	public function rules() {
 		$rules = [
 			'rules' => 'array'
 		];
@@ -36,16 +31,15 @@ class ShowChannelRequest extends Request
 	/**
 	 * Generates a validator
 	 *
-	 * @param Factory $factory
+	 * @param \Illuminate\Contracts\Validation\Factory $factory
 	 *
-	 * @return Validator
+	 * @return \Illuminate\Validation\Validator
 	 */
-	public function validator(Factory $factory)
-    {
+	public function validator(Factory $factory) {
 		$input = $this->all();
 		$input['rules'] = json_decode($input['rules'], true);
 
-		/** @var Validator $validator */
+		/* @var \Illuminate\Validation\Validator $validator */
 		$validator = $factory->make($input, $this->rules(), $this->messages(), $this->attributes());
 
 		foreach ($input['rules'] as $i => $value) {
@@ -65,4 +59,5 @@ class ShowChannelRequest extends Request
 
 		return $validator;
 	}
+
 }

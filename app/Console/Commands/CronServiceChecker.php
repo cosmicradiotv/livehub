@@ -2,16 +2,12 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
-use Illuminate\Support\Collection;
-use Symfony\Component\Console\Input\InputOption;
 use t2t2\LiveHub\Models\Channel;
-use t2t2\LiveHub\Models\IncomingService;
-use t2t2\LiveHub\Services\Incoming\Service;
 use t2t2\LiveHub\Services\IncomingServiceChecker;
+use t2t2\LiveHub\Services\Incoming\Service;
 use t2t2\LiveHub\Services\ServicesGatherer;
 
-class CronServiceChecker extends Command
-{
+class CronServiceChecker extends Command {
 
 	/**
 	 * The console command name.
@@ -29,23 +25,22 @@ class CronServiceChecker extends Command
 	protected $description = 'Cron based services checker';
 
 	/**
-	 * @var ServicesGatherer
+	 * @var \t2t2\LiveHub\Services\ServicesGatherer
 	 */
 	private $services;
 
 	/**
-	 * @var IncomingServiceChecker
+	 * @var \t2t2\LiveHub\Services\IncomingServiceChecker
 	 */
 	private $checker;
 
 	/**
 	 * Create a new command instance.
 	 *
-	 * @param ServicesGatherer $services
-	 * @param IncomingServiceChecker $checker
+	 * @param \t2t2\LiveHub\Services\ServicesGatherer $services
+	 * @param \t2t2\LiveHub\Services\IncomingServiceChecker $checker
 	 */
-	public function __construct(ServicesGatherer $services, IncomingServiceChecker $checker)
-	{
+	public function __construct(ServicesGatherer $services, IncomingServiceChecker $checker) {
 		parent::__construct();
 
 		$this->services = $services;
@@ -57,29 +52,28 @@ class CronServiceChecker extends Command
 	 *
 	 * @return mixed
 	 */
-	public function handle()
-	{
+	public function handle() {
 		if (config('livehub.checker') != 'cron' && !$this->option('force')) {
 			$this->info('Not in use');
 
 			return;
 		}
 
-		/** @var Collection|Service[] $services */
+		/* @var \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Services\Incoming\Service[] $services */
 		$services = $this->services->allIncomingServices()->filter(function (Service $service) {
 			return $service->getSettings() && $service->isCheckable();
 		})->keyBy(function (Service $service) {
 			return $service->getSettings()->id;
 		});
 
-		/** @var DatabaseCollection|IncomingService[] $incomingServices */
+		/* @var \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\IncomingService[] $incomingServices */
 		$incomingServices = new DatabaseCollection($services->map(function (Service $service) {
 			return $service->getSettings();
 		}));
 		$incomingServices = $incomingServices->keyBy('id');
 		$incomingServices->load('channels');
 
-		/** @var DatabaseCollection|Channel[] $channels */
+		/* @var \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $channels */
 		$channels = new DatabaseCollection($incomingServices->pluck('channels')->collapse());
 		$channels->load('streams');
 
@@ -103,4 +97,5 @@ class CronServiceChecker extends Command
 		$collected = \GuzzleHttp\Promise\settle($promises);
 		$collected->wait(false);
 	}
+
 }

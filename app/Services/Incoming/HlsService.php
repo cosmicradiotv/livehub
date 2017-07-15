@@ -10,16 +10,14 @@ use Psr\Http\Message\ResponseInterface;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Services\ShowData;
 
-class HlsService extends Service
-{
+class HlsService extends Service {
 
 	/**
 	 * Nice name for the user
 	 *
 	 * @return string
 	 */
-	public function name()
-    {
+	public function name() {
 		return 'HLS Live Stream';
 	}
 
@@ -28,8 +26,7 @@ class HlsService extends Service
 	 *
 	 * @return string
 	 */
-	public function description()
-    {
+	public function description() {
 		return 'Checking for HLS live streams';
 	}
 
@@ -38,8 +35,7 @@ class HlsService extends Service
 	 *
 	 * @return array
 	 */
-	public function channelConfig()
-    {
+	public function channelConfig() {
 		return [
 			['name' => 'hls_url', 'type' => 'text', 'label' => 'HLS Stream URL', 'rules' => ['required', 'url']]
 		];
@@ -50,21 +46,18 @@ class HlsService extends Service
 	 *
 	 * @return bool
 	 */
-	public function isCheckable()
-    {
+	public function isCheckable() {
 		return true;
 	}
-
 
 	/**
 	 * Check channel for live streams
 	 *
-	 * @param Channel $channel
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	public function check(Channel $channel)
-    {
+	public function check(Channel $channel) {
 		$url = $channel->options->hls_url;
 
 		$client = new Client([
@@ -79,25 +72,24 @@ class HlsService extends Service
 	/**
 	 * Check stream if it's live
 	 *
-	 * @param Client $client
+	 * @param \GuzzleHttp\Client $client
+	 * @param string $url
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	protected function getHlsStreamData(Client $client, $url)
-    {
+	protected function getHlsStreamData(Client $client, $url) {
 		return $client->getAsync($url);
-
 	}
 
 	/**
 	 * Reformat data into livehub format
 	 *
-	 * @param PromiseInterface $promise
+	 * @param \GuzzleHttp\Promise\PromiseInterface $promise
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return mixed
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	protected function reformatData(PromiseInterface $promise, Channel $channel)
-    {
+	protected function reformatData(PromiseInterface $promise, Channel $channel) {
 		return $promise->then(function (ResponseInterface $response) use ($channel) {
 			$streams = new Collection();
 			$body = $response->getBody();
@@ -117,7 +109,8 @@ class HlsService extends Service
 		}, function (RequestException $error) {
 			$response = $error->getResponse();
 
-			if (400 <= $response->getStatusCode() && $response->getStatusCode() <= 599) {
+			$statusCode = $response->getStatusCode();
+			if ($statusCode && $statusCode >= 400 && $statusCode <= 599) {
 				// Stream offline
 
 				return new Collection();
@@ -127,4 +120,5 @@ class HlsService extends Service
 			throw $error;
 		});
 	}
+
 }

@@ -1,5 +1,5 @@
 <?php
-if (! isset($javascript)) {
+if (!isset($javascript)) {
 	$javascript = [];
 }
 ?>

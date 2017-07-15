@@ -1,17 +1,24 @@
 <?php
 namespace t2t2\LiveHub\Services\Incoming;
 
-use GuzzleHttp\Promise\PromiseInterface;
+use Exception;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use t2t2\LiveHub\Models\Channel;
-use t2t2\LiveHub\Models\IncomingService;
-use t2t2\LiveHub\Models\Stream;
 
-abstract class Service implements UrlRoutable
-{
+abstract class Service implements UrlRoutable {
 
+	/**
+	 * Options available for this service
+	 *
+	 * @var array[]
+	 */
 	protected $options;
 
+	/**
+	 * Settings configured for this service
+	 *
+	 * @var \t2t2\LiveHub\Models\IncomingService
+	 */
 	protected $settings;
 
 	/**
@@ -31,24 +38,22 @@ abstract class Service implements UrlRoutable
 	/**
 	 * @return object
 	 */
-	public function getOptions()
-    {
+	public function getOptions() {
 		return $this->options;
 	}
 
 	/**
-	 * @return IncomingService|null
+	 * @return \t2t2\LiveHub\Models\IncomingService|null
 	 */
-	public function getSettings()
-    {
+	public function getSettings() {
 		return $this->settings;
 	}
 
 	/**
-	 * @param IncomingService|null $settings
+	 * @param \t2t2\LiveHub\Models\IncomingService|null $settings
+	 * @return void
 	 */
-	public function setSettings($settings)
-    {
+	public function setSettings($settings) {
 		$this->settings = $settings;
 
 		if ($settings) {
@@ -58,14 +63,12 @@ abstract class Service implements UrlRoutable
 		}
 	}
 
-
 	/**
 	 * Configuration setting available for this service
 	 *
 	 * @return array
 	 */
-	public function serviceConfig()
-    {
+	public function serviceConfig() {
 		return [];
 	}
 
@@ -74,8 +77,7 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return array
 	 */
-	public function serviceValidationRules()
-    {
+	public function serviceValidationRules() {
 		$rules = [];
 
 		foreach ($this->serviceConfig() as $input) {
@@ -90,8 +92,7 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return array
 	 */
-	public function channelConfig()
-    {
+	public function channelConfig() {
 		return [];
 	}
 
@@ -100,8 +101,7 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return array
 	 */
-	public function channelValidationRules()
-    {
+	public function channelValidationRules() {
 		$rules = [];
 
 		foreach ($this->channelConfig() as $input) {
@@ -114,26 +114,24 @@ abstract class Service implements UrlRoutable
 	/**
 	 * Get video URL for this service
 	 *
-	 * @param null|Channel $channel
-	 * @param null|Stream  $stream
+	 * @param null|\t2t2\LiveHub\Models\Channel $channel
+	 * @param null|\t2t2\LiveHub\Models\Stream $stream
 	 *
 	 * @return string
 	 */
-	public function getVideoUrl($channel = null, $stream = null)
-    {
+	public function getVideoUrl($channel = null, $stream = null) {
 		return route('helper.misconfigured');
 	}
 
 	/**
 	 * Get chat URL for this service
 	 *
-	 * @param null|Channel $channel
-	 * @param null|Stream  $stream
+	 * @param null|\t2t2\LiveHub\Models\Channel $channel
+	 * @param null|\t2t2\LiveHub\Models\Stream $stream
 	 *
 	 * @return string
 	 */
-	public function getChatUrl($channel = null, $stream = null)
-    {
+	public function getChatUrl($channel = null, $stream = null) {
 		return route('helper.misconfigured');
 	}
 	/**
@@ -141,8 +139,7 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return mixed
 	 */
-	public function getRouteKey()
-    {
+	public function getRouteKey() {
 		return $this->id();
 	}
 
@@ -151,8 +148,7 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return string
 	 */
-	public function getRouteKeyName()
-    {
+	public function getRouteKeyName() {
 		return 'id';
 	}
 
@@ -161,8 +157,7 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return string
 	 */
-	public function id()
-    {
+	public function id() {
 		return class_basename($this);
 	}
 
@@ -171,20 +166,19 @@ abstract class Service implements UrlRoutable
 	 *
 	 * @return bool
 	 */
-	public function isCheckable()
-    {
+	public function isCheckable() {
 		return false;
 	}
 
 	/**
 	 * Check channel for live streams
 	 *
-	 * @param Channel $channel
+	 * @param \t2t2\LiveHub\Models\Channel $channel
 	 *
-	 * @return PromiseInterface
+	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
-	public function check(Channel $channel)
-    {
-		return \GuzzleHttp\Promise\rejection_for(new \Exception('Not Implemented'));
+	public function check(Channel $channel) {
+		return \GuzzleHttp\Promise\rejection_for(new Exception('Not Implemented'));
 	}
+
 }

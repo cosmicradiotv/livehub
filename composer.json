@@ -20,7 +20,8 @@
 		"phpunit/phpunit": "~4.0",
 		"squizlabs/php_codesniffer": "2.*",
 		"symfony/dom-crawler": "~3.0",
-		"symfony/css-selector": "~3.0"
+		"symfony/css-selector": "~3.0",
+		"fig-r/psr2r-sniffer": "^0.4.1"
 	},
 	"autoload": {
 		"classmap": [
@@ -39,9 +40,8 @@
 		]
 	},
 	"scripts": {
-		"lint": [
-			"phpcs"
-		],
+        "lint": "phpcs",
+        "lint:fix": "phpcbf",
 		"post-install-cmd": [
 			"Illuminate\\Foundation\\ComposerScripts::postInstall",
 			"php artisan optimize"

@@ -1,27 +1,22 @@
 <?php namespace t2t2\LiveHub\Http\Controllers\Admin;
 
 use DB;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use t2t2\LiveHub\Http\Requests;
 use t2t2\LiveHub\Http\Requests\ShowChannelRequest;
-use t2t2\LiveHub\Http\Requests\ShowRequest;
 use t2t2\LiveHub\Models\Channel;
 use t2t2\LiveHub\Models\Show;
 
-class ShowChannelController extends AdminController
-{
+class ShowChannelController extends AdminController {
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param Show $show
-	 *
-	 * @return Response
+	 * @param \t2t2\LiveHub\Models\Show $show
+	 * @param \t2t2\LiveHub\Models\Channel $channel
+	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Show $show, Channel $channel)
-    {
+	public function edit(Show $show, Channel $channel) {
 		$rules = DB::table('channel_show')
 		           ->where('channel_id', $channel->id)
 		           ->where('show_id', $show->id)
@@ -40,15 +35,13 @@ class ShowChannelController extends AdminController
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param Show               $show
-	 * @param Channel            $channel
-	 * @param ShowChannelRequest $request
+	 * @param \t2t2\LiveHub\Models\Show               $show
+	 * @param \t2t2\LiveHub\Models\Channel            $channel
+	 * @param \t2t2\LiveHub\Http\Requests\ShowChannelRequest $request
 	 *
-	 * @return Response
+	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Show $show, Channel $channel, ShowChannelRequest $request)
-    {
-
+	public function update(Show $show, Channel $channel, ShowChannelRequest $request) {
 		$isExisting = DB::table('channel_show')
 		                ->where('show_id', $show->id)
 		                ->where('channel_id', $channel->id)
@@ -67,12 +60,11 @@ class ShowChannelController extends AdminController
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param Show $show
-	 *
-	 * @return Response
+	 * @param \t2t2\LiveHub\Models\Show $show
+	 * @param \t2t2\LiveHub\Models\Channel $channel
+	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Show $show, Channel $channel)
-    {
+	public function destroy(Show $show, Channel $channel) {
 		$isExisting = DB::table('channel_show')
 		                ->where('show_id', $show->id)
 		                ->where('channel_id', $channel->id)
@@ -89,19 +81,19 @@ class ShowChannelController extends AdminController
 	/**
 	 * Redirect based on input variables
 	 *
-	 * @param Request $request
+	 * @param \Illuminate\Http\Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function redirect(Request $request)
-    {
+	public function redirect(Request $request) {
 		$show_id = $request->get('show_id');
 		$channel_id = $request->get('channel_id');
 
 		if ($show_id && $channel_id) {
 			return redirect()->route('admin.show.channel.edit', ['show' => $show_id, 'channel' => $channel_id]);
-		} else {
-			throw new NotFoundHttpException;
 		}
+
+		throw new NotFoundHttpException();
 	}
+
 }

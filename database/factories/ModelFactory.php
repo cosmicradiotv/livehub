@@ -1,8 +1,9 @@
 <?php
 use Faker\Generator;
-use Illuminate\Database\Eloquent\Factory;
 
-/** @var Factory $factory */
+/**
+ * @var Factory
+ */
 
 /*
 |--------------------------------------------------------------------------

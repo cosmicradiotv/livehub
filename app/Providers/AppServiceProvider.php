@@ -1,18 +1,16 @@
 <?php namespace t2t2\LiveHub\Providers;
 
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
-class AppServiceProvider extends ServiceProvider
-{
+class AppServiceProvider extends ServiceProvider {
 
 	/**
 	 * Bootstrap any application services.
 	 *
 	 * @return void
 	 */
-	public function boot()
-	{
+	public function boot() {
 		$this->customValidator();
 	}
 
@@ -21,8 +19,7 @@ class AppServiceProvider extends ServiceProvider
 	 *
 	 * @return void
 	 */
-	public function register()
-	{
+	public function register() {
 		// Dev
 		if ($this->app->environment('local')) {
 			$this->registerIDEHelper();
@@ -31,19 +28,22 @@ class AppServiceProvider extends ServiceProvider
 
 	/**
 	 * Implement custom validator with extra rules
+	 *
+	 * @return void
 	 */
-	public function customValidator()
-	{
-		\Validator::extend('date_parseable', 't2t2\LiveHub\Custom\ValidatorRules@parseableDate');
-		\Validator::extend('valid_regex', 't2t2\LiveHub\Custom\ValidatorRules@validRegex');
-		\Validator::extend('time', 't2t2\LiveHub\Custom\ValidatorRules@time');
+	public function customValidator() {
+		Validator::extend('date_parseable', 't2t2\LiveHub\Custom\ValidatorRules@parseableDate');
+		Validator::extend('valid_regex', 't2t2\LiveHub\Custom\ValidatorRules@validRegex');
+		Validator::extend('time', 't2t2\LiveHub\Custom\ValidatorRules@time');
 	}
 
 	/**
 	 * Register IDE Helper
+	 *
+	 * @return void
 	 */
-	protected function registerIDEHelper()
-	{
+	protected function registerIDEHelper() {
 		$this->app->register('Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider');
 	}
+
 }
