@@ -53,6 +53,29 @@ class YoutubeService extends Service
 	}
 
 	/**
+	 * Get chat URL for this service
+	 *
+	 * @param null|Channel $channel
+	 * @param null|Stream $stream
+	 *
+	 * @return string
+	 */
+	public function getChatUrl($channel = null, $stream = null)
+	{
+		if ($stream->service_info) {
+			$domain_parts = explode('://', config('app.url'));
+			if (count($domain_parts) > 1) {
+				$domain = $domain_parts[1];
+			} else {
+				$doamin = $domain_parts[0];
+			}
+			return 'http://www.youtube.com/live_chat?v=' . $stream->service_info . '&embed_domain=' . $domain;
+		}
+
+		return parent::getVideoUrl($channel, $stream);
+	}
+
+	/**
 	 * Configuration setting available for this service
 	 *
 	 * @return array
