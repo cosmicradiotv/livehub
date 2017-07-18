@@ -14,7 +14,7 @@ class CreateIncomingServicesTable extends Migration {
 		Schema::create('incoming_services', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('class')->unique();
-			$table->json('options');
+			$table->text('options');
 			$table->timestamps();
 		});
 	}

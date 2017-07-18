@@ -18,7 +18,7 @@ class CreateChannelShowsPivot extends Migration {
 			$table->integer('show_id')->unsigned();
 			$table->foreign('show_id')->references('id')->on('shows')->onDelete('cascade');
 
-			$table->json('rules');
+			$table->text('rules');
 			$table->timestamps();
 
 		});

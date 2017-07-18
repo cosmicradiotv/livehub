@@ -33,7 +33,7 @@ class StreamLookupHelpingField extends Migration {
 				$table->dropColumn('service_info');
 			});
 			Schema::table('streams', function (Blueprint $table) {
-				$table->json('options')->after('channel_id')->nullable();
+				$table->text('options')->after('channel_id')->nullable();
 			});
 		});
 	}

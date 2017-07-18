@@ -15,7 +15,7 @@ class CreateChannelsTable extends Migration {
 			$table->increments('id');
 			$table->unsignedInteger('incoming_service_id');
 			$table->string('name');
-			$table->json('options');
+			$table->text('options');
 			$table->text('video_url')->nullable();
 			$table->text('chat_url')->nullable();
 			$table->timestamps();
