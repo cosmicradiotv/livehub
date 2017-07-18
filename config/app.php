@@ -121,6 +121,8 @@ return [
 
 	'log' => env('APP_LOG', 'single'),
 
+    'log_level' => env('APP_LOG_LEVEL', 'debug'),
+
 	/*
 	|--------------------------------------------------------------------------
 	| Autoloaded Service Providers
@@ -160,6 +162,9 @@ return [
 		Illuminate\Validation\ValidationServiceProvider::class,
 		Illuminate\View\ViewServiceProvider::class,
 
+		/*
+		 * Package Service Providers...
+		 */
 		Barryvdh\Cors\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 
@@ -168,6 +173,7 @@ return [
 		 */
 		t2t2\LiveHub\Providers\AppServiceProvider::class,
 		t2t2\LiveHub\Providers\AuthServiceProvider::class,
+		// t2t2\LiveHub\Providers\BroadcastServiceProvider::class,
 		t2t2\LiveHub\Providers\EventServiceProvider::class,
 		t2t2\LiveHub\Providers\LiveHubServiceProvider::class,
 		t2t2\LiveHub\Providers\RouteServiceProvider::class,
