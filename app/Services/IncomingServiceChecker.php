@@ -56,8 +56,8 @@ class IncomingServiceChecker {
 		$promise = $this->services[$channel->incoming_service_id]->check($channel);
 
 		$promise->then(function (Collection $streams) use ($channel) {
-			$found_streams = $streams->lists('service_info')->all();
-			$database_streams = $channel->streams->lists('service_info')->all();
+			$found_streams = $streams->pluck('service_info')->all();
+			$database_streams = $channel->streams->pluck('service_info')->all();
 
 			// Remove ended streams
 			$this->removeEndedStreams(array_diff($database_streams, $found_streams), $channel);
@@ -102,7 +102,7 @@ class IncomingServiceChecker {
 	 */
 	protected function removeEndedStreams($streamIDs, Channel $channel) {
 		foreach ($streamIDs as $endedID) {
-			$stream = $channel->streams->first(function ($key, Stream $stream) use ($endedID) {
+			$stream = $channel->streams->first(function (Stream $stream, $key) use ($endedID) {
 				return $stream->service_info == $endedID;
 			});
 
@@ -150,7 +150,7 @@ class IncomingServiceChecker {
 	 * @return \t2t2\LiveHub\Models\Stream|null
 	 */
 	protected function getStream(ShowData $data, Channel $channel) {
-		$stream = $channel->streams->first(function ($key, Stream $stream) use ($data) {
+		$stream = $channel->streams->first(function (Stream $stream, $key) use ($data) {
 			return $stream->service_info == $data->service_info;
 		});
 		if ($stream) {

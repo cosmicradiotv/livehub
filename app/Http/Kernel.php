@@ -1,14 +1,15 @@
 <?php namespace t2t2\LiveHub\Http;
 
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\Authorize;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use t2t2\LiveHub\Http\Middleware\Authenticate;
 use t2t2\LiveHub\Http\Middleware\EncryptCookies;
 use t2t2\LiveHub\Http\Middleware\RedirectIfAuthenticated;
 use t2t2\LiveHub\Http\Middleware\VerifyCsrfToken;
@@ -33,6 +34,7 @@ class Kernel extends HttpKernel {
 	 */
 	protected $middlewareGroups = [
 		'web' => [
+			SubstituteBindings::class,
 		],
 		'backend' => [
 			EncryptCookies::class,
@@ -40,6 +42,7 @@ class Kernel extends HttpKernel {
 			StartSession::class,
 			ShareErrorsFromSession::class,
 			VerifyCsrfToken::class,
+			SubstituteBindings::class,
 		],
 	];
 
@@ -51,6 +54,7 @@ class Kernel extends HttpKernel {
 	protected $routeMiddleware = [
 		'auth' => Authenticate::class,
 		'auth.basic' => AuthenticateWithBasicAuth::class,
+		'bindings' => SubstituteBindings::class,
 		'can' => Authorize::class,
 		'guest' => RedirectIfAuthenticated::class,
 		'throttle' => ThrottleRequests::class,

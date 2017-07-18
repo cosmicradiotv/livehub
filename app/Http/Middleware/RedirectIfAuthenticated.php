@@ -1,26 +1,9 @@
 <?php namespace t2t2\LiveHub\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated {
-
-	/**
-	 * The Guard implementation.
-	 *
-	 * @var \Illuminate\Contracts\Auth\Guard
-	 */
-	protected $auth;
-
-	/**
-	 * Create a new filter instance.
-	 *
-	 * @param  \Illuminate\Contracts\Auth\Guard $auth
-	 */
-	public function __construct(Guard $auth) {
-		$this->auth = $auth;
-	}
 
 	/**
 	 * Handle an incoming request.
@@ -30,9 +13,9 @@ class RedirectIfAuthenticated {
 	 *
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next) {
-		if ($this->auth->check()) {
-			return new RedirectResponse(route('admin.index'));
+	public function handle($request, Closure $next, $guard = null) {
+		if (Auth::guard($guard)->check()) {
+			return redirect(route('admin.index'));
 		}
 
 		return $next($request);

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>503 | {{config('livehub.brand')}}</title>
+	<title>503 | {{config('app.name')}}</title>
 
 	<style>
 		body {

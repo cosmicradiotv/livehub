@@ -28,7 +28,7 @@ class LiveController extends Controller {
 	public function config(Manager $manager) {
 		$settings = Cache::remember('live.settings', 1, function () use ($manager) {
 			$settings = [
-				'brand' => config('livehub.brand'),
+				'brand' => config('app.name'),
 				'pushers' => [],
 				'notlive' => route('helper.notlive'),
 			];

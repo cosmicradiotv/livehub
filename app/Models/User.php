@@ -1,6 +1,8 @@
 <?php namespace t2t2\LiveHub\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use t2t2\LiveHub\Notifications\ResetPasswordNotification;
 
 /**
  * t2t2\LiveHub\Models\User
@@ -22,6 +24,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static Builder|User whereUpdatedAt($value)
  */
 class User extends Authenticatable {
+	use Notifiable;
 
 	/**
 	 * The database table used by the model.
@@ -43,5 +46,15 @@ class User extends Authenticatable {
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
+	/**
+	* Send the password reset notification.
+	*
+	* @param  string  $token
+	* @return void
+	*/
+	public function sendPasswordResetNotification($token) {
+		$this->notify(new ResetPasswordNotification($token));
+	}
 
 }

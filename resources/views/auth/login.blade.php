@@ -12,8 +12,8 @@
 					<div class="row">
 						<div class="small-12 columns">
 							<label>
-								E-mail Address or Username
-								{!! Form::text('username') !!}
+								E-mail Address
+								{!! Form::text('email') !!}
 							</label>
 						</div>
 					</div>
@@ -33,7 +33,7 @@
 								{!! Form::checkbox('remember') !!}
 								Remember Me
 							</label>
-							<a href="{{ route('auth.email.form') }}">Forgot Password</a>
+							<a href="{{ route('auth.reset.request') }}">Forgot Password</a>
 						</div>
 						<div class="small-6 columns">
 							{!! Form::submit('Login', ['class' => 'button float-right']) !!}

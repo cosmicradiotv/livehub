@@ -109,11 +109,11 @@
 					</label>
 					<label>
 						Channel
-						{!! Form::select('channel_id', $dummyChannels->lists('name', 'id')) !!}
+						{!! Form::select('channel_id', $dummyChannels->pluck('name', 'id')) !!}
 					</label>
 					<label>
 						Show
-						{!! Form::select('show_id', $shows->lists('name', 'id')) !!}
+						{!! Form::select('show_id', $shows->pluck('name', 'id')) !!}
 					</label>
 					<label>
 						Video embed URL

@@ -7,7 +7,7 @@ if (!isset($javascript)) {
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>{{ (isset($title) ? $title . ' | ' : '') . config('livehub.brand') }}</title>
+	<title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
 
 	<link rel="stylesheet" href="{{ asset(versioned('/assets/admin.css')) }}"/>
 </head>

@@ -22,13 +22,13 @@
 					<div class="medium-6 columns">
 						<label>
 							Channel
-							{!! Form::select('channel_id', $channels->lists('name', 'id')) !!}
+							{!! Form::select('channel_id', $channels->pluck('name', 'id')) !!}
 						</label>
 					</div>
 					<div class="medium-6 columns">
 						<label>
 							Show
-							{!! Form::select('show_id', $shows->lists('name', 'id')) !!}
+							{!! Form::select('show_id', $shows->pluck('name', 'id')) !!}
 						</label>
 					</div>
 				</div>

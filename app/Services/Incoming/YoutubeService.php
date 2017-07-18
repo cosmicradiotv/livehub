@@ -114,8 +114,8 @@ class YoutubeService extends Service {
 		$promise = \GuzzleHttp\Promise\all(
 			array_map(
 				$this->requestLiveOfTypeCallback($client, $channel_id),
-//				['upcoming', 'live']
-				['live'] // Check live only until better rate limiting is figured out
+				['upcoming', 'live']
+//				['live'] // Check live only until better rate limiting is figured out
 			)
 		);
 		$promise = $this->findVideoIDsFromRequest($promise);

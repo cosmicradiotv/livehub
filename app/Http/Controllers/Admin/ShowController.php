@@ -57,7 +57,7 @@ class ShowController extends AdminController {
 
 		$title = 'Edit | Show';
 
-		$channels = Channel::whereNotIn('id', $show->channels->lists('id'))->lists('name', 'id');
+		$channels = Channel::whereNotIn('id', $show->channels->pluck('id'))->pluck('name', 'id');
 
 		return view('admin.show.edit', compact('show', 'channels', 'title'));
 	}

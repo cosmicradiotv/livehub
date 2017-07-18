@@ -3,14 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ config('livehub.brand') }}</title>
+	<title>{{ config('app.name') }}</title>
 
 	<link rel="stylesheet" href="{{ asset(versioned('/assets/live.css')) }}"/>
 </head>
 <body data-livehub data-livehub-config="{{ route('live.config') }}">
 	<div id="app" class="container">
 		<div class="header">
-			{{ config('livehub.brand') }}
+			{{ config('app.name') }}
 		</div>
 		<div class="content-wrapper">
 			<div class="live-container iframe-container">

@@ -1,7 +1,12 @@
 <?php namespace t2t2\LiveHub\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
+use t2t2\LiveHub\Models\Channel;
+use t2t2\LiveHub\Models\IncomingService;
+use t2t2\LiveHub\Models\Show;
+use t2t2\LiveHub\Models\Stream;
+use t2t2\LiveHub\Models\User;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -16,37 +21,34 @@ class RouteServiceProvider extends ServiceProvider {
 	/**
 	 * Define your route model bindings, pattern filters, etc.
 	 *
-	 * @param  \Illuminate\Routing\Router $router
-	 *
 	 * @return void
 	 */
-	public function boot(Router $router) {
+	public function boot() {
 		// Register route bindings
-		$router->model('channel', 't2t2\\LiveHub\\Models\\Channel');
-		$router->model('incoming_service', 't2t2\\LiveHub\\Models\\IncomingService');
-		$router->model('show', 't2t2\\LiveHub\\Models\\Show');
-		$router->model('stream', 't2t2\\LiveHub\\Models\\Stream');
-		$router->model('user', 't2t2\\LiveHub\\Models\\User');
+		Route::model('channel', Channel::class);
+		Route::model('incoming_service', IncomingService::class);
+		Route::model('show', Show::class);
+		Route::model('stream', Stream::class);
+		Route::model('user', User::class);
 
-		$router->pattern('channel', '[0-9]+');
-		$router->pattern('incoming_service', '[0-9]+');
-		$router->pattern('show', '[0-9]+');
-		$router->pattern('stream', '[0-9]+');
-		$router->pattern('user', '[0-9]+');
+		Route::pattern('channel', '[0-9]+');
+		Route::pattern('incoming_service', '[0-9]+');
+		Route::pattern('show', '[0-9]+');
+		Route::pattern('stream', '[0-9]+');
+		Route::pattern('user', '[0-9]+');
 
-		$router->pattern('service', '[a-zA-Z]+');
+		Route::pattern('service', '[a-zA-Z]+');
 
-		parent::boot($router);
+		parent::boot();
 	}
 
 	/**
 	 * Define the routes for the application.
 	 *
-	 * @param  \Illuminate\Routing\Router  $router
 	 * @return void
 	 */
-	public function map(Router $router) {
-		$this->mapWebRoutes($router);
+	public function map() {
+		$this->mapWebRoutes();
 
 		//
 	}
@@ -56,14 +58,13 @@ class RouteServiceProvider extends ServiceProvider {
 	 *
 	 * These routes all receive session state, CSRF protection, etc.
 	 *
-	 * @param  \Illuminate\Routing\Router  $router
 	 * @return void
 	 */
-	protected function mapWebRoutes(Router $router) {
-		$router->group([
+	protected function mapWebRoutes() {
+		Route::group([
 			'namespace' => $this->namespace, 'middleware' => 'web',
 		], function ($router) {
-			require app_path('Http/routes.php');
+			require base_path('routes/web.php');
 		});
 	}
 

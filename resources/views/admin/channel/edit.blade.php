@@ -30,7 +30,7 @@ $javascript = [
 					<div class="large-3 columns">
 						<label>
 							Service
-							{!! Form::select('incoming_service_id', $services->lists('class', 'id'), null, ['data-service' => true]) !!}
+							{!! Form::select('incoming_service_id', $services->pluck('class', 'id'), null, ['data-service' => true]) !!}
 						</label>
 					</div>
 				</div>
@@ -61,7 +61,7 @@ $javascript = [
 					<div class="small-12 columns">
 						<label>
 							Default Show
-							{!! Form::select('default_show_id', ['' => '* No Show *'] + $shows->lists('name', 'id')->all(), null, ['class' => 'no-margin']) !!}
+							{!! Form::select('default_show_id', ['' => '* No Show *'] + $shows->pluck('name', 'id')->all(), null, ['class' => 'no-margin']) !!}
 						</label>
 						<p class="help">If no default show is set and the found streams don't match any of the shows the stream is ignored.</p>
 					</div>
