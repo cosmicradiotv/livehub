@@ -19,11 +19,7 @@ $javascript = [
 
 			{!! Form::open(['route' => ['admin.show.channel.update', 'show' => $show, 'channel' => $channel], 'method' => 'PUT']) !!}
 			<h4>Show Rules</h4>
-			<div class="row">
-				<div class="large-12 columns">
-					{!! Form::textarea('rules', json_encode($rules), ['data-rules' => true]) !!}
-				</div>
-			</div>
+			<show-rules-editor :value="{{ old('rules', json_encode($rules)) }}"></show-rules-editor>
 			{!! Form::submit('Save', ['class' => 'button']) !!}
 			{!! Form::close() !!}
 

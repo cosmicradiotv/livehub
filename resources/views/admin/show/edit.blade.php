@@ -69,7 +69,7 @@
 					@endif
 				</tbody>
 			</table>
-<?php /*
+
 			{!! Form::open(['route' => ['admin.show.channel.redirect'], 'method' => 'GET']) !!}
 				{!! Form::hidden('show_id', $show->id) !!}
 				<div class="row collapse">
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 			{!! Form::close() !!}
-*/ ?>
+
 		</div>
 	</div>
 @endsection

@@ -43,16 +43,22 @@ class ShowChannelRequest extends Request {
 		$validator = $factory->make($input, $this->rules(), $this->messages(), $this->attributes());
 
 		foreach ($input['rules'] as $i => $value) {
-			$validator->mergeRules("rules.{$i}.type", ['required', 'in:title,startBetween']);
+			$validator->addRules([
+				"rules.{$i}.type" => ['required', 'in:title,startBetween']
+			]);
 			switch ($value['type']) {
 				case 'title':
-					$validator->mergeRules("rules.{$i}.rule", ['required', 'valid_regex']);
+					$validator->addRules([
+						"rules.{$i}.rule" => ['required', 'valid_regex']
+					]);
 					break;
 				case 'startBetween':
-					$validator->mergeRules("rules.{$i}.days", ['required', 'array', 'min:1']);
-					$validator->each("rules.{$i}.days", ['required', 'between:0,6']);
-					$validator->mergeRules("rules.{$i}.start", ['required', 'time']);
-					$validator->mergeRules("rules.{$i}.end", ['required', 'time']);
+					$validator->addRules([
+						"rules.{$i}.days" => ['required', 'array', 'min:1'],
+						"rules.{$i}.days.*" => ['required', 'between:0,6'],
+						"rules.{$i}.start" => ['required', 'time'],
+						"rules.{$i}.end" => ['required', 'time']
+					]);
 					break;
 			}
 		}

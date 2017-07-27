@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import channelModule from './modules/channel';
-import showChannelModule from '../../admin/modules/show-channel';
+import showChannelModule from './modules/show-channel';
 
 
 var adminApp = function (config) {

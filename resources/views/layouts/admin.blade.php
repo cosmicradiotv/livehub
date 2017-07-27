@@ -9,33 +9,35 @@ if (!isset($javascript)) {
 	<meta charset="UTF-8">
 	<title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
 
-	<link rel="stylesheet" href="{{ asset(versioned('/assets/admin.css')) }}"/>
+	<link rel="stylesheet" href="{{ mix('/assets/admin.css') }}"/>
 </head>
 <body class="no-js" data-config="{{ json_encode($javascript) }}">
-	@include('partials.admin.navbar')
+	<div id="app">
+		@include('partials.admin.navbar')
 
-	@if (session('status'))
-		<div class="callout" data-closable>
-			{{ session('status') }}
-			<button class="close-button" aria-label="Dismiss alert" type="button" data-close>
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-	@endif
+		@if (session('status'))
+			<div class="callout" data-closable>
+				{{ session('status') }}
+				<button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		@endif
 
-	@if(count($errors))
-		<div class="callout alert">
-			<strong>Whoaaaaa</strong> Something's not quite right
-			<ul>
-				@foreach($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+		@if(count($errors))
+			<div class="callout alert">
+				<strong>Whoaaaaa</strong> Something's not quite right
+				<ul>
+					@foreach($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
 
-	@yield('content')
+		@yield('content')
+	</div>
 
-	<script src="{{ asset(versioned('/assets/admin.js')) }}"></script>
+	<script src="{{ mix('/assets/admin.js') }}"></script>
 </body>
 </html>
