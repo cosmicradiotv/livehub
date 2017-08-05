@@ -20,7 +20,7 @@ class ShowChannelController extends AdminController {
 		$rules = DB::table('channel_show')
 		           ->where('channel_id', $channel->id)
 		           ->where('show_id', $show->id)
-		           ->pluck('rules');
+		           ->value('rules');
 		if ($rules) {
 			$rules = json_decode($rules);
 		} else {
