@@ -11,7 +11,15 @@ let mix = require('laravel-mix')
  |
  */
 
+mix.js('resources/assets/js/polyfill.js', 'public/assets')
 mix.js('resources/assets/js/admin.js', 'public/assets')
 mix.js('resources/assets/js/live.js', 'public/assets')
 mix.sass('resources/assets/sass/admin.scss', 'public/assets')
 mix.sass('resources/assets/sass/live.scss', 'public/assets')
+
+mix.webpackConfig({
+	output: {
+		publicPath: Mix.isUsing('hmr') ? 'http://localhost:8080/' : '/',
+		chunkFilename: mix.inProduction() ? 'assets/[name].[chunkhash].app.js' : 'assets/[name].js'
+	}
+})

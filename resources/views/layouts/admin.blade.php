@@ -38,6 +38,7 @@ if (!isset($javascript)) {
 		@yield('content')
 	</div>
 
+	<script src="{{ mix('/assets/polyfill.js') }}"></script>
 	<script src="{{ mix('/assets/admin.js') }}"></script>
 </body>
 </html>
