@@ -22,7 +22,7 @@
 		</div>
 	</div>
 
-	<script src="{{ mix('/assets/polyfills.js') }}"></script>
+	<script src="{{ mix('/assets/polyfill.js') }}"></script>
 	<script src="{{ mix('/assets/live.js') }}"></script>
 </body>
 </html>
