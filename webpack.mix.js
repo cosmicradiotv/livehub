@@ -23,3 +23,9 @@ mix.webpackConfig({
 		chunkFilename: mix.inProduction() ? 'assets/[name].[chunkhash].app.js' : 'assets/[name].js'
 	}
 })
+
+mix.options({
+	postCss: [
+		require('postcss-flexbugs-fixes')()
+	]
+});
