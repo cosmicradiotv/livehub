@@ -23,12 +23,16 @@ class StreamsTransformer extends TransformerAbstract {
 	 * @return array
 	 */
 	public function transform(Stream $stream) {
+		$service = $stream->channel->service->getService();
+
 		return [
 			'id' => $stream->id,
 			'show_id' => $stream->show_id,
 			'title' => $stream->title,
 			'state' => $stream->state,
+			'service' => $service->name(),
 			'start_time' => $stream->start_time->toIso8601String(),
+			'url' => $stream->getUrl(),
 			'video_url' => $stream->getVideoUrl(),
 			'chat_url' => $stream->getChatUrl(),
 		];

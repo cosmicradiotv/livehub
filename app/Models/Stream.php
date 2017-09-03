@@ -92,6 +92,15 @@ class Stream extends Model {
 	}
 
 	/**
+	 * Gets the URL for the stream
+	 *
+	 * @return string
+	 */
+	public function getUrl() {
+		return $this->url ?: $this->channel->getUrl($this);
+	}
+
+	/**
 	 * Gets the chat embed url for the stream
 	 *
 	 * @return string

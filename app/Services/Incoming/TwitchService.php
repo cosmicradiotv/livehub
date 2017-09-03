@@ -31,6 +31,14 @@ class TwitchService extends Service {
 		return 'Checking for twitch livestreams';
 	}
 
+	public function getUrl($channel = null, $stream = null) {
+		if ($stream->service_info) {
+			return 'https://www.twitch.tv/' . $channel->options->channel_username;
+		}
+
+		return parent::getVideoUrl($channel, $stream);
+	}
+
 	/**
 	 * Get video URL for this service
 	 *
@@ -41,7 +49,7 @@ class TwitchService extends Service {
 	 */
 	public function getVideoUrl($channel = null, $stream = null) {
 		if ($channel && $channel->options && isset($channel->options->channel_username)) {
-			return 'http://www.twitch.tv/' . $channel->options->channel_username . '/embed';
+			return 'http://player.twitch.tv/?channel=' . $channel->options->channel_username;
 		}
 
 		return parent::getVideoUrl($channel, $stream);

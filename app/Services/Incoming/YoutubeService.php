@@ -18,7 +18,7 @@ class YoutubeService extends Service {
 	 * @return string
 	 */
 	public function name() {
-		return 'Youtube Live';
+		return 'YouTube';
 	}
 
 	/**
@@ -28,6 +28,14 @@ class YoutubeService extends Service {
 	 */
 	public function description() {
 		return 'Checking for youtube livestreams';
+	}
+
+	public function getUrl($channel = null, $stream = null) {
+		if ($stream->service_info) {
+			return 'https://www.youtube.com/watch?v=' . $stream->service_info;
+		}
+
+		return parent::getVideoUrl($channel, $stream);
 	}
 
 	/**
@@ -143,6 +151,7 @@ class YoutubeService extends Service {
 						'channelId' => $channel_id,
 						'type' => 'video',
 						'eventType' => $type,
+						'maxResults' => 10
 					],
 			]);
 		};

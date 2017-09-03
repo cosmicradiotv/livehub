@@ -9,7 +9,7 @@ class DumbService extends Service {
 	 * @return string
 	 */
 	public function name() {
-		return 'Dumb service';
+		return 'Custom';
 	}
 
 	/**

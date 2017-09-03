@@ -2,6 +2,7 @@
 namespace Tests\Unit\ShowRuleMatcher;
 
 use Carbon\Carbon;
+use stdClass;
 use t2t2\LiveHub\Services\ShowData;
 use t2t2\LiveHub\Services\ShowRuleMatcher;
 use Tests\TestCase;
@@ -23,13 +24,13 @@ class StartBetweenMatcherTest extends TestCase {
 	protected $startOvernight;
 
 	public function __construct() {
-		$this->startNormal = new \stdClass();
+		$this->startNormal = new stdClass();
 		$this->startNormal->type = 'startBetween';
 		$this->startNormal->days = ['0']; // Sunday
 		$this->startNormal->start = '11:00';
 		$this->startNormal->end = '13:00';
 
-		$this->startOvernight = new \stdClass();
+		$this->startOvernight = new stdClass();
 		$this->startOvernight->type = 'startBetween';
 		$this->startOvernight->days = ['0']; // Sunday
 		$this->startOvernight->start = '20:00';

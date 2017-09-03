@@ -69,6 +69,16 @@ class Channel extends Model {
 	protected $table = 'channels';
 
 	/**
+	 * Get the URL for the channel
+	 *
+	 * @param \t2t2\LiveHub\Models\Stream|null $stream
+	 * @return string
+	 */
+	public function getUrl($stream = null) {
+		return $this->url ?: $this->service->getService()->getUrl($this, $stream);
+	}
+
+	/**
 	 * Get Chat URL for the channel
 	 *
 	 * @param \t2t2\LiveHub\Models\Stream|null $stream

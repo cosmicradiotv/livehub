@@ -18,7 +18,7 @@ class HlsService extends Service {
 	 * @return string
 	 */
 	public function name() {
-		return 'HLS Live Stream';
+		return 'HLS';
 	}
 
 	/**

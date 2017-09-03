@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Unit\ShowRuleMatcher;
 
+use stdClass;
 use t2t2\LiveHub\Services\ShowData;
 use t2t2\LiveHub\Services\ShowRuleMatcher;
 use Tests\TestCase;
@@ -15,7 +16,7 @@ class TitleMatcherTest extends TestCase {
 	public function testTitleMatch() {
 		$matcher = $this->getMatcher();
 
-		$rule = new \stdClass();
+		$rule = new stdClass();
 		$rule->type = 'title';
 		$rule->rule = '/Something/';
 
@@ -33,7 +34,7 @@ class TitleMatcherTest extends TestCase {
 	public function testTitleNotMatch() {
 		$matcher = $this->getMatcher();
 
-		$rule = new \stdClass();
+		$rule = new stdClass();
 		$rule->type = 'title';
 		$rule->rule = '/Nothing/';
 

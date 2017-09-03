@@ -112,6 +112,18 @@ abstract class Service implements UrlRoutable {
 	}
 
 	/**
+	 * Get service URL for this channel/stream
+	 *
+	 * @param null|\t2t2\LiveHub\Models\Channel $channel
+	 * @param null|\t2t2\LiveHub\Models\Stream $stream
+	 *
+	 * @return string
+	 */
+	public function getUrl($channel = null, $stream = null) {
+		return route('helper.misconfigured');
+	}
+
+	/**
 	 * Get video URL for this service
 	 *
 	 * @param null|\t2t2\LiveHub\Models\Channel $channel
