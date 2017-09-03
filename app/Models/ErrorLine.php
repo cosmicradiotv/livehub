@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * t2t2\LiveHub\Models\ErrorLine
  *
- * @property integer $id
+ * @property int $id
  * @property string $text
- * @property integer $channel_id
+ * @property int|null $channel_id
  * @property \Carbon\Carbon $created_at
- * @property-read \t2t2\LiveHub\Models\Channel $channel
- * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\ErrorLine whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\ErrorLine whereText($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\ErrorLine whereChannelId($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\ErrorLine whereCreatedAt($value)
+ * @property-read \t2t2\LiveHub\Models\Channel|null $channel
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\ErrorLine whereChannelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\ErrorLine whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\ErrorLine whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\ErrorLine whereText($value)
+ * @mixin \Eloquent
  */
 class ErrorLine extends Model {
 

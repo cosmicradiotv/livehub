@@ -6,17 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * t2t2\LiveHub\Models\IncomingService
  *
- * @property integer                                                                      $id
- * @property string                                                                       $class
- * @property object                                                                       $options
- * @property \Carbon\Carbon                                                               $created_at
- * @property \Carbon\Carbon                                                               $updated_at
- * @property-read Collection|\t2t2\LiveHub\Models\Channel[] $channels
- * @method static Builder|IncomingService whereId($value)
- * @method static Builder|IncomingService whereClass($value)
- * @method static Builder|IncomingService whereOptions($value)
- * @method static Builder|IncomingService whereCreatedAt($value)
- * @method static Builder|IncomingService whereUpdatedAt($value)
+ * @property int $id
+ * @property string $class
+ * @property object $options
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $channels
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\IncomingService whereClass($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\IncomingService whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\IncomingService whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\IncomingService whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\IncomingService whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class IncomingService extends Model {
 

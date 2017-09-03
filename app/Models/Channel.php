@@ -6,30 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * t2t2\LiveHub\Models\Channel
  *
- * @property integer                                                $id
- * @property integer                                                $incoming_service_id
- * @property string                                                 $name
- * @property object                                                 $options
- * @property \Carbon\Carbon                                         $last_checked
- * @property string                                                 $video_url
- * @property string                                                 $chat_url
- * @property integer                                                $default_show_id
- * @property \Carbon\Carbon                                         $created_at
- * @property \Carbon\Carbon                                         $updated_at
- * @property-read Show                                              $defaultShow
- * @property-read IncomingService                                   $service
- * @property-read Collection|Show[] $shows
- * @property-read Collection|Stream[] $streams
- * @method static Builder|Channel whereId($value)
- * @method static Builder|Channel whereIncomingServiceId($value)
- * @method static Builder|Channel whereName($value)
- * @method static Builder|Channel whereOptions($value)
- * @method static Builder|Channel whereLastChecked($value)
- * @method static Builder|Channel whereVideoUrl($value)
- * @method static Builder|Channel whereChatUrl($value)
- * @method static Builder|Channel whereDefaultShowId($value)
- * @method static Builder|Channel whereCreatedAt($value)
- * @method static Builder|Channel whereUpdatedAt($value)
+ * @property int $id
+ * @property int $incoming_service_id
+ * @property string $name
+ * @property object $options
+ * @property \Carbon\Carbon|null $last_checked
+ * @property string|null $url
+ * @property string|null $video_url
+ * @property string|null $chat_url
+ * @property int|null $default_show_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \t2t2\LiveHub\Models\Show|null $defaultShow
+ * @property-read \t2t2\LiveHub\Models\IncomingService $service
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Show[] $shows
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Stream[] $streams
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereChatUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereDefaultShowId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereIncomingServiceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereLastChecked($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Channel whereVideoUrl($value)
+ * @mixin \Eloquent
  */
 class Channel extends Model {
 

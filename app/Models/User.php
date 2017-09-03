@@ -7,21 +7,22 @@ use t2t2\LiveHub\Notifications\ResetPasswordNotification;
 /**
  * t2t2\LiveHub\Models\User
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\ $related[] $morphedByMany
- * @property integer $id
+ * @property int $id
  * @property string $username
  * @property string $email
  * @property string $password
- * @property string $remember_token
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @method static Builder|User whereId($value)
- * @method static Builder|User whereUsername($value)
- * @method static Builder|User whereEmail($value)
- * @method static Builder|User wherePassword($value)
- * @method static Builder|User whereRememberToken($value)
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereUpdatedAt($value)
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\User whereUsername($value)
+ * @mixin \Eloquent
  */
 class User extends Authenticatable {
 	use Notifiable;

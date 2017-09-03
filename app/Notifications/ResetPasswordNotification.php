@@ -16,6 +16,8 @@ class ResetPasswordNotification extends Notification {
 
 	/**
 	 * Create a new notification instance.
+	 *
+	 * @param string $token
 	 */
 	public function __construct($token) {
 		$this->token = $token;

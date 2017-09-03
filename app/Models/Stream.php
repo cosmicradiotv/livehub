@@ -8,31 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * t2t2\LiveHub\Models\Stream
  *
- * @property integer                                        $id
- * @property integer                                        $channel_id
- * @property integer                                        $show_id
- * @property array                                          $service_info
- * @property string                                         $title
- * @property string                                         $state
- * @property \Carbon\Carbon                                 $start_time
- * @property string                                         $video_url
- * @property string                                         $chat_url
- * @property \Carbon\Carbon                                 $created_at
- * @property \Carbon\Carbon                                 $updated_at
- * @property-read \t2t2\LiveHub\Models\Channel              $channel
- * @property-read \t2t2\LiveHub\Models\Show                 $show
- * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
- * @method static Builder|Stream whereId($value)
- * @method static Builder|Stream whereChannelId($value)
- * @method static Builder|Stream whereServiceInfo($value)
- * @method static Builder|Stream whereTitle($value)
- * @method static Builder|Stream whereState($value)
- * @method static Builder|Stream whereStartTime($value)
- * @method static Builder|Stream whereVideoUrl($value)
- * @method static Builder|Stream whereChatUrl($value)
- * @method static Builder|Stream whereCreatedAt($value)
- * @method static Builder|Stream whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\t2t2\LiveHub\Models\Stream whereShowId($value)
+ * @property int $id
+ * @property int $channel_id
+ * @property int|null $show_id
+ * @property string|null $service_info
+ * @property string $title
+ * @property string $state
+ * @property \Carbon\Carbon $start_time
+ * @property string|null $url
+ * @property string|null $video_url
+ * @property string|null $chat_url
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \t2t2\LiveHub\Models\Channel $channel
+ * @property-read \t2t2\LiveHub\Models\Show|null $show
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereChannelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereChatUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereServiceInfo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereShowId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Stream whereVideoUrl($value)
+ * @mixin \Eloquent
  */
 class Stream extends Model {
 

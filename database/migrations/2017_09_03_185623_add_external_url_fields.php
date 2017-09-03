@@ -16,7 +16,7 @@ class AddExternalUrlFields extends Migration {
 			$table->text('url')->after('last_checked')->nullable();
 		});
 	}
-	
+
 	/**
 	* Reverse the migrations.
 	*

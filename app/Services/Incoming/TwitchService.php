@@ -36,7 +36,7 @@ class TwitchService extends Service {
 			return 'https://www.twitch.tv/' . $channel->options->channel_username;
 		}
 
-		return parent::getVideoUrl($channel, $stream);
+		return parent::getUrl($channel, $stream);
 	}
 
 	/**

@@ -5,19 +5,19 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * t2t2\LiveHub\Models\Show
  *
- * @property integer                   $id
- * @property string                    $name
- * @property string                    $slug
- * @property \Carbon\Carbon            $created_at
- * @property \Carbon\Carbon            $updated_at
- * @property-read Collection|Channel[] $channels
- * @property-read Channel|null $defaultFor
- * @method static Builder|Show whereId($value)
- * @method static Builder|Show whereName($value)
- * @method static Builder|Show whereSlug($value)
- * @method static Builder|Show whereCreatedAt($value)
- * @method static Builder|Show whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\$related[] $morphedByMany
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $channels
+ * @property-read \Illuminate\Database\Eloquent\Collection|\t2t2\LiveHub\Models\Channel[] $defaultFor
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Show whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Show whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Show whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Show whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\t2t2\LiveHub\Models\Show whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Show extends Model {
 

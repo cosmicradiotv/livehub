@@ -35,7 +35,7 @@ class YoutubeService extends Service {
 			return 'https://www.youtube.com/watch?v=' . $stream->service_info;
 		}
 
-		return parent::getVideoUrl($channel, $stream);
+		return parent::getUrl($channel, $stream);
 	}
 
 	/**
