@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="{{ mix('/assets/live.css') }}"/>
 </head>
-<body data-livehub data-livehub-config="{{ route('live.config') }}">
+<body>
 	<div id="app" class="container">
 		<div class="header">
 			{{ config('app.name') }}

@@ -6,8 +6,7 @@
 				"browsers": ["> 1%"],
 				"uglify": true
 			},
-			"useBuiltIns": true,
-			"debug": true
+			"useBuiltIns": true
 		}]
 	],
 	"plugins": ["syntax-dynamic-import"]

@@ -27,6 +27,7 @@ class StreamsTransformer extends TransformerAbstract {
 
 		return [
 			'id' => $stream->id,
+			'channel_id' => $stream->channel_id,
 			'show_id' => $stream->show_id,
 			'title' => $stream->title,
 			'state' => $stream->state,
