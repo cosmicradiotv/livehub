@@ -49,7 +49,7 @@ class TwitchService extends Service {
 	 */
 	public function getVideoUrl($channel = null, $stream = null) {
 		if ($channel && $channel->options && isset($channel->options->channel_username)) {
-			return 'http://player.twitch.tv/?channel=' . $channel->options->channel_username;
+			return 'https://player.twitch.tv/?channel=' . $channel->options->channel_username;
 		}
 
 		return parent::getVideoUrl($channel, $stream);
@@ -65,7 +65,7 @@ class TwitchService extends Service {
 	 */
 	public function getChatUrl($channel = null, $stream = null) {
 		if ($channel && $channel->options && isset($channel->options->channel_username)) {
-			return 'http://www.twitch.tv/' . $channel->options->channel_username . '/chat?popout=';
+			return 'https://www.twitch.tv/' . $channel->options->channel_username . '/chat?popout=';
 		}
 
 		return parent::getChatUrl($channel, $stream);

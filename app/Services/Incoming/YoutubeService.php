@@ -48,7 +48,7 @@ class YoutubeService extends Service {
 	 */
 	public function getVideoUrl($channel = null, $stream = null) {
 		if ($stream->service_info) {
-			return 'http://www.youtube.com/embed/' . $stream->service_info . '?autohide=1&autoplay=1';
+			return 'https://www.youtube.com/embed/' . $stream->service_info . '?autohide=1&autoplay=1';
 		}
 
 		return parent::getVideoUrl($channel, $stream);
@@ -70,7 +70,7 @@ class YoutubeService extends Service {
 			} else {
 				$doamin = $domain_parts[0];
 			}
-			return 'http://www.youtube.com/live_chat?v=' . $stream->service_info . '&embed_domain=' . $domain;
+			return 'https://www.youtube.com/live_chat?v=' . $stream->service_info . '&embed_domain=' . $domain;
 		}
 
 		return parent::getVideoUrl($channel, $stream);
