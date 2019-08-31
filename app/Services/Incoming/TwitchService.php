@@ -118,9 +118,8 @@ class TwitchService extends Service {
 		$username = $channel->options->channel_username;
 
 		$client = new Client([
-			'base_uri' => 'https://api.twitch.tv/kraken/',
+			'base_uri' => 'https://api.twitch.tv/helix/',
 			'headers' => [
-				'Accept' => 'application/vnd.twitchtv.v3+json',
 				'Client-ID' => $this->getOptions()->client_key,
 			],
 			'query' => [
@@ -143,7 +142,11 @@ class TwitchService extends Service {
 	 * @return \GuzzleHttp\Promise\PromiseInterface
 	 */
 	protected function requestChannelInformation(Client $client, $username) {
-		return $client->getAsync('streams/' . $username);
+		return $client->getAsync('streams', [
+			'query' => [
+				'user_login' => $username
+			]
+		]);
 	}
 
 	/**
@@ -156,16 +159,17 @@ class TwitchService extends Service {
 	protected function transformStreamDataToLocal(PromiseInterface $promise) {
 		return $promise->then(function (ResponseInterface $response) {
 			$results = json_decode($response->getBody(), true);
-			$stream = $results['stream'];
 
 			$streams = new Collection();
 
-			if ($stream) {
+			if (count($results['data']) > 0) {
+				$stream = $results['data'][0];
+
 				$data = new ShowData();
-				$data->service_info = $stream['channel']['name'];
-				$data->title = $stream['channel']['status'];
+				$data->service_info = $stream['id'];
+				$data->title = $stream['title'];
 				$data->state = 'live';
-				$data->start_time = Carbon::parse($stream['created_at']);
+				$data->start_time = Carbon::parse($stream['started_at']);
 
 				$streams->push($data);
 			}
